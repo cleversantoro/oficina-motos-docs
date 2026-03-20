@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Mecânico</title>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6; /* Azul vibrante */
+            --bg: #f3f4f6;
+            --surface: #ffffff;
+            --border: #e5e7eb;
+            --text: #374151;
+            --text-light: #6b7280;
+        }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        
+        .container { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 300px 1fr; gap: 20px; }
+
+        /* Coluna Esquerda: Cartão de Perfil */
+        .profile-card { background: var(--surface); padding: 30px 20px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center; height: fit-content; }
+        .avatar-area { position: relative; width: 120px; height: 120px; margin: 0 auto 15px; }
+        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid #e0e7ff; }
+        .status-dot { position: absolute; bottom: 5px; right: 5px; width: 20px; height: 20px; background: #22c55e; border: 3px solid white; border-radius: 50%; }
+        
+        h1 { margin: 10px 0 5px; font-size: 1.5rem; color: var(--primary); }
+        .role { color: var(--text-light); font-weight: 500; margin-bottom: 20px; display: block; }
+
+        .kpi-row { display: flex; justify-content: center; gap: 15px; margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px; }
+        .kpi { text-align: center; }
+        .kpi strong { display: block; font-size: 1.2rem; color: var(--primary); }
+        .kpi span { font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; }
+
+        .btn-action { width: 100%; padding: 10px; margin-top: 20px; border: 1px solid var(--border); background: white; border-radius: 6px; cursor: pointer; font-weight: 600; color: var(--text); }
+        .btn-action:hover { background: #f9fafb; }
+
+        /* Coluna Direita: Detalhes */
+        .details-area { background: var(--surface); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+        
+        .tabs { display: flex; border-bottom: 1px solid var(--border); background: #f8fafc; }
+        .tab { padding: 15px 25px; cursor: pointer; font-weight: 600; color: var(--text-light); border-bottom: 3px solid transparent; }
+        .tab.active { color: var(--accent); border-bottom-color: var(--accent); background: white; }
+
+        .content { padding: 30px; }
+        h2 { font-size: 1.1rem; color: var(--primary); margin-top: 0; margin-bottom: 15px; border-left: 4px solid var(--accent); padding-left: 10px; }
+
+        /* Tags de Especialidade */
+        .skills-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
+        .skill-tag { background: #eff6ff; color: var(--accent); padding: 6px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 8px; border: 1px solid #dbeafe; }
+        .skill-add { background: white; border: 1px dashed #9ca3af; color: #6b7280; cursor: pointer; }
+
+        /* Grid de Disponibilidade */
+        .schedule-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 30px; text-align: center; }
+        .day-header { font-weight: 600; font-size: 0.85rem; color: var(--text-light); margin-bottom: 5px; }
+        .time-slot { background: #dcfce7; color: #15803d; padding: 8px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 5px; border: 1px solid #bbf7d0; }
+        .time-slot.busy { background: #fee2e2; color: #991b1b; border-color: #fecaca; text-decoration: line-through; opacity: 0.6; }
+
+        /* Lista de Certificações/Experiência */
+        .list-item { display: flex; gap: 15px; border-bottom: 1px solid var(--border); padding: 15px 0; align-items: start; }
+        .list-icon { background: #f3f4f6; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .meta { font-size: 0.85rem; color: var(--text-light); margin-top: 4px; }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+            .profile-card { flex-direction: row; text-align: left; display: flex; align-items: center; gap: 20px; }
+            .avatar-area { margin: 0; width: 80px; height: 80px; }
+            .schedule-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <aside class="profile-card">
+            <div class="avatar-area">
+                <img src="https://i.pravatar.cc/150?img=11" alt="Foto Mecânico" class="avatar">
+                <div class="status-dot" title="Disponível"></div>
+            </div>
+            
+            <div>
+                <h1>Carlos Mendes</h1>
+                <span class="role">Mecânico Sênior</span>
+                
+                <div class="kpi-row">
+                    <div class="kpi">
+                        <strong>98%</strong>
+                        <span>Pontualidade</span>
+                    </div>
+                    <div class="kpi">
+                        <strong>12a</strong>
+                        <span>Experiência</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; text-align: left; font-size: 0.9rem;">
+                    <p>📞 (11) 99999-8888</p>
+                    <p>📍 São Paulo, SP</p>
+                </div>
+
+                <button class="btn-action">Editar Dados Pessoais</button>
+                <button class="btn-action" style="color: #dc2626; border-color: #fee2e2;">Desativar Cadastro</button>
+            </div>
+        </aside>
+
+        <main class="details-area">
+            <nav class="tabs">
+                <div class="tab active">Habilidades & Agenda</div>
+                <div class="tab">Histórico & Docs</div>
+                <div class="tab">Endereço & Contato</div>
+            </nav>
+
+            <div class="content">
+                
+                <h2>Especialidades Técnicas</h2>
+                <p class="meta" style="margin-bottom: 15px;">Selecione os tipos de serviço que este profissional está apto a realizar.</p>
+                
+                <div class="skills-container">
+                    <div class="skill-tag">Injeção Eletrônica <span style="cursor:pointer; margin-left:5px">✕</span></div>
+                    <div class="skill-tag">Câmbio Automático <span style="cursor:pointer; margin-left:5px">✕</span></div>
+                    <div class="skill-tag">Freios ABS <span style="cursor:pointer; margin-left:5px">✕</span></div>
+                    <div class="skill-tag">Motor Diesel <span style="cursor:pointer; margin-left:5px">✕</span></div>
+                    <button class="skill-tag skill-add">+ Adicionar</button>
+                </div>
+
+                <h2 style="margin-top: 40px;">Disponibilidade Semanal</h2>
+                <div class="schedule-grid">
+                    <div>
+                        <div class="day-header">Seg</div>
+                        <div class="time-slot">08:00 - 12:00</div>
+                        <div class="time-slot">13:00 - 18:00</div>
+                    </div>
+                    <div>
+                        <div class="day-header">Ter</div>
+                        <div class="time-slot">08:00 - 12:00</div>
+                        <div class="time-slot">13:00 - 18:00</div>
+                    </div>
+                    <div>
+                        <div class="day-header">Qua</div>
+                        <div class="time-slot">08:00 - 12:00</div>
+                        <div class="time-slot">13:00 - 18:00</div>
+                    </div>
+                    <div>
+                        <div class="day-header">Qui</div>
+                        <div class="time-slot">08:00 - 12:00</div>
+                        <div class="time-slot">13:00 - 18:00</div>
+                    </div>
+                    <div>
+                        <div class="day-header">Sex</div>
+                        <div class="time-slot">08:00 - 12:00</div>
+                        <div class="time-slot busy">Tarde Livre</div>
+                    </div>
+                    <div>
+                        <div class="day-header">Sáb</div>
+                        <div class="time-slot">08:00 - 12:00</div>
+                    </div>
+                </div>
+
+                <h2 style="margin-top: 40px;">Certificações & Cursos</h2>
+                
+                <div class="list-item">
+                    <div class="list-icon">🎓</div>
+                    <div style="flex: 1;">
+                        <strong>Especialização Bosch Service</strong>
+                        <div class="meta">Concluído em: 15/05/2023 | Validade: Indeterminada</div>
+                    </div>
+                    <button style="border:none; background:transparent; color:#3b82f6; cursor:pointer;">Ver Certificado</button>
+                </div>
+
+                <div class="list-item">
+                    <div class="list-icon">📜</div>
+                    <div style="flex: 1;">
+                        <strong>NR-12 Segurança no Trabalho</strong>
+                        <div class="meta">Concluído em: 10/01/2024 | <span style="color:#eab308;">Expira em 30 dias</span></div>
+                    </div>
+                    <button style="border:none; background:transparent; color:#3b82f6; cursor:pointer;">Ver Certificado</button>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

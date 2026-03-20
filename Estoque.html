@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Estoque</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --bg: #f1f5f9;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text: #1e293b;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+        }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+
+        /* KPI Header */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: var(--surface); padding: 20px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+        .stat-label { font-size: 0.85rem; color: #64748b; font-weight: 500; }
+        .stat-value { font-size: 1.8rem; font-weight: 700; margin-top: 5px; }
+        .stat-card.alert { border-left: 4px solid var(--danger); }
+
+        /* Layout Principal */
+        .main-layout { display: flex; gap: 20px; align-items: flex-start; }
+        
+        /* Sidebar Filtros */
+        .filters { width: 250px; background: var(--surface); padding: 20px; border-radius: 8px; flex-shrink: 0; }
+        .filter-group { margin-bottom: 20px; }
+        .filter-title { font-weight: 600; margin-bottom: 10px; display: block; font-size: 0.9rem; }
+        .checkbox-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 0.9rem; color: #475569; }
+
+        /* Tabela de Produtos */
+        .content-area { flex: 1; background: var(--surface); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        
+        .toolbar { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 10px; background: #f8fafc; }
+        .search-bar { flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: 6px; max-width: 400px; }
+        .btn-new { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 500; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 15px 20px; background: #f8fafc; font-size: 0.8rem; text-transform: uppercase; color: #64748b; font-weight: 600; border-bottom: 1px solid var(--border); }
+        td { padding: 15px 20px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        tr:hover { background: #f8fafc; }
+
+        /* Componentes da Tabela */
+        .product-info { display: flex; gap: 12px; align-items: center; }
+        .product-img { width: 40px; height: 40px; background: #e2e8f0; border-radius: 6px; object-fit: cover; }
+        .sku { font-size: 0.75rem; color: #64748b; font-family: monospace; }
+        
+        .stock-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
+        .stock-ok { background: #dcfce7; color: #166534; }
+        .stock-low { background: #fee2e2; color: #991b1b; }
+        
+        .location-tag { background: #eff6ff; color: var(--primary); padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; border: 1px solid #bfdbfe; }
+
+        .actions { display: flex; gap: 10px; }
+        .btn-icon { background: transparent; border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #64748b; }
+        .btn-icon:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* Responsividade */
+        @media (max-width: 900px) {
+            .main-layout { flex-direction: column; }
+            .filters { width: auto; display: flex; gap: 20px; overflow-x: auto; padding: 10px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            th:nth-child(3), td:nth-child(3), /* Fabricante */
+            th:nth-child(4), td:nth-child(4)  /* Local */ 
+            { display: none; } 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-label">Valor em Estoque</span>
+            <span class="stat-value">R$ 142.500</span>
+        </div>
+        <div class="stat-card alert">
+            <span class="stat-label">Estoque Crítico</span>
+            <span class="stat-value" style="color: var(--danger)">12 Itens</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Total de Peças (SKUs)</span>
+            <span class="stat-value">843</span>
+        </div>
+    </div>
+
+    <div class="main-layout">
+        
+        <aside class="filters">
+            <div class="filter-group">
+                <span class="filter-title">Categorias</span>
+                <div class="checkbox-row"><input type="checkbox" checked> Motor</div>
+                <div class="checkbox-row"><input type="checkbox"> Suspensão</div>
+                <div class="checkbox-row"><input type="checkbox"> Freios</div>
+                <div class="checkbox-row"><input type="checkbox"> Lubrificantes</div>
+            </div>
+            
+            <div class="filter-group">
+                <span class="filter-title">Fabricantes</span>
+                <div class="checkbox-row"><input type="checkbox"> Bosch</div>
+                <div class="checkbox-row"><input type="checkbox"> Cofap</div>
+                <div class="checkbox-row"><input type="checkbox"> Motul</div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-title">Status</span>
+                <div class="checkbox-row"><input type="checkbox"> Estoque Baixo</div>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            <div class="toolbar">
+                <input type="text" class="search-bar" placeholder="Buscar por nome, código ou SKU...">
+                <button class="btn-new">+ Nova Peça</button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 300px;">Produto</th>
+                        <th>Preço Venda</th>
+                        <th>Fabricante</th>
+                        <th>Localização</th>
+                        <th>Estoque</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <div class="product-img"></div> <div>
+                                    <div style="font-weight: 600;">Óleo 10w40 Semissintético</div>
+                                    <div class="sku">SKU: MOT-1040 | Categoria: Lubrificantes</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>R$ 45,00</td>
+                        <td>Motul</td>
+                        <td><span class="location-tag">Prateleira A2</span></td>
+                        <td>
+                            <div class="stock-badge stock-ok">
+                                24 un
+                            </div>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-icon" title="Histórico">H</button>
+                                <button class="btn-icon" title="Editar">✎</button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <div class="product-img" style="background: #fee2e2;"></div>
+                                <div>
+                                    <div style="font-weight: 600;">Pastilha Freio CB 500</div>
+                                    <div class="sku">SKU: COF-998 | Categoria: Freios</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>R$ 120,00</td>
+                        <td>Cofap</td>
+                        <td><span class="location-tag">Gaveta 04</span></td>
+                        <td>
+                            <div class="stock-badge stock-low">
+                                ⚠ 2 un
+                            </div>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-icon" title="Entrada Rápida">+</button>
+                                <button class="btn-icon">✎</button>
+                            </div>
+                        </td>
+                    </tr>
+
+                     <tr>
+                        <td>
+                            <div class="product-info">
+                                <div class="product-img"></div>
+                                <div>
+                                    <div style="font-weight: 600;">Filtro de Ar Esportivo</div>
+                                    <div class="sku">SKU: K&N-001 | Categoria: Motor</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>R$ 290,00</td>
+                        <td>K&N</td>
+                        <td><span class="location-tag">Parede B</span></td>
+                        <td>
+                            <div class="stock-badge stock-ok">
+                                5 un
+                            </div>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-icon">H</button>
+                                <button class="btn-icon">✎</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+</body>
+</html>

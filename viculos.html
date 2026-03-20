@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Veículo (Placa XYZ-1234)</title>
+    <style>
+        :root {
+            --primary: #1e40af; /* Azul Escuro */
+            --accent: #3b82f6; 
+            --bg: #f3f4f6;
+            --surface: #ffffff;
+            --border: #e5e7eb;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --warning: #fcd34d;
+        }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        /* Header e Destaque */
+        .header-veiculo { background: var(--surface); padding: 25px 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .veiculo-info { flex-grow: 1; }
+        .placa-box { background: var(--primary); color: white; padding: 5px 15px; border-radius: 4px; font-weight: 700; font-size: 1.2rem; display: inline-block; margin-bottom: 5px; }
+        h1 { margin: 0; font-size: 1.8rem; color: var(--primary); }
+        .owner-link { color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.95rem; margin-top: 5px; display: block; }
+        
+        /* KPIs de Manutenção */
+        .kpi-manutencao { display: flex; gap: 20px; text-align: right; }
+        .kpi { border-left: 1px solid var(--border); padding-left: 20px; }
+        .kpi strong { display: block; font-size: 1.5rem; color: var(--text); }
+        .kpi span { font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; }
+        .kpi.alert strong { color: var(--warning); }
+
+        /* Navegação por Abas */
+        .tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 20px; }
+        .tab { padding: 12px 20px; cursor: pointer; font-weight: 600; color: var(--text-light); border-bottom: 3px solid transparent; margin-bottom: -2px; }
+        .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+        /* Conteúdo */
+        .card { background: var(--surface); padding: 25px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--border); }
+        h2 { font-size: 1.2rem; margin-top: 0; margin-bottom: 15px; color: var(--primary); }
+
+        /* Tabela de Histórico (Visão Rápida) */
+        .history-table { width: 100%; border-collapse: collapse; }
+        .history-table th { text-align: left; background: #f9fafb; padding: 10px; font-size: 0.85rem; color: var(--text-light); border-bottom: 1px solid var(--border); }
+        .history-table td { padding: 12px 10px; border-bottom: 1px dashed var(--border); font-size: 0.9rem; }
+        .status-os { background: #e0f2fe; color: #0369a1; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 500; }
+
+        /* Grid de Dados Técnicos */
+        .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .data-item { border-left: 3px solid var(--accent); padding-left: 10px; }
+        .data-label { font-size: 0.8rem; color: var(--text-light); }
+        .data-value { font-weight: 600; margin-top: 2px; }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header-veiculo { flex-direction: column; align-items: flex-start; }
+            .kpi-manutencao { justify-content: space-between; width: 100%; margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px; }
+            .kpi { border-left: none; padding-left: 0; text-align: left; }
+            .history-table th:nth-child(3), .history-table td:nth-child(3) { display: none; } /* Oculta Responsável no mobile */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="header-veiculo">
+            <div class="veiculo-info">
+                <div class="placa-box">ABC-1234</div>
+                <h1>Honda Civic Sedan 2.0 (2020)</h1>
+                <a href="#" class="owner-link">Proprietário: Maria da Silva (Cliente #456)</a>
+            </div>
+            
+            <div class="kpi-manutencao">
+                <div class="kpi">
+                    <strong>120.500 KM</strong>
+                    <span>Último KM Registrado</span>
+                </div>
+                <div class="kpi alert">
+                    <strong>10.000 KM</strong>
+                    <span>Próxima Troca de Óleo</span>
+                </div>
+            </div>
+        </header>
+
+        <nav class="tabs">
+            <div class="tab active">Histórico de Serviço</div>
+            <div class="tab">Dados Técnicos</div>
+            <div class="tab">Documentos & Peças</div>
+        </nav>
+
+        <main>
+            <div class="card">
+                <h2>Últimas Ordens de Serviço</h2>
+                
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>OS #</th>
+                            <th>Data Fechamento</th>
+                            <th>Serviço Principal</th>
+                            <th>Valor Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#1024</td>
+                            <td>15/11/2025</td>
+                            <td>Revisão Completa (Óleo, Filtros)</td>
+                            <td>R$ 850,00</td>
+                            <td><span class="status-os" style="background:#dcfce7; color:#16a34a;">Concluída</span></td>
+                        </tr>
+                        <tr>
+                            <td>#0987</td>
+                            <td>01/08/2025</td>
+                            <td>Troca de Pneus Dianteiros</td>
+                            <td>R$ 1.200,00</td>
+                            <td><span class="status-os">Orçamento</span></td>
+                        </tr>
+                        <tr>
+                            <td>#0850</td>
+                            <td>20/03/2025</td>
+                            <td>Revisão Freios e Suspensão</td>
+                            <td>R$ 4.500,00</td>
+                            <td><span class="status-os" style="background:#dcfce7; color:#16a34a;">Concluída</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="text-align: center; margin-top: 15px;">
+                    <button style="background: none; border: 1px solid var(--border); padding: 8px 15px; border-radius: 4px; color: var(--primary); cursor: pointer;">Ver Histórico Completo</button>
+                </div>
+            </div>
+            
+            <div class="card" style="display: none;"> <h2>Dados de Cadastro</h2>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <span class="data-label">Marca</span>
+                        <span class="data-value">Honda (ID do VeiculoMarcas)</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Modelo</span>
+                        <span class="data-value">Civic Sedan 2.0 (ID do VeiculoModelos)</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Ano Fabricação/Modelo</span>
+                        <span class="data-value">2020/2020</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Cor</span>
+                        <span class="data-value">Prata</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Motor (Cilindrada/Potência)</span>
+                        <span class="data-value">2.0L i-VTEC</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Tipo de Combustível</span>
+                        <span class="data-value">Flex</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Chassi</span>
+                        <span class="data-value">9B775CXXXXXXXXXXXXX</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+    
+    <script>
+        // Simples lógica para trocar de aba (apenas para demonstração HTML)
+        const tabs = document.querySelectorAll('.tab');
+        const contents = document.querySelectorAll('.card');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                contents.forEach(content => content.style.display = 'none');
+                
+                // Indexar as abas para mostrar o conteúdo correto
+                const index = Array.from(tabs).indexOf(tab);
+                contents[index].style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

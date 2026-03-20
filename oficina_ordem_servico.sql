@@ -1,0 +1,338 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+SET FOREIGN_KEY_CHECKS=0;
+
+
+--
+-- Despejando dados para a tabela `os_ordens`
+--
+
+INSERT INTO `os_ordens` (`id`, `cliente_id`, `mecanico_id`, `descricao_problema`, `status`, `data_abertura`, `data_conclusao`, `created_at`, `updated_at`) VALUES
+(10001, 1, 1, 'Troca de óleo e filtro - revisão preventiva', 'CONCLUIDA', '2025-10-29 01:50:11.000', '2025-10-30 01:50:11.000', '2025-11-08 01:50:11.934', NULL),
+(10002, 2, 2, 'Ruído na suspensão dianteira ao frear', 'EM_ANDAMENTO', '2025-11-01 01:50:11.000', NULL, '2025-11-08 01:50:11.934', NULL),
+(10003, 3, 3, 'Motor falhando - diagnóstico de ignição', 'CONCLUIDA', '2025-10-19 01:50:11.000', '2025-10-21 01:50:11.000', '2025-11-08 01:50:11.934', NULL),
+(10004, 4, 4, 'Substituição de pastilhas e fluido de freio', 'CONCLUIDA', '2025-10-24 01:50:11.000', '2025-10-25 01:50:11.000', '2025-11-08 01:50:11.934', NULL),
+(10005, 5, 5, 'Luz da injeção acesa - leitura scanner', 'ABERTA', '2025-11-06 01:50:11.000', NULL, '2025-11-08 01:50:11.934', NULL),
+(10006, 6, 6, 'Revisão 30.000km Onix. Trocar velas e filtros.', 'CONCLUIDA', '2025-11-09 08:00:00.000', '2025-11-09 17:00:00.000', '2025-11-13 13:00:00.001', NULL),
+(10007, 7, 7, 'Ar condicionado não gela - Honda Fit.', 'EM_ANDAMENTO', '2025-11-10 09:00:00.000', NULL, '2025-11-13 13:00:00.001', NULL),
+(10008, 8, 8, 'Barulho (assobio) freio traseiro Civic.', 'AGUARDANDO_APROVACAO', '2025-11-10 10:00:00.000', NULL, '2025-11-13 13:00:00.001', NULL),
+(10009, 9, 9, 'Troca kit de embreagem Uno Fire.', 'EM_ANDAMENTO', '2025-11-10 11:00:00.000', NULL, '2025-11-13 13:00:00.001', NULL),
+(10010, 10, 10, 'Troca de óleo e filtro - 5W30 Sintético.', 'CONCLUIDA', '2025-11-10 14:00:00.000', '2025-11-10 15:00:00.000', '2025-11-13 13:00:00.001', NULL),
+(10011, 11, 34, 'Veículo não dá partida. Suspeita de bateria.', 'CONCLUIDA', '2025-11-11 08:30:00.000', '2025-11-11 09:30:00.000', '2025-11-13 13:00:00.001', NULL),
+(10012, 12, 10, 'Luz alta (H4) queimada.', 'CONCLUIDA', '2025-11-11 09:00:00.000', '2025-11-11 09:20:00.000', '2025-11-13 13:00:00.001', NULL),
+(10013, 13, 11, 'Instabilidade na suspensão Corsa.', 'EM_ANDAMENTO', '2025-11-11 10:00:00.000', NULL, '2025-11-13 13:00:00.001', NULL),
+(10014, 14, 12, 'Troca filtro de cabine Corolla.', 'CONCLUIDA', '2025-11-11 11:00:00.000', '2025-11-11 11:45:00.000', '2025-11-13 13:00:00.001', NULL),
+(10015, 15, 13, 'Barulho correia dentada Gol.', 'AGUARDANDO_APROVACAO', '2025-11-11 14:00:00.000', NULL, '2025-11-13 13:00:00.001', NULL),
+(10016, 16, 14, 'Aquecimento do motor Celta (com A/C).', 'EM_ANDAMENTO', '2025-11-12 08:00:00.000', NULL, '2025-11-13 13:00:00.001', NULL),
+(10017, 17, 15, 'Barulho na roda dianteira Ford Ka.', 'CONCLUIDA', '2025-11-12 09:00:00.000', '2025-11-12 11:00:00.000', '2025-11-13 13:00:00.001', NULL),
+(10018, 18, 16, 'Troca fluido de freio (DOT4).', 'CONCLUIDA', '2025-11-12 10:00:00.000', '2025-11-12 10:40:00.000', '2025-11-13 13:00:00.001', NULL),
+(10019, 19, 17, 'Carro engasgando - Fox 1.6.', 'AGUARDANDO_APROVACAO', '2025-11-12 11:00:00.000', NULL, '2025-11-13 13:00:00.001', NULL),
+(10020, 20, 18, 'Revisão câmbio automático (troca fluido ATF).', 'CONCLUIDA', '2025-11-12 14:00:00.000', '2025-11-12 17:00:00.000', '2025-11-13 13:00:00.001', NULL),
+(10021, 21, 19, 'Troca palheta limpador 20\".', 'CONCLUIDA', '2025-11-12 15:00:00.000', '2025-11-12 15:15:00.000', '2025-11-13 13:00:00.001', NULL),
+(10022, 22, 20, 'Luz injeção acesa VW UP TSI.', 'EM_ANDAMENTO', '2025-11-12 16:00:00.000', NULL, '2025-11-13 13:00:00.001', NULL),
+(10023, 23, 21, 'Troca pastilhas freio Hilux.', 'CONCLUIDA', '2025-11-13 08:00:00.000', '2025-11-13 10:00:00.000', '2025-11-13 13:00:00.001', NULL),
+(10024, 24, 22, 'Troca amortecedores traseiros Onix.', 'EM_ANDAMENTO', '2025-11-13 09:00:00.000', NULL, '2025-11-13 13:00:00.001', NULL),
+(10025, 25, 23, 'Barulho correia alternador Cruze.', 'AGUARDANDO_APROVACAO', '2025-11-13 10:00:00.000', NULL, '2025-11-13 13:00:00.001', NULL),
+(10026, 26, 24, 'Troca bateria 70Ah.', 'CONCLUIDA', '2025-11-13 11:00:00.000', '2025-11-13 11:30:00.000', '2025-11-13 13:00:00.001', NULL),
+(10027, 27, 25, 'Troca lâmpada H7 Philips.', 'CONCLUIDA', '2025-11-13 11:30:00.000', '2025-11-13 11:50:00.000', '2025-11-13 13:00:00.001', NULL),
+(10028, 28, 26, 'Carro demorando para esquentar (Palio).', 'EM_ANDAMENTO', '2025-11-13 12:00:00.000', NULL, '2025-11-13 13:00:00.001', NULL),
+(10029, 29, 27, 'Troca filtro combustível Gol G5.', 'CONCLUIDA', '2025-11-13 12:30:00.000', '2025-11-13 13:00:00.000', '2025-11-13 13:00:00.001', NULL),
+(10030, 30, 28, 'Troca aditivo radiador (Paraflu Rosa).', 'CONCLUIDA', '2025-11-13 13:00:00.000', '2025-11-13 13:45:00.000', '2025-11-13 13:00:00.001', NULL),
+(10031, 31, 29, 'Falha motor Celta (cabos e velas).', 'AGUARDANDO_APROVACAO', '2025-11-13 13:15:00.000', NULL, '2025-11-13 13:00:00.001', NULL),
+(10032, 32, 30, 'Orçamento bico injetor Peugeot 308 THP.', 'CANCELADA', '2025-11-13 13:30:00.000', '2025-11-13 13:35:00.000', '2025-11-13 13:00:00.001', NULL),
+(10033, 33, 31, 'Troca discos freio Jetta TSI (traseiro).', 'EM_ANDAMENTO', '2025-11-13 13:45:00.000', NULL, '2025-11-13 13:00:00.001', NULL),
+(10034, 34, 32, 'Troca kit batente amortecedor Ka.', 'CONCLUIDA', '2025-11-13 14:00:00.000', '2025-11-13 15:30:00.000', '2025-11-13 13:00:00.001', NULL),
+(10035, 35, 33, 'Barulho rolamento roda dianteira Gol (ABS).', 'CONCLUIDA', '2025-11-13 14:15:00.000', '2025-11-13 16:00:00.000', '2025-11-13 13:00:00.001', NULL);
+
+
+
+INSERT INTO `os_anexos` (`id`, `ordem_servico_id`, `nome`, `tipo`, `url`, `observacao`, `data_upload`, `created_at`, `updated_at`) VALUES
+(50001, 10001, 'foto-filtro-antigo.jpg', 'image/jpeg', 'https://exemplo.com/os10001/filtro.jpg', 'Filtro sujo substituído', '2025-10-29 01:50:12.000', '2025-11-08 01:50:12.037', NULL),
+(50002, 10002, 'video-barulho.mp4', 'video/mp4', 'https://exemplo.com/os10002/barulho.mp4', 'Ruído capturado em teste', '2025-11-02 01:50:12.000', '2025-11-08 01:50:12.037', NULL),
+(50003, 10003, 'relatorio-ignicao.pdf', 'application/pdf', 'https://exemplo.com/os10003/diagnostico.pdf', 'Relatório técnico', '2025-10-20 01:50:12.000', '2025-11-08 01:50:12.037', NULL),
+(50004, 10004, 'foto-freio-novo.jpg', 'image/jpeg', 'https://exemplo.com/os10004/freio.jpg', 'Pastilhas novas instaladas', '2025-10-25 01:50:12.000', '2025-11-08 01:50:12.037', NULL),
+(50005, 10005, 'leitura-obd.jpg', 'image/jpeg', 'https://exemplo.com/os10005/obd.jpg', 'Código P0130 armazenado', '2025-11-07 01:50:12.000', '2025-11-08 01:50:12.037', NULL),
+(50006, 10006, 'vela-antiga.jpg', 'image/jpeg', 'https://exemplo.com/os10006/vela-antiga.jpg', 'Velas antigas carbonizadas', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50007, 10007, 'foto-vazamento-uv.jpg', 'image/jpeg', 'https://exemplo.com/os10007/vazamento.jpg', 'Ponto de vazamento no condensador (UV)', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50008, 10008, 'audio-freio.mp3', 'audio/mpeg', 'https://exemplo.com/os10008/audio.mp3', 'Áudio do ruído (cliente)', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50009, 10009, 'foto-embreagem.jpg', 'image/jpeg', 'https://exemplo.com/os10009/embreagem.jpg', 'Disco de embreagem antigo', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50010, 10010, 'nota-oleo.pdf', 'application/pdf', 'https://exemplo.com/os10010/nota.pdf', 'Nota fiscal óleo Monroe', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50011, 10011, 'teste-bateria.png', 'image/png', 'https://exemplo.com/os10011/teste.png', 'Resultado teste CCA', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50012, 10012, 'foto-lampada.jpg', 'image/jpeg', 'https://exemplo.com/os10012/lampada.jpg', 'Caixa lâmpada Osram', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50013, 10013, 'foto-pivo-folga.jpg', 'image/jpeg', 'https://exemplo.com/os10013/pivo.jpg', 'Folga excessiva pivô LE', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50014, 10014, 'filtro-cabine-antigo.jpg', 'image/jpeg', 'https://exemplo.com/os10014/filtro.jpg', 'Filtro antigo contaminado', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50015, 10015, 'video-tensor.mp4', 'video/mp4', 'https://exemplo.com/os10015/video.mp4', 'Ruído do tensor', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50016, 10016, 'foto-mangueira.jpg', 'image/jpeg', 'https://exemplo.com/os10016/mangueira.jpg', 'Vazamento mangueira superior', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50017, 10017, 'foto-coifa-rasgada.jpg', 'image/jpeg', 'https://exemplo.com/os10017/coifa.jpg', 'Coifa homocinética LD', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50018, 10018, 'nota-fluido-trw.pdf', 'application/pdf', 'https://exemplo.com/os10018/nota.pdf', 'Nota fiscal fluido', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50019, 10019, 'scanner-p0301.png', 'image/png', 'https://exemplo.com/os10019/scanner.png', 'Falha cilindro 1', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50020, 10020, 'foto-oleo-atf-antigo.jpg', 'image/jpeg', 'https://exemplo.com/os10020/oleo.jpg', 'Comparativo óleo ATF', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50021, 10021, 'foto-palheta.jpg', 'image/jpeg', 'https://exemplo.com/os10021/palheta.jpg', 'Palheta Bosch instalada', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50022, 10022, 'scanner-sonda-up.png', 'image/png', 'https://exemplo.com/os10022/scanner.png', 'Gráfico sonda lambda (travada)', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50023, 10023, 'foto-pastilha-hilux.jpg', 'image/jpeg', 'https://exemplo.com/os10023/pastilha.jpg', 'Pastilha cerâmica TRW', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50024, 10024, 'amortecedor-estourado.jpg', 'image/jpeg', 'https://exemplo.com/os10024/amortecedor.jpg', 'Vazamento óleo amortecedor TR LD', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50025, 10025, 'video-correia-cruze.mp4', 'video/mp4', 'https://exemplo.com/os10025/video.mp4', 'Ruído tensor alternador', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50026, 10026, 'foto-bateria-heliar.jpg', 'image/jpeg', 'https://exemplo.com/os10026/bateria.jpg', 'Bateria nova instalada', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50027, 10027, 'foto-lampada-h7.jpg', 'image/jpeg', 'https://exemplo.com/os10027/lampada.jpg', 'Caixa Philips H7', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50028, 10028, 'valvula-travada.jpg', 'image/jpeg', 'https://exemplo.com/os10028/valvula.jpg', 'Válvula termostática antiga', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50029, 10029, 'filtro-comb-antigo.jpg', 'image/jpeg', 'https://exemplo.com/os10029/filtro.jpg', 'Filtro combustível antigo', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50030, 10030, 'foto-aditivo.jpg', 'image/jpeg', 'https://exemplo.com/os10030/aditivo.jpg', 'Aditivo Paraflu Rosa', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50031, 10031, 'foto-fuga-corrente.jpg', 'image/jpeg', 'https://exemplo.com/os10031/fuga.jpg', 'Cabo vela cilindro 2 com fuga', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50032, 10032, 'orcamento-cancelado.pdf', 'application/pdf', 'https://exemplo.com/os10032/cancelado.pdf', 'Peça descontinuada', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50033, 10033, 'disco-traseiro-jetta.jpg', 'image/jpeg', 'https://exemplo.com/os10033/disco.jpg', 'Discos novos TRW', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50034, 10034, 'kit-batente-ka.jpg', 'image/jpeg', 'https://exemplo.com/os10034/batente.jpg', 'Kit batente Nakata', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL),
+(50035, 10035, 'rolamento-skf-abs.jpg', 'image/jpeg', 'https://exemplo.com/os10035/rolamento.jpg', 'Rolamento SKF com anel ABS', '2025-11-13 16:56:14.038', '2025-11-13 13:04:00.005', NULL);
+
+--
+-- Despejando dados para a tabela `os_avaliacoes`
+--
+
+INSERT INTO `os_avaliacoes` (`id`, `ordem_servico_id`, `nota`, `comentario`, `usuario`, `created_at`, `updated_at`) VALUES
+(60001, 10001, 5, 'Serviço rápido e bem feito. Recomendo!', 'joao.silva', '2025-11-08 01:50:12.074', NULL),
+(60002, 10002, 4, 'Diagnóstico correto, aguardando orçamento.', 'maria.oliveira', '2025-11-08 01:50:12.074', NULL),
+(60003, 10003, 5, 'Problema resolvido. Oficina confiável.', 'carlos.santos', '2025-11-08 01:50:12.074', NULL),
+(60004, 10004, 5, 'Freio perfeito, atendimento excelente.', 'patricia.lima', '2025-11-08 01:50:12.074', NULL),
+(60005, 10005, 3, 'Aguardando contato sobre orçamento.', 'eduardo.souza', '2025-11-08 01:50:12.074', NULL),
+(60006, 10006, 5, 'Revisão completa, carro ficou ótimo.', 'cliente_206', '2025-11-13 13:05:00.006', NULL),
+(60007, 10007, 3, 'Ainda em diagnóstico, mas o mecânico foi atencioso.', 'cliente_207', '2025-11-13 13:05:00.006', NULL),
+(60008, 10008, 4, 'Recebi o orçamento rápido, aguardando aprovação.', 'cliente_208', '2025-11-13 13:05:00.006', NULL),
+(60009, 10009, 5, 'Serviço pesado, mas ficou excelente.', 'cliente_209', '2025-11-13 13:05:00.006', NULL),
+(60010, 10010, 5, 'Troca de óleo rápida.', 'cliente_210', '2025-11-13 13:05:00.006', NULL),
+(60011, 10011, 5, 'Resolveram rápido, era a bateria mesmo.', 'cliente_211', '2025-11-13 13:05:00.006', NULL),
+(60012, 10012, 5, 'Troca de lâmpada simples, sem espera.', 'cliente_212', '2025-11-13 13:05:00.006', NULL),
+(60013, 10013, 4, 'Aguardando alinhamento para finalizar.', 'cliente_213', '2025-11-13 13:05:00.006', NULL),
+(60014, 10014, 5, 'Filtro de cabine trocado, ar ficou melhor.', 'cliente_214', '2025-11-13 13:05:00.006', NULL),
+(60015, 10015, 4, 'Diagnóstico parece correto (tensor).', 'cliente_215', '2025-11-13 13:05:00.006', NULL),
+(60016, 10016, 4, 'Ainda em reparo (aguardando peça).', 'cliente_216', '2025-11-13 13:05:00.006', NULL),
+(60017, 10017, 5, 'Barulho na roda sumiu. Ótimo.', 'cliente_217', '2025-11-13 13:05:00.006', NULL),
+(60018, 10018, 5, 'Serviço rápido.', 'cliente_218', '2025-11-13 13:05:00.006', NULL),
+(60019, 10019, 3, 'Aguardando orçamento da bobina.', 'cliente_219', '2025-11-13 13:05:00.006', NULL),
+(60020, 10020, 5, 'Câmbio ficou mais suave após a troca do ATF.', 'cliente_220', '2025-11-13 13:05:00.006', NULL),
+(60021, 10021, 5, 'Troca rápida.', 'cliente_221', '2025-11-13 13:05:00.006', NULL),
+(60022, 10022, 4, 'Aguardando peça (sonda).', 'cliente_222', '2025-11-13 13:05:00.006', NULL),
+(60023, 10023, 5, 'Serviço bem feito na Hilux.', 'cliente_223', '2025-11-13 13:05:00.006', NULL),
+(60024, 10024, 4, 'Em andamento.', 'cliente_224', '2025-11-13 13:05:00.006', NULL),
+(60025, 10025, 4, 'Aguardando aprovação.', 'cliente_225', '2025-11-13 13:05:00.006', NULL),
+(60026, 10026, 5, 'Troca de bateria rápida.', 'cliente_226', '2025-11-13 13:05:00.006', NULL),
+(60027, 10027, 5, 'Serviço rápido.', 'cliente_227', '2025-11-13 13:05:00.006', NULL),
+(60028, 10028, 4, 'Aguardando finalização do reparo.', 'cliente_228', '2025-11-13 13:05:00.006', NULL),
+(60029, 10029, 5, 'OK.', 'cliente_229', '2025-11-13 13:05:00.006', NULL),
+(60030, 10030, 5, 'Troca de aditivo OK.', 'cliente_230', '2025-11-13 13:05:00.006', NULL),
+(60031, 10031, 4, 'Aguardando aprovação orçamento cabos.', 'cliente_231', '2025-11-13 13:05:00.006', NULL),
+(60032, 10032, 2, 'Não conseguiram a peça (descontinuada).', 'cliente_232', '2025-11-13 13:05:00.006', NULL),
+(60033, 10033, 4, 'Aguardando finalização.', 'cliente_233', '2025-11-13 13:05:00.006', NULL),
+(60034, 10034, 5, 'Serviço concluído. OK.', 'cliente_234', '2025-11-13 13:05:00.006', NULL),
+(60035, 10035, 5, 'Barulho do rolamento resolvido.', 'cliente_235', '2025-11-13 13:05:00.006', NULL);
+
+--
+-- Despejando dados para a tabela `os_checklists`
+--
+
+INSERT INTO `os_checklists` (`id`, `ordem_servico_id`, `item`, `realizado`, `observacao`, `created_at`, `updated_at`) VALUES
+(30001, 10001, 'Nível do óleo', 1, 'Troca realizada', '2025-11-08 01:50:11.983', NULL),
+(30002, 10002, 'Suspensão dianteira', 1, 'Barulho detectado', '2025-11-08 01:50:11.983', NULL),
+(30003, 10003, 'Velas e cabos', 1, 'Cabos substituídos', '2025-11-08 01:50:11.983', NULL),
+(30004, 10004, 'Sistema de freio', 1, 'Pastilhas novas', '2025-11-08 01:50:11.983', NULL),
+(30005, 10005, 'Scanner OBDII', 0, 'Aguardando aprovação do cliente', '2025-11-08 01:50:11.983', NULL),
+(30006, 10006, 'Troca de velas', 1, 'NGK Iridium OK', '2025-11-13 13:02:00.003', NULL),
+(30007, 10007, 'Verificar pressão do gás A/C', 1, 'Baixa pressão. Suspeita de vazamento.', '2025-11-13 13:02:00.003', NULL),
+(30008, 10008, 'Verificar pastilhas traseiras', 1, 'Desgastadas, 2mm.', '2025-11-13 13:02:00.003', NULL),
+(30009, 10009, 'Nível óleo câmbio', 1, 'Verificado. OK.', '2025-11-13 13:02:00.003', NULL),
+(30010, 10010, 'Filtro de óleo', 1, 'Trocado', '2025-11-13 13:02:00.003', NULL),
+(30011, 10011, 'Teste de bateria', 1, 'CCA Baixo (150A). Necessária troca.', '2025-11-13 13:02:00.003', NULL),
+(30012, 10012, 'Teste de luzes', 1, 'Lâmpada H4 LD queimada.', '2025-11-13 13:02:00.003', NULL),
+(30013, 10013, 'Verificar pivôs', 1, 'Ambos com folga.', '2025-11-13 13:02:00.003', NULL),
+(30014, 10014, 'Filtro de cabine', 1, 'Substituído (Carvão Ativado).', '2025-11-13 13:02:00.003', NULL),
+(30015, 10015, 'Verificar tensor correia', 1, 'Tensor ruidoso.', '2025-11-13 13:02:00.003', NULL),
+(30016, 10016, 'Verificar mangueiras radiador', 1, 'Mangueira superior com vazamento.', '2025-11-13 13:02:00.003', NULL),
+(30017, 10017, 'Verificar homocinética', 1, 'Coifa rasgada, junta danificada (LD).', '2025-11-13 13:02:00.003', NULL),
+(30018, 10018, 'Sangria do sistema', 1, 'Realizada nas 4 rodas.', '2025-11-13 13:02:00.003', NULL),
+(30019, 10019, 'Diagnóstico bobina', 0, 'Aguardando aprovação.', '2025-11-13 13:02:00.003', NULL),
+(30020, 10020, 'Nível fluido câmbio', 1, 'Nível OK após troca.', '2025-11-13 13:02:00.003', NULL),
+(30021, 10021, 'Verificar limpadores', 1, 'Palheta 20\" (LE) trocada.', '2025-11-13 13:02:00.003', NULL),
+(30022, 10022, 'Leitura Sonda Lambda', 1, 'Sonda pré-catalisador travada.', '2025-11-13 13:02:00.003', NULL),
+(30023, 10023, 'Verificar pastilhas', 1, 'Pastilhas de cerâmica instaladas.', '2025-11-13 13:02:00.003', NULL),
+(30024, 10024, 'Verificar amortecedores', 1, 'Traseiros estourados.', '2025-11-13 13:02:00.003', NULL),
+(30025, 10025, 'Inspeção correia alternador', 1, 'Correia ressecada, tensor com folga.', '2025-11-13 13:02:00.003', NULL),
+(30026, 10026, 'Verificar alternador', 1, 'Carga OK (14.1V).', '2025-11-13 13:02:00.003', NULL),
+(30027, 10027, 'Verificar farol', 1, 'Lâmpada H7 LE trocada.', '2025-11-13 13:02:00.003', NULL),
+(30028, 10028, 'Verificar válvula termostática', 1, 'Válvula travada aberta.', '2025-11-13 13:02:00.003', NULL),
+(30029, 10029, 'Filtro combustível', 1, 'Trocado.', '2025-11-13 13:02:00.003', NULL),
+(30030, 10030, 'Limpeza sistema arrefecimento', 1, 'Limpeza realizada.', '2025-11-13 13:02:00.003', NULL),
+(30031, 10031, 'Verificar cabos de vela', 1, 'Cabos com fuga de corrente.', '2025-11-13 13:02:00.003', NULL),
+(30032, 10032, 'Orçamento peça', 0, 'Peça descontinuada (ID 1032).', '2025-11-13 13:02:00.003', NULL),
+(30033, 10033, 'Discos traseiros', 1, 'Substituição em andamento.', '2025-11-13 13:02:00.003', NULL),
+(30034, 10034, 'Verificar batentes', 1, 'Batentes dianteiros (ambos) trocados.', '2025-11-13 13:02:00.003', NULL),
+(30035, 10035, 'Rolamento dianteiro', 1, 'Rolamento LD (com ABS) trocado.', '2025-11-13 13:02:00.003', NULL);
+
+--
+-- Despejando dados para a tabela `os_itens`
+--
+
+INSERT INTO `os_itens` (`id`, `ordem_servico_id`, `peca_id`, `descricao`, `quantidade`, `valor_unitario`, `created_at`, `updated_at`) VALUES
+(20001, 10001, 1001, 'Filtro de óleo Bosch', 1, 29.90, '2025-11-08 01:50:11.960', NULL),
+(20002, 10001, 1002, 'Filtro de ar NGK', 1, 39.50, '2025-11-08 01:50:11.960', NULL),
+(20003, 10002, 1004, 'Amortecedor Monroe dianteiro', 2, 349.00, '2025-11-08 01:50:11.960', NULL),
+(20004, 10004, 1003, 'Pastilhas de freio TRW', 1, 119.90, '2025-11-08 01:50:11.960', NULL),
+(20005, 10005, 1005, 'Correia dentada SKF', 1, 89.00, '2025-11-08 01:50:11.960', NULL),
+(20006, 10006, 1006, 'Vela de ignição Onix 1.0 (NGK)', 4, 45.00, '2025-11-13 13:01:00.002', NULL),
+(20007, 10007, NULL, 'Carga de Gás R134a', 1, 150.00, '2025-11-13 13:01:00.002', NULL),
+(20008, 10008, 1033, 'Disco de freio traseiro Jetta TSI (TRW)', 2, 199.00, '2025-11-13 13:01:00.002', NULL),
+(20009, 10009, 1009, 'Kit de embreagem Uno Fire 1.0 (SKF)', 1, 450.00, '2025-11-13 13:01:00.002', NULL),
+(20010, 10010, 1010, 'Óleo de motor 5W30 Sintético (Monroe)', 4, 59.90, '2025-11-13 13:01:00.002', NULL),
+(20011, 10011, 1011, 'Bateria 60Ah M60AD (Moura)', 1, 410.00, '2025-11-13 13:01:00.002', NULL),
+(20012, 10012, 1012, 'Lâmpada H4 Night Breaker (Osram)', 1, 75.00, '2025-11-13 13:01:00.002', NULL),
+(20013, 10013, 1013, 'Pivô de suspensão Corsa (Nakata)', 2, 65.00, '2025-11-13 13:01:00.002', NULL),
+(20014, 10014, 1014, 'Filtro de cabine Corolla (Bosch)', 1, 49.90, '2025-11-13 13:01:00.002', NULL),
+(20015, 10015, 1015, 'Tensor correia dentada Gol EA111 (SKF)', 1, 130.00, '2025-11-13 13:01:00.002', NULL),
+(20016, 10016, 1016, 'Radiador de água Celta/Prisma (Valeo)', 1, 399.00, '2025-11-13 13:01:00.002', NULL),
+(20017, 10017, 1017, 'Junta Homocinética Ford Ka 1.0 (Nakata)', 1, 179.90, '2025-11-13 13:01:00.002', NULL),
+(20018, 10018, 1018, 'Fluido de freio DOT4 500ml (TRW)', 1, 22.50, '2025-11-13 13:01:00.002', NULL),
+(20019, 10019, 1019, 'Bobina de ignição Fox 1.6 (NGK)', 1, 199.00, '2025-11-13 13:01:00.002', NULL),
+(20020, 10020, 1020, 'Óleo câmbio automático ATF 1L (Monroe)', 5, 75.00, '2025-11-13 13:01:00.002', NULL),
+(20021, 10021, 1021, 'Palheta limpador Silicone 20\" (Bosch)', 1, 35.00, '2025-11-13 13:01:00.002', NULL),
+(20022, 10022, 1022, 'Sonda Lambda VW UP TSI (NGK)', 1, 280.00, '2025-11-13 13:01:00.002', NULL),
+(20023, 10023, 1023, 'Pastilha de freio Hilux 2.8 (TRW)', 1, 259.90, '2025-11-13 13:01:00.002', NULL),
+(20024, 10024, 1024, 'Amortecedor traseiro Onix (Monroe)', 2, 299.00, '2025-11-13 13:01:00.002', NULL),
+(20025, 10025, 1025, 'Kit correia alternador Cruze 1.8 (SKF)', 1, 210.00, '2025-11-13 13:01:00.002', NULL),
+(20026, 10026, 1026, 'Bateria 70Ah HG70ND (Heliar)', 1, 519.00, '2025-11-13 13:01:00.002', NULL),
+(20027, 10027, 1027, 'Lâmpada H7 X-treme Vision (Philips)', 1, 110.00, '2025-11-13 13:01:00.002', NULL),
+(20028, 10028, 1028, 'Válvula termostática Palio Fire (MTE)', 1, 85.00, '2025-11-13 13:01:00.002', NULL),
+(20029, 10029, 1029, 'Filtro de combustível Gol G5 (Bosch)', 1, 25.00, '2025-11-13 13:01:00.002', NULL),
+(20030, 10030, 1030, 'Aditivo radiador Paraflu Bio 1L', 2, 32.00, '2025-11-13 13:01:00.002', NULL),
+(20031, 10031, 1031, 'Cabo de vela Celta 1.0 (NGK)', 1, 115.00, '2025-11-13 13:01:00.002', NULL),
+(20032, 10032, 1032, 'Bico injetor Peugeot 308 1.6 THP (Bosch)', 1, 450.00, '2025-11-13 13:01:00.002', NULL),
+(20033, 10033, 1033, 'Disco de freio traseiro Jetta TSI (TRW)', 2, 199.00, '2025-11-13 13:01:00.002', NULL),
+(20034, 10034, 1034, 'Kit batente amortecedor Ford Ka (Nakata)', 2, 120.00, '2025-11-13 13:01:00.002', NULL),
+(20035, 10035, 1035, 'Rolamento roda dianteira Gol G5 (SKF)', 1, 145.00, '2025-11-13 13:01:00.002', NULL);
+
+--
+-- Despejando dados para a tabela `os_observacoes`
+--
+
+INSERT INTO `os_observacoes` (`id`, `ordem_servico_id`, `usuario`, `texto`, `created_at`, `updated_at`) VALUES
+(40001, 10001, 'mecanico_joao', 'Cliente solicitou óleo sintético 5W30.', '2025-11-08 01:50:12.002', NULL),
+(40002, 10002, 'mecanico_paulo', 'Suspensão com folga. Recomendado trocar buchas.', '2025-11-08 01:50:12.002', NULL),
+(40003, 10003, 'mecanico_maria', 'Troca de velas NGK e limpeza de bicos realizada.', '2025-11-08 01:50:12.002', NULL),
+(40004, 10004, 'mecanico_ana', 'Fluido DOT 4 sangrado. Freio firme.', '2025-11-08 01:50:12.002', NULL),
+(40005, 10005, 'mecanico_lucas', 'Leitura scanner: falha intermitente no sensor lambda.', '2025-11-08 01:50:12.002', NULL),
+(40006, 10006, 'mecanico_andre', 'Cliente aprovou troca de velas e filtro de ar (Peca 1002).', '2025-11-13 13:03:00.004', NULL),
+(40007, 10007, 'mecanico_bruna', 'Injetado contraste UV no sistema de A/C. Aguardar 24h para verificar vazamento.', '2025-11-13 13:03:00.004', NULL),
+(40008, 10008, 'mecanico_caio', 'Discos e pastilhas traseiras necessitam substituição. Enviado orçamento.', '2025-11-13 13:03:00.004', NULL),
+(40009, 10009, 'mecanico_daniela', 'Câmbio no chão. Embreagem antiga estava no limite.', '2025-11-13 13:03:00.004', NULL),
+(40010, 10010, 'mecanico_eduardo', 'Troca de óleo e filtro de óleo. Nível OK.', '2025-11-13 13:03:00.004', NULL),
+(40011, 10011, 'mecanico_fabiana', 'Bateria M60AD instalada. Alternador carregando 14.2V.', '2025-11-13 13:03:00.004', NULL),
+(40012, 10012, 'mecanico_gustavo', 'Lâmpada Osram H4 instalada.', '2025-11-13 13:03:00.004', NULL),
+(40013, 10013, 'mecanico_helena', 'Pivôs Nakata (par) instalados. Necessário alinhar.', '2025-11-13 13:03:00.004', NULL),
+(40014, 10014, 'mecanico_igor', 'Filtro de cabine antigo estava muito sujo.', '2025-11-13 13:03:00.004', NULL),
+(40015, 10015, 'mecanico_julia', 'Tensor ruidoso. Cliente ciente do risco. Aguardando aprovação da troca.', '2025-11-13 13:03:00.004', NULL),
+(40016, 10016, 'mecanico_kleber', 'Vazamento na mangueira superior do radiador. Radiador OK.', '2025-11-13 13:03:00.004', NULL),
+(40017, 10017, 'mecanico_larissa', 'Junta homocinética LD substituída (Kit Nakata).', '2025-11-13 13:03:00.004', NULL),
+(40018, 10018, 'mecanico_marcos', 'Fluido TRW DOT4 aplicado. Sistema sangrado.', '2025-11-13 13:03:00.004', NULL),
+(40019, 10019, 'mecanico_natalia', 'Passado scanner. Falha P0301 (Bobina). Orçamento bobina NGK enviado.', '2025-11-13 13:03:00.004', NULL),
+(40020, 10020, 'mecanico_otavio', 'Troca de 5L fluido ATF Dexron VI (Monroe). Filtro interno OK.', '2025-11-13 13:03:00.004', NULL),
+(40021, 10021, 'mecanico_paula', 'Palheta Bosch Aerofit 20\" LE instalada.', '2025-11-13 13:03:00.004', NULL),
+(40022, 10022, 'mecanico_quintino', 'Falha P0135 (Sonda Lambda). Aguardando peça (NGK).', '2025-11-13 13:03:00.004', NULL),
+(40023, 10023, 'mecanico_rafaela', 'Pastilhas cerâmica TRW instaladas. Cliente avisado sobre período de assentamento.', '2025-11-13 13:03:00.004', NULL),
+(40024, 10024, 'mecanico_sergio', 'Amortecedores Monroe OESpectrum (par) traseiros instalados.', '2025-11-13 13:03:00.004', NULL),
+(40025, 10025, 'mecanico_tais', 'Kit correia alternador SKF orçado. Aguardando aprovação.', '2025-11-13 13:03:00.004', NULL),
+(40026, 10026, 'mecanico_ulisses', 'Bateria Heliar 70A instalada.', '2025-11-13 13:03:00.004', NULL),
+(40027, 10027, 'mecanico_valeria', 'Lâmpada H7 Philips LE (farol baixo) trocada.', '2025-11-13 13:03:00.004', NULL),
+(40028, 10028, 'mecanico_wagner', 'Diagnóstico: Válvula termostática MTE travada. Substituição em andamento.', '2025-11-13 13:03:00.004', NULL),
+(40029, 10029, 'mecanico_xenia', 'Filtro de combustível Bosch trocado.', '2025-11-13 13:03:00.004', NULL),
+(40030, 10030, 'mecanico_yara', 'Sistema de arrefecimento limpo. Adicionado 2L Paraflu Bio.', '2025-11-13 13:03:00.004', NULL),
+(40031, 10031, 'mecanico_zaqueu', 'Cabos de vela NGK e velas (não inclusas) orçados.', '2025-11-13 13:03:00.004', NULL),
+(40032, 10032, 'mecanico_aline', 'Cliente ciente de que a peça (1032) está descontinuada. OS Cancelada.', '2025-11-13 13:03:00.004', NULL),
+(40033, 10033, 'mecanico_bernardo', 'Discos TRW (par) traseiros em substituição.', '2025-11-13 13:03:00.004', NULL),
+(40034, 10034, 'mecanico_clara', 'Kit batente Nakata (par) dianteiro instalado.', '2025-11-13 13:03:00.004', NULL),
+(40035, 10035, 'mecanico_davi', 'Rolamento SKF LD (com sensor ABS) substituído. Ruído sanado.', '2025-11-13 13:03:00.004', NULL);
+
+
+--
+-- Despejando dados para a tabela `os_ordens_historico`
+--
+
+INSERT INTO `os_ordens_historico` (`id`, `ordem_servico_id`, `data_alteracao`, `usuario`, `campo`, `valor_antigo`, `valor_novo`, `created_at`, `updated_at`) VALUES
+(80001, 10001, '2025-10-29 01:50:12.000', 'clever', 'status', 'ABERTA', 'CONCLUIDA', '2025-11-08 01:50:12.128', NULL),
+(80002, 10002, '2025-11-02 01:50:12.000', 'mecanico_paulo', 'status', 'ABERTA', 'EM_ANDAMENTO', '2025-11-08 01:50:12.128', NULL),
+(80003, 10003, '2025-10-20 01:50:12.000', 'mecanico_maria', 'status', 'ABERTA', 'CONCLUIDA', '2025-11-08 01:50:12.128', NULL),
+(80004, 10004, '2025-10-24 01:50:12.000', 'mecanico_ana', 'status', 'ABERTA', 'CONCLUIDA', '2025-11-08 01:50:12.128', NULL),
+(80005, 10005, '2025-11-07 01:50:12.000', 'mecanico_lucas', 'status', 'ABERTA', 'AGUARDANDO_APROVACAO', '2025-11-08 01:50:12.128', NULL),
+(80006, 10006, '2025-11-09 17:00:00.000', 'mecanico_andre', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80007, 10007, '2025-11-10 09:05:00.000', 'mecanico_bruna', 'status', 'ABERTA', 'EM_ANDAMENTO', '2025-11-13 13:07:00.008', NULL),
+(80008, 10008, '2025-11-10 10:30:00.000', 'mecanico_caio', 'status', 'EM_ANDAMENTO', 'AGUARDANDO_APROVACAO', '2025-11-13 13:07:00.008', NULL),
+(80009, 10009, '2025-11-10 11:05:00.000', 'mecanico_daniela', 'status', 'ABERTA', 'EM_ANDAMENTO', '2025-11-13 13:07:00.008', NULL),
+(80010, 10010, '2025-11-10 15:00:00.000', 'mecanico_eduardo', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80011, 10011, '2025-11-11 09:30:00.000', 'mecanico_fabiana', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80012, 10012, '2025-11-11 09:20:00.000', 'mecanico_gustavo', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80013, 10013, '2025-11-11 10:05:00.000', 'mecanico_helena', 'status', 'ABERTA', 'EM_ANDAMENTO', '2025-11-13 13:07:00.008', NULL),
+(80014, 10014, '2025-11-11 11:45:00.000', 'mecanico_igor', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80015, 10015, '2025-11-11 14:30:00.000', 'mecanico_julia', 'status', 'EM_ANDAMENTO', 'AGUARDANDO_APROVACAO', '2025-11-13 13:07:00.008', NULL),
+(80016, 10016, '2025-11-12 08:05:00.000', 'mecanico_kleber', 'status', 'ABERTA', 'EM_ANDAMENTO', '2025-11-13 13:07:00.008', NULL),
+(80017, 10017, '2025-11-12 11:00:00.000', 'mecanico_larissa', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80018, 10018, '2025-11-12 10:40:00.000', 'mecanico_marcos', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80019, 10019, '2025-11-12 11:30:00.000', 'mecanico_natalia', 'status', 'EM_ANDAMENTO', 'AGUARDANDO_APROVACAO', '2025-11-13 13:07:00.008', NULL),
+(80020, 10020, '2025-11-12 17:00:00.000', 'mecanico_otavio', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80021, 10021, '2025-11-12 15:15:00.000', 'mecanico_paula', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80022, 10022, '2025-11-12 16:05:00.000', 'mecanico_quintino', 'status', 'ABERTA', 'EM_ANDAMENTO', '2025-11-13 13:07:00.008', NULL),
+(80023, 10023, '2025-11-13 10:00:00.000', 'mecanico_rafaela', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80024, 10024, '2025-11-13 09:05:00.000', 'mecanico_sergio', 'status', 'ABERTA', 'EM_ANDAMENTO', '2025-11-13 13:07:00.008', NULL),
+(80025, 10025, '2025-11-13 10:30:00.000', 'mecanico_tais', 'status', 'EM_ANDAMENTO', 'AGUARDANDO_APROVACAO', '2025-11-13 13:07:00.008', NULL),
+(80026, 10026, '2025-11-13 11:30:00.000', 'mecanico_ulisses', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80027, 10027, '2025-11-13 11:50:00.000', 'mecanico_valeria', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80028, 10028, '2025-11-13 12:05:00.000', 'mecanico_wagner', 'status', 'ABERTA', 'EM_ANDAMENTO', '2025-11-13 13:07:00.008', NULL),
+(80029, 10029, '2025-11-13 13:00:00.000', 'mecanico_xenia', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80030, 10030, '2025-11-13 13:45:00.000', 'mecanico_yara', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80031, 10031, '2025-11-13 13:20:00.000', 'mecanico_zaqueu', 'status', 'EM_ANDAMENTO', 'AGUARDANDO_APROVACAO', '2025-11-13 13:07:00.008', NULL),
+(80032, 10032, '2025-11-13 13:35:00.000', 'mecanico_aline', 'status', 'AGUARDANDO_APROVACAO', 'CANCELADA', '2025-11-13 13:07:00.008', NULL),
+(80033, 10033, '2025-11-13 13:50:00.000', 'mecanico_bernardo', 'status', 'ABERTA', 'EM_ANDAMENTO', '2025-11-13 13:07:00.008', NULL),
+(80034, 10034, '2025-11-13 15:30:00.000', 'mecanico_clara', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL),
+(80035, 10035, '2025-11-13 16:00:00.000', 'mecanico_davi', 'status', 'EM_ANDAMENTO', 'CONCLUIDA', '2025-11-13 13:07:00.008', NULL);
+
+--
+-- Despejando dados para a tabela `os_pagamentos`
+--
+
+INSERT INTO `os_pagamentos` (`id`, `ordem_servico_id`, `valor`, `status`, `data_pagamento`, `metodo`, `observacao`, `created_at`, `updated_at`) VALUES
+(70001, 10001, 250.00, 'PAGO', '2025-10-30 01:50:12.000', 'Cartão Crédito', 'Troca de óleo completa', '2025-11-08 01:50:12.102', NULL),
+(70002, 10002, 698.00, 'PENDENTE', NULL, 'PIX', 'Peças em aprovação', '2025-11-08 01:50:12.102', NULL),
+(70003, 10003, 320.00, 'PAGO', '2025-10-21 01:50:12.000', 'Dinheiro', 'Serviço completo', '2025-11-08 01:50:12.102', NULL),
+(70004, 10004, 160.00, 'PAGO', '2025-10-25 01:50:12.000', 'Cartão Débito', 'Pastilhas e fluido', '2025-11-08 01:50:12.102', NULL),
+(70005, 10005, 89.00, 'PENDENTE', NULL, 'PIX', 'Aguardando diagnóstico final', '2025-11-08 01:50:12.102', NULL),
+(70006, 10006, 280.00, 'PAGO', '2025-11-09 17:01:00.000', 'PIX', 'Velas (180) + Mão de Obra (100)', '2025-11-13 13:06:00.007', NULL),
+(70007, 10007, 200.00, 'PENDENTE', NULL, 'Cartão Crédito', 'Orçamento pendente (Gás + Vazamento)', '2025-11-13 13:06:00.007', NULL),
+(70008, 10008, 398.00, 'PENDENTE', NULL, 'Cartão Crédito', 'Aguardando aprovação (Discos 2x 199)', '2025-11-13 13:06:00.007', NULL),
+(70009, 10009, 650.00, 'PENDENTE', NULL, 'PIX', 'Peça (450) + Mão de Obra (200)', '2025-11-13 13:06:00.007', NULL),
+(70010, 10010, 299.60, 'PAGO', '2025-11-10 15:01:00.000', 'Cartão Débito', 'Óleo (4x 59.90) + Mão de Obra (60)', '2025-11-13 13:06:00.007', NULL),
+(70011, 10011, 460.00, 'PAGO', '2025-11-11 09:31:00.000', 'Dinheiro', 'Bateria (410) + Mão de Obra (50)', '2025-11-13 13:06:00.007', NULL),
+(70012, 10012, 95.00, 'PAGO', '2025-11-11 09:21:00.000', 'PIX', 'Lâmpada (75) + Mão de Obra (20)', '2025-11-13 13:06:00.007', NULL),
+(70013, 10013, 230.00, 'PENDENTE', NULL, 'Cartão Débito', 'Pivôs (2x 65) + Mão de Obra (100)', '2025-11-13 13:06:00.007', NULL),
+(70014, 10014, 89.90, 'PAGO', '2025-11-11 11:46:00.000', 'PIX', 'Filtro (49.90) + Mão de Obra (40)', '2025-11-13 13:06:00.007', NULL),
+(70015, 10015, 230.00, 'PENDENTE', NULL, 'PIX', 'Aguardando aprovação (Tensor 130 + MO 100)', '2025-11-13 13:06:00.007', NULL),
+(70016, 10016, 549.00, 'PENDENTE', NULL, 'Cartão Crédito', 'Radiador (399) + MO (150)', '2025-11-13 13:06:00.007', NULL),
+(70017, 10017, 279.90, 'PAGO', '2025-11-12 11:01:00.000', 'Cartão Crédito', 'Homocinética (179.90) + MO (100)', '2025-11-13 13:06:00.007', NULL),
+(70018, 10018, 82.50, 'PAGO', '2025-11-12 10:41:00.000', 'PIX', 'Fluido (22.50) + MO (60)', '2025-11-13 13:06:00.007', NULL),
+(70019, 10019, 299.00, 'PENDENTE', NULL, 'Dinheiro', 'Aguardando aprovação (Bobina 199 + MO 100)', '2025-11-13 13:06:00.007', NULL),
+(70020, 10020, 575.00, 'PAGO', '2025-11-12 17:01:00.000', 'Cartão Crédito', 'Óleo ATF (5x 75) + MO (200)', '2025-11-13 13:06:00.007', NULL),
+(70021, 10021, 55.00, 'PAGO', '2025-11-12 15:16:00.000', 'Dinheiro', 'Palheta (35) + MO (20)', '2025-11-13 13:06:00.007', NULL),
+(70022, 10022, 380.00, 'PENDENTE', NULL, 'PIX', 'Sonda (280) + MO (100)', '2025-11-13 13:06:00.007', NULL),
+(70023, 10023, 379.90, 'PAGO', '2025-11-13 10:01:00.000', 'Cartão Débito', 'Pastilha (259.90) + MO (120)', '2025-11-13 13:06:00.007', NULL),
+(70024, 10024, 748.00, 'PENDENTE', NULL, 'PIX', 'Amortecedores (2x 299) + MO (150)', '2025-11-13 13:06:00.007', NULL),
+(70025, 10025, 330.00, 'PENDENTE', NULL, 'Cartão Crédito', 'Aguardando aprovação (Kit 210 + MO 120)', '2025-11-13 13:06:00.007', NULL),
+(70026, 10026, 569.00, 'PAGO', '2025-11-13 11:31:00.000', 'Cartão Crédito', 'Bateria (519) + MO (50)', '2025-11-13 13:06:00.007', NULL),
+(70027, 10027, 130.00, 'PAGO', '2025-11-13 11:51:00.000', 'PIX', 'Lâmpada (110) + MO (20)', '2025-11-13 13:06:00.007', NULL),
+(70028, 10028, 165.00, 'PENDENTE', NULL, 'Dinheiro', 'Válvula (85) + MO (80)', '2025-11-13 13:06:00.007', NULL),
+(70029, 10029, 65.00, 'PAGO', '2025-11-13 13:01:00.000', 'PIX', 'Filtro (25) + MO (40)', '2025-11-13 13:06:00.007', NULL),
+(70030, 10030, 144.00, 'PAGO', '2025-11-13 13:46:00.000', 'Cartão Débito', 'Aditivo (2x 32) + MO (80)', '2025-11-13 13:06:00.007', NULL),
+(70031, 10031, 195.00, 'PENDENTE', NULL, 'PIX', 'Aguardando aprovação (Cabo 115 + MO 80)', '2025-11-13 13:06:00.007', NULL),
+(70032, 10032, 0.00, 'PAGO', '2025-11-13 13:36:00.000', 'N/A', 'Cancelado. Sem custo.', '2025-11-13 13:06:00.007', NULL),
+(70033, 10033, 548.00, 'PENDENTE', NULL, 'Cartão Crédito', 'Discos (2x 199) + MO (150)', '2025-11-13 13:06:00.007', NULL),
+(70034, 10034, 390.00, 'PAGO', '2025-11-13 15:31:00.000', 'PIX', 'Batentes (2x 120) + MO (150)', '2025-11-13 13:06:00.007', NULL),
+(70035, 10035, 295.00, 'PAGO', '2025-11-13 16:01:00.000', 'Cartão Crédito', 'Rolamento (145) + MO (150)', '2025-11-13 13:06:00.007', NULL);
+
+-- --------------------------------------------------------
+
+SET FOREIGN_KEY_CHECKS=1;
+COMMIT;
+

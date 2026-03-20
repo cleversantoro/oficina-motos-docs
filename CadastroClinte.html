@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Cliente 360º</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f3f4f6;
+            --surface: #ffffff;
+            --text: #1f2937;
+            --border: #e5e7eb;
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        
+        /* Layout Principal */
+        .layout { display: flex; gap: 20px; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; }
+        
+        /* Sidebar de Navegação */
+        .sidebar { flex: 1; min-width: 200px; background: var(--surface); padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); height: fit-content; }
+        .nav-item { display: block; padding: 12px; margin-bottom: 5px; color: #6b7280; text-decoration: none; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .nav-item:hover { background: #eff6ff; color: var(--primary); }
+        .nav-item.active { background: var(--primary); color: white; font-weight: bold; }
+        
+        /* Área de Conteúdo */
+        .content { flex: 3; min-width: 300px; }
+        .card { background: var(--surface); padding: 25px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        
+        h2 { margin-top: 0; font-size: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 20px; }
+        h3 { font-size: 1rem; color: #4b5563; margin-top: 20px; }
+        
+        /* Formulários */
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .form-group { margin-bottom: 10px; }
+        label { display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; box-sizing: border-box; }
+        input:focus { outline: 2px solid var(--primary); border-color: transparent; }
+        
+        /* Toggle PF/PJ */
+        .type-toggle { display: flex; gap: 10px; margin-bottom: 20px; background: var(--bg); padding: 5px; border-radius: 8px; width: fit-content; }
+        .toggle-btn { padding: 8px 20px; border: none; background: transparent; cursor: pointer; border-radius: 6px; font-weight: 600; }
+        .toggle-btn.active { background: white; shadow: 0 1px 2px rgba(0,0,0,0.1); color: var(--primary); }
+
+        /* Componentes Específicos */
+        .tag-container { display: flex; gap: 10px; flex-wrap: wrap; }
+        .tag { background: #e0e7ff; color: var(--primary); padding: 5px 10px; border-radius: 15px; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; }
+        .upload-area { border: 2px dashed var(--border); padding: 30px; text-align: center; border-radius: 8px; color: #9ca3af; cursor: pointer; }
+        
+        .btn-save { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 1rem; float: right; }
+
+        /* Responsividade Mobile */
+        @media (max-width: 768px) {
+            .layout { flex-direction: column; }
+            .sidebar { display: flex; overflow-x: auto; padding: 10px; white-space: nowrap; }
+            .nav-item { display: inline-block; margin-right: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="layout">
+        <nav class="sidebar">
+            <div class="nav-item active">Dados Cadastrais</div>
+            <div class="nav-item">Contatos & Endereços</div>
+            <div class="nav-item">Financeiro & Comercial</div>
+            <div class="nav-item">Documentos & LGPD</div>
+            <div class="nav-item">Anexos</div>
+        </nav>
+
+        <main class="content">
+            
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1 style="margin:0; font-size: 1.5rem;">Novo Cliente</h1>
+                    <span style="font-size: 0.85rem; color: #6b7280;">ID: #GeradoAutomaticamente</span>
+                </div>
+                <button class="btn-save">Salvar Cadastro</button>
+            </div>
+
+            <div class="card">
+                <h2>Identificação</h2>
+                
+                <div class="type-toggle">
+                    <button class="toggle-btn active">Pessoa Física</button>
+                    <button class="toggle-btn">Pessoa Jurídica</button>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Nome Completo / Razão Social</label>
+                        <input type="text" placeholder="Ex: João da Silva">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select><option>Ativo</option><option>Inativo</option><option>Prospect</option></select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>CPF</label>
+                        <input type="text" placeholder="000.000.000-00">
+                    </div>
+                    <div class="form-group">
+                        <label>RG / IE</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Data Nascimento / Fundação</label>
+                        <input type="date">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Origem do Lead</label>
+                        <select>
+                            <option>Google Ads</option>
+                            <option>Indicação</option>
+                            <option>Instagram</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display:flex; justify-content:space-between;">
+                    <h2>Contatos e Endereços</h2>
+                    <button style="border:none; background:transparent; color:var(--primary); cursor:pointer;">+ Adicionar</button>
+                </div>
+
+                <h3>Meios de Contato</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <select><option>Celular (WhatsApp)</option><option>Email Financeiro</option></select>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Valor</label>
+                        <input type="text" value="(11) 99999-9999">
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px;">Endereços</h3>
+                <div style="border: 1px solid var(--border); padding: 15px; border-radius: 6px; position: relative;">
+                    <span style="position: absolute; top: 10px; right: 10px; font-size: 0.8rem; background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 4px;">Principal</span>
+                    <div class="form-grid">
+                        <div class="form-group"><label>CEP</label><input type="text"></div>
+                        <div class="form-group" style="grid-column: span 2;"><label>Logradouro</label><input type="text"></div>
+                        <div class="form-group"><label>Número</label><input type="text"></div>
+                        <div class="form-group"><label>Bairro</label><input type="text"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Financeiro & Legal</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Limite de Crédito (R$)</label>
+                        <input type="number">
+                    </div>
+                    <div class="form-group">
+                        <label>Condição de Pagamento</label>
+                        <select><option>À Vista</option><option>Boleto 30dd</option></select>
+                    </div>
+                </div>
+
+                <h3>Consentimento LGPD</h3>
+                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                    <input type="checkbox" id="lgpd1" checked style="width: auto;">
+                    <label for="lgpd1" style="margin:0; font-weight: normal;">Aceitou termos de uso e política de dados</label>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="checkbox" id="lgpd2" style="width: auto;">
+                    <label for="lgpd2" style="margin:0; font-weight: normal;">Aceitou receber comunicações de marketing</label>
+                </div>
+            </div>
+
+             <div class="card">
+                <h2>Documentos & Anexos</h2>
+                <div class="upload-area">
+                    <p>Arraste arquivos aqui (RG, Contrato Social, Comprovante)</p>
+                    <button style="margin-top:10px;">Selecionar Arquivos</button>
+                </div>
+                <div style="margin-top: 15px;">
+                    <div class="tag-container">
+                        <div class="tag">cnh_motorista.pdf <span>✕</span></div>
+                        <div class="tag">contrato_social.pdf <span>✕</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Principal</title>
+    <style>
+        :root {
+            --primary: #1d4ed8;    /* Azul Principal */
+            --success: #10b981;    /* Verde (Entrada/Saúde) */
+            --danger: #ef4444;     /* Vermelho (Vencido/Risco) */
+            --warning: #f59e0b;    /* Laranja (Atenção) */
+            --bg: #f9fafb;
+            --surface: #ffffff;
+            --border: #e5e7eb;
+            --text: #1f2937;
+            --text-light: #6b7280;
+        }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        
+        .container { max-width: 1300px; margin: 0 auto; }
+
+        /* Título Principal */
+        h1 { font-size: 2rem; color: var(--text); margin-bottom: 25px; }
+        
+        /* Layout Grid de Colunas */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+
+        /* Cards Principais (Indicadores) */
+        .kpi-card { background: var(--surface); padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border); transition: transform 0.2s; cursor: pointer; }
+        .kpi-card:hover { transform: translateY(-3px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .kpi-title { font-size: 0.9rem; color: var(--text-light); font-weight: 500; margin-bottom: 5px; }
+        .kpi-value { font-size: 2.2rem; font-weight: 700; margin-bottom: 0px; }
+        .kpi-footer { font-size: 0.8rem; color: var(--text-light); margin-top: 5px; }
+        
+        /* Customizações de Cor para Valor */
+        .value-success { color: var(--success); }
+        .value-danger { color: var(--danger); }
+        .value-warning { color: var(--warning); }
+
+        /* Seção de Alertas e Tabela */
+        .section-card { background: var(--surface); padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border); margin-bottom: 20px; }
+        .section-card h2 { font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-top: 0; margin-bottom: 15px; color: var(--primary); }
+
+        /* Tabela de Alertas Financeiros */
+        .alert-table { width: 100%; border-collapse: collapse; }
+        .alert-table th { text-align: left; padding: 8px 0; font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; }
+        .alert-table td { padding: 8px 0; border-bottom: 1px dashed #f1f5f9; font-size: 0.9rem; }
+        
+        /* Gráfico de Barras Simulado (Apenas visual) */
+        .chart-container { height: 150px; background: #f0f4f8; border-radius: 4px; margin-top: 15px; display: flex; align-items: flex-end; justify-content: space-around; padding: 10px; }
+        .bar { width: 10%; background: var(--primary); height: 50%; border-radius: 2px 2px 0 0; }
+        .bar-alt { background: #38bdf8; height: 75%; }
+        .bar-low { background: #94a3b8; height: 30%; }
+
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <h1>Dashboard - Visão Geral</h1>
+
+        <div class="dashboard-grid">
+            
+            <div class="kpi-card" onclick="window.location.href='/relatorios/servico'">
+                <div class="kpi-title">Ticket Médio (OS Concluídas - Mês)</div>
+                <div class="kpi-value value-success">R$ 1.250,00</div>
+                <div class="kpi-footer">25 Ordens de Serviço fechadas</div>
+            </div>
+
+            <div class="kpi-card" onclick="window.location.href='/financeiro/contas-pagar?status=vencido'">
+                <div class="kpi-title">Contas a Pagar Vencidas</div>
+                <div class="kpi-value value-danger">R$ 4.890,00</div>
+                <div class="kpi-footer">Ações urgentes necessárias (4 boletos)</div>
+            </div>
+
+            <div class="kpi-card" onclick="window.location.href='/compras/pedidos?status=pendente'">
+                <div class="kpi-title">Pedidos de Peças Pendentes</div>
+                <div class="kpi-value value-warning">7</div>
+                <div class="kpi-footer">Atraso em 2 pedidos. Risco de parar serviço.</div>
+            </div>
+
+        </div>
+        
+        <div class="dashboard-grid" style="margin-top: 25px;">
+            
+            <div class="coluna-operacional">
+                <div class="section-card">
+                    <h2>Fluxo de Atendimento</h2>
+                    
+                    <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="kpi-small">
+                            <div class="kpi-title">Veículos em Serviço</div>
+                            <div class="kpi-value" style="font-size: 1.5rem; color:var(--primary);">12</div>
+                        </div>
+                        <div class="kpi-small">
+                            <div class="kpi-title">Próxima Revisão (Alerta)</div>
+                            <div class="kpi-value" style="font-size: 1.5rem; color:var(--danger);">3 Veículos</div>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size:1rem; margin-top:20px; color:var(--secondary);">OS por Etapa (Simulação Gráfica)</h3>
+                    <div class="chart-container">
+                        <div class="bar" style="height: 80%; background: #06b6d4;" title="Orçamento: 8"></div>
+                        <div class="bar" style="height: 60%; background: #22c55e;" title="Aprovado: 6"></div>
+                        <div class="bar" style="height: 40%; background: #f97316;" title="Aguardando Peça: 4"></div>
+                        <div class="bar" style="height: 90%; background: #1d4ed8;" title="Em Execução: 9"></div>
+                        <div class="bar" style="height: 20%; background: #64748b;" title="Aguardando Retirada: 2"></div>
+                    </div>
+                    <div class="kpi-footer" style="margin-top:10px;">Distribuição de veículos em andamento</div>
+
+                </div>
+            </div>
+
+            <div class="coluna-financeiro">
+                <div class="section-card">
+                    <h2>Previsão de Fluxo de Caixa (Próx. 7 dias)</h2>
+
+                    <table class="alert-table">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th style="text-align: right;">Valor</th>
+                                <th>Detalhes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="color:var(--success);">
+                                <td>A RECEBER (OS)</td>
+                                <td style="text-align: right; font-weight: 700;">+ R$ 9.500,00</td>
+                                <td>5 pagamentos de clientes</td>
+                            </tr>
+                            <tr style="color:var(--danger);">
+                                <td>A PAGAR (Boletos)</td>
+                                <td style="text-align: right; font-weight: 700;">- R$ 5.100,00</td>
+                                <td>Aluguel e 2 Fornecedores</td>
+                            </tr>
+                            <tr>
+                                <td>SALDO LÍQUIDO</td>
+                                <td style="text-align: right; font-weight: 700; color:var(--primary);">R$ 4.400,00</td>
+                                <td>Previsão de caixa positiva</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top:20px;">
+                        <a href="/financeiro/contas-receber" style="color:var(--primary); text-decoration:none; font-size:0.9rem;">Ver todas as contas a receber »</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="coluna-suprimentos">
+                <div class="section-card">
+                    <h2>Reputação & Gastos (Fornecedores)</h2>
+                    
+                    <div class="kpi-small">
+                        <div class="kpi-title">Score Médio (Avaliações Recentes)</div>
+                        <div class="kpi-value" style="font-size: 1.5rem; color:var(--gold);">★★★★☆ 4.2</div>
+                    </div>
+                    
+                    <h3 style="font-size:1rem; margin-top:20px; color:var(--secondary);">Maiores Gastos (Mês)</h3>
+                    <table class="alert-table">
+                        <tr>
+                            <td>1. Lubrificantes Souza</td>
+                            <td style="text-align: right;">R$ 4.500,00</td>
+                        </tr>
+                        <tr>
+                            <td>2. Auto Distribuidora Sul</td>
+                            <td style="text-align: right;">R$ 3.200,00</td>
+                        </tr>
+                        <tr>
+                            <td>3. Pneus Norte</td>
+                            <td style="text-align: right;">R$ 1.800,00</td>
+                        </tr>
+                    </table>
+
+                    <div style="margin-top:20px;">
+                        <a href="/fornecedores" style="color:var(--primary); text-decoration:none; font-size:0.9rem;">Gerenciar Parceiros »</a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+</body>
+</html>

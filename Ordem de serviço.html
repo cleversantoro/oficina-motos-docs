@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordem de Serviço #12345</title>
+    <style>
+        :root {
+            --primary: #0284c7; /* Azul Oficina */
+            --success: #16a34a;
+            --warning: #ea580c;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-sec: #64748b;
+        }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text-main); margin: 0; padding: 0; }
+
+        /* Layout */
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
+        /* Cabeçalho "Resumo da OS" */
+        .os-header { background: var(--surface); padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 20px; align-items: center; margin-bottom: 20px; border-left: 5px solid var(--warning); }
+        .os-info h1 { margin: 0; font-size: 1.5rem; }
+        .os-info span { color: var(--text-sec); font-size: 0.9rem; }
+        .status-badge { background: #ffedd5; color: #9a3412; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; display: inline-block; margin-top: 5px; }
+        
+        .client-card { display: flex; gap: 10px; align-items: center; }
+        .avatar { width: 40px; height: 40px; background: #e0e7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: bold; }
+        
+        .total-box { text-align: right; }
+        .total-label { font-size: 0.8rem; color: var(--text-sec); text-transform: uppercase; }
+        .total-value { font-size: 1.8rem; font-weight: 800; color: var(--text-main); }
+
+        /* Navegação por Abas */
+        .tabs { display: flex; gap: 20px; border-bottom: 2px solid var(--border); margin-bottom: 20px; overflow-x: auto; }
+        .tab { padding: 10px 5px; cursor: pointer; color: var(--text-sec); font-weight: 600; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; }
+        .tab.active { color: var(--primary); border-color: var(--primary); }
+
+        /* Conteúdo das Abas */
+        .grid-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .card { background: var(--surface); border-radius: 8px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; }
+        .card-header { background: #f1f5f9; padding: 10px 15px; border-bottom: 1px solid var(--border); font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+        .card-body { padding: 15px; }
+
+        /* Tabela de Itens */
+        .items-table { width: 100%; border-collapse: collapse; }
+        .items-table th { text-align: left; color: var(--text-sec); font-size: 0.85rem; padding: 10px; border-bottom: 1px solid var(--border); }
+        .items-table td { padding: 12px 10px; border-bottom: 1px solid #f1f5f9; }
+        .price-col { text-align: right; font-family: monospace; font-size: 1rem; }
+
+        /* Checklist Visual */
+        .checklist-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed var(--border); }
+        .check-status { display: flex; gap: 5px; }
+        .status-btn { width: 25px; height: 25px; border-radius: 50%; border: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+        .status-btn.ok { background: #dcfce7; color: #166534; border-color: #dcfce7; }
+        .status-btn.bad { background: #fee2e2; color: #991b1b; border-color: #fee2e2; }
+
+        /* Anexos */
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; margin-top: 10px; }
+        .photo-thumb { aspect-ratio: 1; background: #cbd5e1; border-radius: 4px; position: relative; cursor: pointer; }
+        .photo-add { border: 2px dashed #94a3b8; background: transparent; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 1.5rem; }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .os-header { grid-template-columns: 1fr; gap: 10px; text-align: center; border-left: none; border-top: 5px solid var(--warning); }
+            .total-box { text-align: center; border-top: 1px solid var(--border); padding-top: 10px; }
+            .grid-layout { grid-template-columns: 1fr; }
+            .client-card { justify-content: center; }
+            .items-table th:nth-child(3), .items-table td:nth-child(3) { display: none; } /* Oculta Unitário no mobile */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="os-header">
+            <div class="os-info">
+                <span>Ordem de Serviço</span>
+                <h1>#1024</h1>
+                <div class="status-badge">Em Orçamento</div>
+            </div>
+            
+            <div class="client-card">
+                <div class="avatar">JS</div>
+                <div style="text-align: left;">
+                    <strong>João da Silva</strong><br>
+                    <span style="font-size: 0.85rem">Honda CB 500X (ABC-1234)</span>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <span style="display: block; font-size: 0.8rem; color: #64748b;">Entrada</span>
+                <strong>15/12/2025</strong>
+            </div>
+
+            <div class="total-box">
+                <div class="total-label">Total Estimado</div>
+                <div class="total-value">R$ 450,00</div>
+            </div>
+        </header>
+
+        <nav class="tabs">
+            <div class="tab active">Peças & Serviços</div>
+            <div class="tab">Checklist & Entrada</div>
+            <div class="tab">Histórico & Obs</div>
+            <div class="tab">Pagamentos</div>
+            <div class="tab">Avaliação</div>
+        </nav>
+
+        <div class="grid-layout">
+            
+            <main>
+                <div class="card">
+                    <div class="card-header">
+                        <span>Peças e Mão de Obra</span>
+                        <button style="background: var(--primary); color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer;">+ Adicionar Item</button>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <table class="items-table">
+                            <thead>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th style="width: 50px; text-align: center;">Qtd</th>
+                                    <th>Unitário</th>
+                                    <th style="text-align: right;">Total</th>
+                                    <th style="width: 30px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>Troca de Óleo Motul 10w40</strong><br>
+                                        <small style="color: #64748b;">Peça</small>
+                                    </td>
+                                    <td style="text-align: center;">3</td>
+                                    <td>R$ 80,00</td>
+                                    <td class="price-col">R$ 240,00</td>
+                                    <td style="color: red; cursor: pointer;">✕</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Mão de Obra Revisão</strong><br>
+                                        <small style="color: #64748b;">Serviço</small>
+                                    </td>
+                                    <td style="text-align: center;">1</td>
+                                    <td>R$ 210,00</td>
+                                    <td class="price-col">R$ 210,00</td>
+                                    <td style="color: red; cursor: pointer;">✕</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-body" style="background: #f8fafc; text-align: right;">
+                        <strong>Subtotal: R$ 450,00</strong>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Diagnóstico / Defeito Relatado</div>
+                    <div class="card-body">
+                        <textarea style="width: 100%; border: 1px solid var(--border); padding: 10px; border-radius: 4px;" rows="3" placeholder="Cliente relata barulho na suspensão dianteira..."></textarea>
+                    </div>
+                </div>
+            </main>
+
+            <aside>
+                
+                <div class="card">
+                    <div class="card-header">
+                        Inspeção Inicial
+                        <span style="font-size: 0.7rem; background: #e2e8f0; padding: 2px 5px; border-radius: 4px;">4/10</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="checklist-item">
+                            <span>Nível Combustível</span>
+                            <div class="check-status"><span class="status-btn bad">1/4</span></div>
+                        </div>
+                        <div class="checklist-item">
+                            <span>Riscos Tanque</span>
+                            <div class="check-status">
+                                <span class="status-btn">Não</span>
+                                <span class="status-btn bad" style="background:#fee2e2; border-color: red;">Sim</span>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <span>Luzes Painel</span>
+                            <div class="check-status"><span class="status-btn ok">✔</span></div>
+                        </div>
+                        <button style="width: 100%; margin-top: 10px; padding: 8px; border: 1px solid var(--border); background: white; cursor: pointer;">Ver Checklist Completo</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Fotos da Entrada</div>
+                    <div class="card-body">
+                        <div class="photo-grid">
+                            <div class="photo-thumb" style="background-image: url('https://via.placeholder.com/80'); background-size: cover;"></div>
+                            <div class="photo-thumb" style="background-image: url('https://via.placeholder.com/80'); background-size: cover;"></div>
+                            <div class="photo-thumb photo-add">+</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button style="width: 100%; background: var(--success); color: white; padding: 15px; border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-bottom: 10px;">APROVAR ORÇAMENTO</button>
+                <button style="width: 100%; background: white; color: var(--text-main); padding: 10px; border: 1px solid var(--border); border-radius: 6px; cursor: pointer;">Imprimir OS</button>
+
+            </aside>
+        </div>
+
+    </div>
+</body>
+</html>

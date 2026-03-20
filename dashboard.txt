@@ -1,0 +1,14 @@
+Coluna,Foco,Métrica Primária
+Operacional,Produtividade e Risco Veicular,Ticket Médio e Alerta de KM Vencido
+Financeiro,Fluxo de Caixa e Compliance,Vencimentos (Pagar e Receber)
+Suprimentos,Eficiência de Compras e Custo,Reputação do Fornecedor e Pedidos Pendentes
+
+
+Métrica no Dashboard,Endpoint(s) de Origem,Ação e Usabilidade
+Ticket Médio,"GET /api/v1/OrdemServicos (filtrar por status=""Fechado"" e período)",Indica a lucratividade por serviço. Deve ser um link para o Relatório de OS.
+Contas a Pagar Vencidas,"GET /api/v1/FinanceiroContasPagar (filtrar por data_vencimento < hoje e status=""Aberto"")","Alerta Crítico (Vermelho). Clique leva o usuário diretamente para a lista de contas pendentes, permitindo a baixa imediata."
+Próxima Revisão (Alerta),GET /api/v1/Veiculos (filtrar por veículos com proximo_km_revisao < ultimo_km_registrado),Alerta de Oportunidade (Vermelho). Indica clientes que precisam ser contatados para agendar a manutenção.
+A Receber/Pagar (Próx. 7 dias),GET /api/v1/FinanceiroContasReceber e GET /api/v1/FinanceiroContasPagar (filtrar por data entre hoje e hoje + 7 dias).,Oferece a previsibilidade do fluxo de caixa. O Saldo Líquido é a métrica mais importante dessa seção.
+Pedidos de Peças Pendentes,"Endpoint Assumido: GET /api/v1/PedidosCompra (filtrar por status=""Aguardando Entrega"")",Alerta Operacional (Laranja). Indica gargalos que podem atrasar a conclusão das OS. Clique leva para o Painel de Compras.
+Score Médio Fornecedores,GET /api/v1/FornecedorAvaliacoes (calcula a média dos últimos 3 meses),Garante que o time de compras esteja utilizando parceiros eficientes. Clique leva ao Hub de Parceiros (Listagem de Fornecedores).
+OS por Etapa (Gráfico),GET /api/v1/OrdemServicos (agrupado por status_os),"Permite que o gerente identifique rapidamente onde está o gargalo (ex: ""Muitas OSs aguardando peça"")."
