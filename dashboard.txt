@@ -12,3 +12,18 @@ A Receber/Pagar (Próx. 7 dias),GET /api/v1/FinanceiroContasReceber e GET /api/v
 Pedidos de Peças Pendentes,"Endpoint Assumido: GET /api/v1/PedidosCompra (filtrar por status=""Aguardando Entrega"")",Alerta Operacional (Laranja). Indica gargalos que podem atrasar a conclusão das OS. Clique leva para o Painel de Compras.
 Score Médio Fornecedores,GET /api/v1/FornecedorAvaliacoes (calcula a média dos últimos 3 meses),Garante que o time de compras esteja utilizando parceiros eficientes. Clique leva ao Hub de Parceiros (Listagem de Fornecedores).
 OS por Etapa (Gráfico),GET /api/v1/OrdemServicos (agrupado por status_os),"Permite que o gerente identifique rapidamente onde está o gargalo (ex: ""Muitas OSs aguardando peça"")."
+
+
+Prioridade Sugerida
+Prioridade	Item
+🔴 Alta	Autenticação (login, guards, interceptor JWT) ok
+🔴 Alta	ClienteCadastro — converter UI em formulário reativo com API ok
+🔴 Alta	FornecedorLista + FornecedorDetalhe com API real ok
+🔴 Alta	VeiculoLista + VeiculoDetalhe com API real
+🟡 Média	Formulários de criação para Mecânicos, Estoque, OS
+🟡 Média	Filtro de busca em EstoqueLista
+🟡 Média	Shared utils/pipes (formatação de moeda, datas)
+🟢 Baixa	Header com info do usuário
+🟢 Baixa	Footer
+🟢 Baixa	Environment de produção
+🟢 Baixa	Rota 404
