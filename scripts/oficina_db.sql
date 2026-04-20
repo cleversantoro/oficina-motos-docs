@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-server
--- Tempo de geração: 20/03/2026 às 20:56
+-- Tempo de geração: 20/04/2026 às 19:31
 -- Versão do servidor: 8.0.44
 -- Versão do PHP: 8.3.26
 
@@ -683,6 +683,14 @@ CREATE TABLE `cad_fornecedores` (
   `Updated_At` datetime(6) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Despejando dados para a tabela `cad_fornecedores`
+--
+
+INSERT INTO `cad_fornecedores` (`Id`, `Codigo`, `Tipo`, `Razao_Social`, `Nome_Fantasia`, `Documento`, `Inscricao_Estadual`, `Inscricao_Municipal`, `Segmento_Principal_Id`, `Website`, `Email`, `Telefone_Principal`, `Status`, `Condicao_Pagamento_Padrao`, `Prazo_Entrega_Medio`, `Nota_Media`, `Observacoes`, `Prazo_Garantia_Padrao`, `Termos_Negociados`, `Atendimento_Personalizado`, `Retirada_Local`, `Rating_Logistica`, `Rating_Qualidade`, `Created_At`, `Updated_At`) VALUES
+(301, 'FORN-0001', 'PJ', 'Distribuidora AutoParts Sul Ltda', 'AutoParts Sul', '12.345.678/0001-90', '123.456.789.012', '12.345/001', 1, 'https://www.autopartssul.com.br', 'vendas@autopartssul.com.br', '(11) 3344-5566', 'ATIVO', 'Boleto 28/56 dias', 3, 4.50, 'Fornecedor preferencial para peças Honda e Yamaha. Lote mínimo 10 unidades para desconto.', '6 meses contra defeito de fabricação', 'Desconto de 8% em pedidos acima de R$ 2.000. Frete grátis acima de R$ 5.000.', 1, 1, 4.60, 4.40, '2026-03-21 01:31:29.000000', NULL),
+(302, 'FORN-0002', 'PJ', 'Petromax Lubrificantes Comercial Ltda', 'Petromax', '98.765.432/0001-11', '987.654.321.098', '98.765/002', 2, 'https://www.petromax.com.br', 'contato@petromax.com.br', '(21) 2233-4455', 'ATIVO', 'Boleto 30 dias / Cartão 2x sem juros', 2, 4.20, 'Revendedor autorizado Mobil e Castrol. Entrega via motoboy para pedidos até 20 litros.', '12 meses (embalagem lacrada)', 'Desconto progressivo: 5% (R$500+), 10% (R$1.500+). Bonificação trimestral em galões.', 1, 0, 4.30, 4.10, '2026-03-21 01:31:29.000000', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -700,6 +708,16 @@ CREATE TABLE `cad_fornecedores_avaliacoes` (
   `Created_At` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   `Updated_At` datetime(6) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `cad_fornecedores_avaliacoes`
+--
+
+INSERT INTO `cad_fornecedores_avaliacoes` (`Id`, `Fornecedor_Id`, `Data_Avaliacao`, `Avaliado_Por`, `Categoria`, `Nota`, `Comentarios`, `Created_At`, `Updated_At`) VALUES
+(7001, 301, '2025-12-10 10:00:00.000000', 'Carlos Souza', 'Entrega', 4.50, 'Prazo cumprido, embalagem ok. Pequeno atraso na última remessa.', '2026-03-21 01:31:29.000000', NULL),
+(7002, 301, '2026-02-05 14:30:00.000000', 'Maria Oliveira', 'Qualidade', 4.50, 'Peças originais, sem defeitos no lote de 50 unidades.', '2026-03-21 01:31:29.000000', NULL),
+(7003, 302, '2025-11-20 09:00:00.000000', 'João Pereira', 'Entrega', 4.00, 'Motoboy pontual, mas embalagem poderia ser mais resistente.', '2026-03-21 01:31:30.000000', NULL),
+(7004, 302, '2026-01-15 16:00:00.000000', 'Carlos Souza', 'Qualidade', 4.50, 'Mobil 1 e Castrol GTX sempre originais e dentro da validade.', '2026-03-21 01:31:30.000000', NULL);
 
 -- --------------------------------------------------------
 
@@ -722,6 +740,14 @@ CREATE TABLE `cad_fornecedores_bancos` (
   `Updated_At` datetime(6) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Despejando dados para a tabela `cad_fornecedores_bancos`
+--
+
+INSERT INTO `cad_fornecedores_bancos` (`Id`, `Fornecedor_Id`, `Banco`, `Agencia`, `Conta`, `Digito`, `Tipo_Conta`, `Pix_Chave`, `Observacoes`, `Principal`, `Created_At`, `Updated_At`) VALUES
+(4001, 301, 'Banco Itaú (341)', '1234', '56789', '0', 'Corrente', '12.345.678/0001-90', 'Conta principal para boletos e transferências', 1, '2026-03-21 01:31:29.000000', NULL),
+(4002, 302, 'Bradesco (237)', '0987', '12345', '6', 'Corrente', '98.765.432/0001-11', 'Conta para TED e boletos', 1, '2026-03-21 01:31:29.000000', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -741,6 +767,14 @@ CREATE TABLE `cad_fornecedores_certificacoes` (
   `Updated_At` datetime(6) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Despejando dados para a tabela `cad_fornecedores_certificacoes`
+--
+
+INSERT INTO `cad_fornecedores_certificacoes` (`Id`, `Fornecedor_Id`, `Titulo`, `Instituicao`, `Data_Emissao`, `Data_Validade`, `Codigo_Certificacao`, `Escopo`, `Created_At`, `Updated_At`) VALUES
+(6001, 301, 'ISO 9001:2015 — Gestão da Qualidade', 'Bureau Veritas', '2023-04-10', '2026-04-09', 'BV-ISO9001-2023-0341', 'Distribuição de peças automotivas e motociclísticas', '2026-03-21 01:31:29.000000', NULL),
+(6002, 302, 'ISO 14001:2015 — Gestão Ambiental', 'DNV GL', '2022-09-01', '2025-08-31', 'DNV-ISO14001-2022-1120', 'Armazenamento, distribuição e comercialização de lubrificantes e fluidos automotivos', '2026-03-21 01:31:30.000000', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -757,6 +791,17 @@ CREATE TABLE `cad_fornecedores_contatos` (
   `Created_At` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   `Updated_At` datetime(6) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `cad_fornecedores_contatos`
+--
+
+INSERT INTO `cad_fornecedores_contatos` (`Id`, `Fornecedor_Id`, `Tipo`, `Valor`, `Principal`, `Observacao`, `Created_At`, `Updated_At`) VALUES
+(2001, 301, 'Telefone', '(11) 3344-5566', 1, 'Comercial — seg a sex 8h–18h', '2026-03-21 01:31:29.000000', NULL),
+(2002, 301, 'WhatsApp', '(11) 98877-6655', 0, 'Pedidos urgentes', '2026-03-21 01:31:29.000000', NULL),
+(2003, 301, 'Email', 'vendas@autopartssul.com.br', 0, NULL, '2026-03-21 01:31:29.000000', NULL),
+(2004, 302, 'Telefone', '(21) 2233-4455', 1, 'SAC — seg a sex 8h–17h', '2026-03-21 01:31:29.000000', NULL),
+(2005, 302, 'Email', 'contato@petromax.com.br', 0, 'Pedidos e NF-e', '2026-03-21 01:31:29.000000', NULL);
 
 -- --------------------------------------------------------
 
@@ -777,6 +822,16 @@ CREATE TABLE `cad_fornecedores_documentos` (
   `Created_At` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   `Updated_At` datetime(6) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `cad_fornecedores_documentos`
+--
+
+INSERT INTO `cad_fornecedores_documentos` (`Id`, `Fornecedor_Id`, `Tipo`, `Numero`, `Data_Emissao`, `Data_Validade`, `Orgao_Expedidor`, `Arquivo_Url`, `Observacoes`, `Created_At`, `Updated_At`) VALUES
+(5001, 301, 'Contrato Social', 'CS-2018-0042', '2018-03-15', NULL, 'JUCESP', NULL, NULL, '2026-03-21 01:31:29.000000', NULL),
+(5002, 301, 'Certidão Negativa', 'CN-2025-11987', '2025-11-01', '2026-05-01', 'Receita Federal', NULL, 'Renovar semestralmente', '2026-03-21 01:31:29.000000', NULL),
+(5003, 302, 'Contrato Social', 'CS-2015-7721', '2015-07-20', NULL, 'JUCERJ', NULL, NULL, '2026-03-21 01:31:30.000000', NULL),
+(5004, 302, 'Licença Ambiental', 'LA-RJ-2024-883', '2024-01-10', '2026-12-31', 'INEA-RJ', NULL, 'Obrigatória para armazenamento de inflamáveis', '2026-03-21 01:31:30.000000', NULL);
 
 -- --------------------------------------------------------
 
@@ -802,6 +857,15 @@ CREATE TABLE `cad_fornecedores_enderecos` (
   `Updated_At` datetime(6) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Despejando dados para a tabela `cad_fornecedores_enderecos`
+--
+
+INSERT INTO `cad_fornecedores_enderecos` (`Id`, `Fornecedor_Id`, `Tipo`, `Cep`, `Logradouro`, `Numero`, `Bairro`, `Cidade`, `Estado`, `Pais`, `Complemento`, `Principal`, `Observacao`, `Created_At`, `Updated_At`) VALUES
+(1001, 301, 'Matriz', '04343-001', 'Av. das Indústrias', '1000', 'Santo André', 'São Paulo', 'SP', 'Brasil', 'Galpão 4', 1, 'Endereço fiscal e administrativo', '2026-03-21 01:31:29.000000', NULL),
+(1002, 301, 'Centro de Dist.', '07750-000', 'Rod. Anhanguera', 'KM 20', 'Área Industrial', 'Cajamar', 'SP', 'Brasil', NULL, 0, 'CD — retirada de pedidos grandes', '2026-03-21 01:31:29.000000', NULL),
+(1003, 302, 'Sede', '20040-020', 'Rua dos Comerciantes', '450', 'Centro', 'Rio de Janeiro', 'RJ', 'Brasil', 'Sala 12', 1, 'Endereço comercial e fiscal', '2026-03-21 01:31:29.000000', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -823,6 +887,15 @@ CREATE TABLE `cad_fornecedores_representantes` (
   `Updated_At` datetime(6) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Despejando dados para a tabela `cad_fornecedores_representantes`
+--
+
+INSERT INTO `cad_fornecedores_representantes` (`Id`, `Fornecedor_Id`, `Nome`, `Cargo`, `Email`, `Telefone`, `Celular`, `Preferencia_Contato`, `Principal`, `Observacoes`, `Created_At`, `Updated_At`) VALUES
+(3001, 301, 'Roberto Almeida', 'Gerente de Contas – Região Sul', 'roberto@autopartssul.com.br', NULL, '(11) 98877-6655', 'WhatsApp', 1, 'Atende exclusivamente nossa conta', '2026-03-21 01:31:29.000000', NULL),
+(3002, 301, 'Central de Vendas', 'Televendas Geral', 'vendas@autopartssul.com.br', '0800 777 9999', NULL, 'Telefone', 0, NULL, '2026-03-21 01:31:29.000000', NULL),
+(3003, 302, 'Fernanda Lima', 'Representante Comercial – SP e RJ', 'fernanda@petromax.com.br', '(21) 2233-4455', '(21) 99912-3456', 'Email', 1, 'Visita mensal — trazer lista de pedidos antecipada', '2026-03-21 01:31:29.000000', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -839,6 +912,14 @@ CREATE TABLE `cad_fornecedores_segmentos` (
   `Updated_At` datetime(6) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Despejando dados para a tabela `cad_fornecedores_segmentos`
+--
+
+INSERT INTO `cad_fornecedores_segmentos` (`Id`, `Codigo`, `Nome`, `Descricao`, `Ativo`, `Created_At`, `Updated_At`) VALUES
+(1, 'PECAS', 'Peças e Componentes', 'Distribuidoras e fabricantes de peças originais e paralelas', 1, '2026-03-21 01:31:29.000000', NULL),
+(2, 'LUBRIF', 'Lubrificantes e Fluidos', 'Óleos, fluidos de freio, graxas e produtos químicos automotivos', 1, '2026-03-21 01:31:29.000000', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -854,6 +935,14 @@ CREATE TABLE `cad_fornecedores_segmentos_rel` (
   `Created_At` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   `Updated_At` datetime(6) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `cad_fornecedores_segmentos_rel`
+--
+
+INSERT INTO `cad_fornecedores_segmentos_rel` (`Id`, `Fornecedor_Id`, `Segmento_Id`, `Principal`, `Observacoes`, `Created_At`, `Updated_At`) VALUES
+(8001, 301, 1, 1, 'Segmento principal — peças Honda, Yamaha e Suzuki', '2026-03-21 01:31:29.000000', NULL),
+(8002, 302, 2, 1, 'Segmento principal — lubrificantes Mobil, Castrol e Shell', '2026-03-21 01:31:30.000000', NULL);
 
 -- --------------------------------------------------------
 
@@ -3392,61 +3481,61 @@ ALTER TABLE `cad_clientes_pj`
 -- AUTO_INCREMENT de tabela `cad_fornecedores`
 --
 ALTER TABLE `cad_fornecedores`
-  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=303;
 
 --
 -- AUTO_INCREMENT de tabela `cad_fornecedores_avaliacoes`
 --
 ALTER TABLE `cad_fornecedores_avaliacoes`
-  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7005;
 
 --
 -- AUTO_INCREMENT de tabela `cad_fornecedores_bancos`
 --
 ALTER TABLE `cad_fornecedores_bancos`
-  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4003;
 
 --
 -- AUTO_INCREMENT de tabela `cad_fornecedores_certificacoes`
 --
 ALTER TABLE `cad_fornecedores_certificacoes`
-  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6003;
 
 --
 -- AUTO_INCREMENT de tabela `cad_fornecedores_contatos`
 --
 ALTER TABLE `cad_fornecedores_contatos`
-  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2006;
 
 --
 -- AUTO_INCREMENT de tabela `cad_fornecedores_documentos`
 --
 ALTER TABLE `cad_fornecedores_documentos`
-  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5005;
 
 --
 -- AUTO_INCREMENT de tabela `cad_fornecedores_enderecos`
 --
 ALTER TABLE `cad_fornecedores_enderecos`
-  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1004;
 
 --
 -- AUTO_INCREMENT de tabela `cad_fornecedores_representantes`
 --
 ALTER TABLE `cad_fornecedores_representantes`
-  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3004;
 
 --
 -- AUTO_INCREMENT de tabela `cad_fornecedores_segmentos`
 --
 ALTER TABLE `cad_fornecedores_segmentos`
-  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `cad_fornecedores_segmentos_rel`
 --
 ALTER TABLE `cad_fornecedores_segmentos_rel`
-  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8003;
 
 --
 -- AUTO_INCREMENT de tabela `cad_mecanicos`
@@ -3953,6 +4042,351 @@ ALTER TABLE `os_ordens_historico`
 --
 ALTER TABLE `os_pagamentos`
   ADD CONSTRAINT `FK_os_pagamentos_ordem` FOREIGN KEY (`ordem_servico_id`) REFERENCES `os_ordens` (`Id`) ON DELETE CASCADE;
+
+-- ============================================================
+-- MÓDULO: SEGURANÇA — Usuários, Perfis e Permissões (seg_)
+-- ============================================================
+
+-- --------------------------------------------------------
+--
+-- Estrutura para tabela `seg_modulos`
+--
+
+CREATE TABLE `seg_modulos` (
+  `Id` int NOT NULL,
+  `Nome` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Descricao` varchar(240) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Icone` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Rota` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Modulo_Pai_Id` int DEFAULT NULL,
+  `Ordem` int NOT NULL DEFAULT '0',
+  `Ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `Created_At` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `Updated_At` datetime(6) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `seg_modulos` (`Id`, `Nome`, `Descricao`, `Icone`, `Rota`, `Modulo_Pai_Id`, `Ordem`, `Ativo`, `Created_At`, `Updated_At`) VALUES
+(1,  'Dashboard',           'Painel principal com indicadores e resumos',         'pi-home',          '/dashboard',    NULL, 1,  1, '2026-04-20 00:00:00.000000', NULL),
+(2,  'Clientes',            'Cadastro e gestão de clientes PF e PJ',              'pi-users',         '/clientes',     NULL, 2,  1, '2026-04-20 00:00:00.000000', NULL),
+(3,  'Mecânicos',           'Cadastro e gestão de mecânicos',                     'pi-wrench',        '/mecanicos',    NULL, 3,  1, '2026-04-20 00:00:00.000000', NULL),
+(4,  'Veículos',            'Cadastro e histórico de veículos',                   'pi-car',           '/veiculos',     NULL, 4,  1, '2026-04-20 00:00:00.000000', NULL),
+(5,  'Ordens de Serviço',   'Abertura, execução e encerramento de OS',            'pi-clipboard-list','/ordens',       NULL, 5,  1, '2026-04-20 00:00:00.000000', NULL),
+(6,  'Estoque',             'Gestão de peças, movimentações e localização',       'pi-box',           '/estoque',      NULL, 6,  1, '2026-04-20 00:00:00.000000', NULL),
+(7,  'Financeiro',          'Contas a pagar/receber, lançamentos e pagamentos',   'pi-dollar',        '/financeiro',   NULL, 7,  1, '2026-04-20 00:00:00.000000', NULL),
+(8,  'Relatórios',          'Geração e exportação de relatórios gerenciais',      'pi-chart-bar',     '/relatorios',   NULL, 8,  1, '2026-04-20 00:00:00.000000', NULL),
+(9,  'Configurações',       'Parâmetros gerais do sistema',                       'pi-cog',           '/configuracoes',NULL, 9,  1, '2026-04-20 00:00:00.000000', NULL),
+(10, 'Segurança',           'Gestão de usuários, perfis e permissões de acesso',  'pi-shield',        '/seguranca',    NULL, 10, 1, '2026-04-20 00:00:00.000000', NULL),
+(11, 'Fornecedores',        'Cadastro e gestão de fornecedores',                  'pi-truck',         '/fornecedores', NULL, 11, 1, '2026-04-20 00:00:00.000000', NULL);
+
+-- --------------------------------------------------------
+--
+-- Estrutura para tabela `seg_perfis`
+--
+
+CREATE TABLE `seg_perfis` (
+  `Id` int NOT NULL,
+  `Nome` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Descricao` varchar(240) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Nivel` int NOT NULL DEFAULT '99' COMMENT '1 = maior prioridade / acesso total; valores maiores = acesso mais restrito',
+  `Status` int NOT NULL DEFAULT '1' COMMENT '0 = Inativo; 1 = Ativo',
+  `Created_At` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `Updated_At` datetime(6) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `seg_perfis` (`Id`, `Nome`, `Descricao`, `Nivel`, `Status`, `Created_At`, `Updated_At`) VALUES
+(1, 'Administrador', 'Acesso total ao sistema, incluindo configurações e segurança',                    1, 1, '2026-04-20 00:00:00.000000', NULL),
+(2, 'Gerente',       'Gestão operacional e financeira completa, sem acesso a configurações de segurança', 2, 1, '2026-04-20 00:00:00.000000', NULL),
+(3, 'Recepcionista', 'Atendimento ao cliente: cadastro, veículos e abertura de OS',                    3, 1, '2026-04-20 00:00:00.000000', NULL),
+(4, 'Financeiro',    'Gestão financeira, contas, lançamentos e relatórios',                            4, 1, '2026-04-20 00:00:00.000000', NULL),
+(5, 'Mecânico',      'Execução de ordens de serviço e consulta de estoque',                            5, 1, '2026-04-20 00:00:00.000000', NULL),
+(6, 'Consulta',      'Acesso somente leitura a todos os módulos operacionais',                         6, 1, '2026-04-20 00:00:00.000000', NULL);
+
+-- --------------------------------------------------------
+--
+-- Estrutura para tabela `seg_permissoes`
+--
+
+CREATE TABLE `seg_permissoes` (
+  `Id` int NOT NULL,
+  `Modulo_Id` int NOT NULL,
+  `Acao` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+    COMMENT 'Ações possíveis: visualizar | criar | editar | excluir | exportar | aprovar',
+  `Descricao` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Created_At` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `seg_permissoes` (`Id`, `Modulo_Id`, `Acao`, `Descricao`, `Created_At`) VALUES
+(1,1,'visualizar','Visualizar painel de indicadores','2026-04-20 00:00:00.000000'),
+(2,2,'visualizar','Consultar lista e detalhes de clientes','2026-04-20 00:00:00.000000'),
+(3,2,'criar','Cadastrar novos clientes','2026-04-20 00:00:00.000000'),
+(4,2,'editar','Alterar dados de clientes','2026-04-20 00:00:00.000000'),
+(5,2,'excluir','Remover clientes do sistema','2026-04-20 00:00:00.000000'),
+(6,2,'exportar','Exportar listagem de clientes','2026-04-20 00:00:00.000000'),
+(7,3,'visualizar','Consultar lista e perfis de mecânicos','2026-04-20 00:00:00.000000'),
+(8,3,'criar','Cadastrar novos mecânicos','2026-04-20 00:00:00.000000'),
+(9,3,'editar','Alterar dados de mecânicos','2026-04-20 00:00:00.000000'),
+(10,3,'excluir','Remover mecânicos do sistema','2026-04-20 00:00:00.000000'),
+(11,3,'exportar','Exportar listagem de mecânicos','2026-04-20 00:00:00.000000'),
+(12,4,'visualizar','Consultar veículos e histórico','2026-04-20 00:00:00.000000'),
+(13,4,'criar','Cadastrar novos veículos','2026-04-20 00:00:00.000000'),
+(14,4,'editar','Alterar dados de veículos','2026-04-20 00:00:00.000000'),
+(15,4,'excluir','Remover veículos do sistema','2026-04-20 00:00:00.000000'),
+(16,4,'exportar','Exportar listagem de veículos','2026-04-20 00:00:00.000000'),
+(17,5,'visualizar','Consultar ordens de serviço','2026-04-20 00:00:00.000000'),
+(18,5,'criar','Abrir novas ordens de serviço','2026-04-20 00:00:00.000000'),
+(19,5,'editar','Atualizar ordens de serviço','2026-04-20 00:00:00.000000'),
+(20,5,'excluir','Cancelar/remover ordens de serviço','2026-04-20 00:00:00.000000'),
+(21,5,'exportar','Exportar ordens de serviço','2026-04-20 00:00:00.000000'),
+(22,5,'aprovar','Aprovar orçamentos e liberar execução de OS','2026-04-20 00:00:00.000000'),
+(23,6,'visualizar','Consultar peças e movimentações de estoque','2026-04-20 00:00:00.000000'),
+(24,6,'criar','Adicionar peças e entradas de estoque','2026-04-20 00:00:00.000000'),
+(25,6,'editar','Ajustar dados de peças e localizações','2026-04-20 00:00:00.000000'),
+(26,6,'excluir','Remover peças do estoque','2026-04-20 00:00:00.000000'),
+(27,6,'exportar','Exportar relatório de estoque','2026-04-20 00:00:00.000000'),
+(28,7,'visualizar','Consultar lançamentos, contas e pagamentos','2026-04-20 00:00:00.000000'),
+(29,7,'criar','Registrar lançamentos e contas','2026-04-20 00:00:00.000000'),
+(30,7,'editar','Alterar lançamentos e contas','2026-04-20 00:00:00.000000'),
+(31,7,'excluir','Remover lançamentos e contas','2026-04-20 00:00:00.000000'),
+(32,7,'exportar','Exportar extratos e relatórios financeiros','2026-04-20 00:00:00.000000'),
+(33,7,'aprovar','Aprovar lançamentos e baixas financeiras','2026-04-20 00:00:00.000000'),
+(34,8,'visualizar','Visualizar relatórios gerenciais','2026-04-20 00:00:00.000000'),
+(35,8,'exportar','Exportar relatórios em PDF/Excel','2026-04-20 00:00:00.000000'),
+(36,9,'visualizar','Visualizar parâmetros do sistema','2026-04-20 00:00:00.000000'),
+(37,9,'editar','Alterar parâmetros e configurações do sistema','2026-04-20 00:00:00.000000'),
+(38,10,'visualizar','Consultar usuários, perfis e permissões','2026-04-20 00:00:00.000000'),
+(39,10,'criar','Criar usuários e perfis de acesso','2026-04-20 00:00:00.000000'),
+(40,10,'editar','Editar usuários, perfis e permissões','2026-04-20 00:00:00.000000'),
+(41,10,'excluir','Remover usuários e perfis de acesso','2026-04-20 00:00:00.000000'),
+(42,11,'visualizar','Consultar lista e detalhes de fornecedores','2026-04-20 00:00:00.000000'),
+(43,11,'criar','Cadastrar novos fornecedores','2026-04-20 00:00:00.000000'),
+(44,11,'editar','Alterar dados de fornecedores','2026-04-20 00:00:00.000000'),
+(45,11,'excluir','Remover fornecedores do sistema','2026-04-20 00:00:00.000000'),
+(46,11,'exportar','Exportar listagem de fornecedores','2026-04-20 00:00:00.000000');
+
+-- --------------------------------------------------------
+--
+-- Estrutura para tabela `seg_perfis_permissoes`
+--
+
+CREATE TABLE `seg_perfis_permissoes` (
+  `Id` bigint NOT NULL,
+  `Perfil_Id` int NOT NULL,
+  `Permissao_Id` int NOT NULL,
+  `Created_At` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `seg_perfis_permissoes` (`Id`, `Perfil_Id`, `Permissao_Id`, `Created_At`) VALUES
+(1,1,1,'2026-04-20 00:00:00.000000'),(2,1,2,'2026-04-20 00:00:00.000000'),(3,1,3,'2026-04-20 00:00:00.000000'),(4,1,4,'2026-04-20 00:00:00.000000'),(5,1,5,'2026-04-20 00:00:00.000000'),
+(6,1,6,'2026-04-20 00:00:00.000000'),(7,1,7,'2026-04-20 00:00:00.000000'),(8,1,8,'2026-04-20 00:00:00.000000'),(9,1,9,'2026-04-20 00:00:00.000000'),(10,1,10,'2026-04-20 00:00:00.000000'),
+(11,1,11,'2026-04-20 00:00:00.000000'),(12,1,12,'2026-04-20 00:00:00.000000'),(13,1,13,'2026-04-20 00:00:00.000000'),(14,1,14,'2026-04-20 00:00:00.000000'),(15,1,15,'2026-04-20 00:00:00.000000'),
+(16,1,16,'2026-04-20 00:00:00.000000'),(17,1,17,'2026-04-20 00:00:00.000000'),(18,1,18,'2026-04-20 00:00:00.000000'),(19,1,19,'2026-04-20 00:00:00.000000'),(20,1,20,'2026-04-20 00:00:00.000000'),
+(21,1,21,'2026-04-20 00:00:00.000000'),(22,1,22,'2026-04-20 00:00:00.000000'),(23,1,23,'2026-04-20 00:00:00.000000'),(24,1,24,'2026-04-20 00:00:00.000000'),(25,1,25,'2026-04-20 00:00:00.000000'),
+(26,1,26,'2026-04-20 00:00:00.000000'),(27,1,27,'2026-04-20 00:00:00.000000'),(28,1,28,'2026-04-20 00:00:00.000000'),(29,1,29,'2026-04-20 00:00:00.000000'),(30,1,30,'2026-04-20 00:00:00.000000'),
+(31,1,31,'2026-04-20 00:00:00.000000'),(32,1,32,'2026-04-20 00:00:00.000000'),(33,1,33,'2026-04-20 00:00:00.000000'),(34,1,34,'2026-04-20 00:00:00.000000'),(35,1,35,'2026-04-20 00:00:00.000000'),
+(36,1,36,'2026-04-20 00:00:00.000000'),(37,1,37,'2026-04-20 00:00:00.000000'),(38,1,38,'2026-04-20 00:00:00.000000'),(39,1,39,'2026-04-20 00:00:00.000000'),(40,1,40,'2026-04-20 00:00:00.000000'),
+(41,1,41,'2026-04-20 00:00:00.000000'),(42,1,42,'2026-04-20 00:00:00.000000'),(43,1,43,'2026-04-20 00:00:00.000000'),(44,1,44,'2026-04-20 00:00:00.000000'),(45,1,45,'2026-04-20 00:00:00.000000'),
+(46,1,46,'2026-04-20 00:00:00.000000'),
+-- Gerente: tudo exceto Seg.criar/editar/excluir(39,40,41) e Config.editar(37)
+(47,2,1,'2026-04-20 00:00:00.000000'),(48,2,2,'2026-04-20 00:00:00.000000'),(49,2,3,'2026-04-20 00:00:00.000000'),(50,2,4,'2026-04-20 00:00:00.000000'),(51,2,5,'2026-04-20 00:00:00.000000'),
+(52,2,6,'2026-04-20 00:00:00.000000'),(53,2,7,'2026-04-20 00:00:00.000000'),(54,2,8,'2026-04-20 00:00:00.000000'),(55,2,9,'2026-04-20 00:00:00.000000'),(56,2,10,'2026-04-20 00:00:00.000000'),
+(57,2,11,'2026-04-20 00:00:00.000000'),(58,2,12,'2026-04-20 00:00:00.000000'),(59,2,13,'2026-04-20 00:00:00.000000'),(60,2,14,'2026-04-20 00:00:00.000000'),(61,2,15,'2026-04-20 00:00:00.000000'),
+(62,2,16,'2026-04-20 00:00:00.000000'),(63,2,17,'2026-04-20 00:00:00.000000'),(64,2,18,'2026-04-20 00:00:00.000000'),(65,2,19,'2026-04-20 00:00:00.000000'),(66,2,20,'2026-04-20 00:00:00.000000'),
+(67,2,21,'2026-04-20 00:00:00.000000'),(68,2,22,'2026-04-20 00:00:00.000000'),(69,2,23,'2026-04-20 00:00:00.000000'),(70,2,24,'2026-04-20 00:00:00.000000'),(71,2,25,'2026-04-20 00:00:00.000000'),
+(72,2,26,'2026-04-20 00:00:00.000000'),(73,2,27,'2026-04-20 00:00:00.000000'),(74,2,28,'2026-04-20 00:00:00.000000'),(75,2,29,'2026-04-20 00:00:00.000000'),(76,2,30,'2026-04-20 00:00:00.000000'),
+(77,2,31,'2026-04-20 00:00:00.000000'),(78,2,32,'2026-04-20 00:00:00.000000'),(79,2,33,'2026-04-20 00:00:00.000000'),(80,2,34,'2026-04-20 00:00:00.000000'),(81,2,35,'2026-04-20 00:00:00.000000'),
+(82,2,36,'2026-04-20 00:00:00.000000'),(83,2,38,'2026-04-20 00:00:00.000000'),(84,2,42,'2026-04-20 00:00:00.000000'),(85,2,43,'2026-04-20 00:00:00.000000'),(86,2,44,'2026-04-20 00:00:00.000000'),
+(87,2,45,'2026-04-20 00:00:00.000000'),(88,2,46,'2026-04-20 00:00:00.000000'),
+-- Recepcionista
+(89,3,1,'2026-04-20 00:00:00.000000'),(90,3,2,'2026-04-20 00:00:00.000000'),(91,3,3,'2026-04-20 00:00:00.000000'),(92,3,4,'2026-04-20 00:00:00.000000'),
+(93,3,7,'2026-04-20 00:00:00.000000'),(94,3,12,'2026-04-20 00:00:00.000000'),(95,3,13,'2026-04-20 00:00:00.000000'),(96,3,14,'2026-04-20 00:00:00.000000'),
+(97,3,17,'2026-04-20 00:00:00.000000'),(98,3,18,'2026-04-20 00:00:00.000000'),(99,3,19,'2026-04-20 00:00:00.000000'),(100,3,42,'2026-04-20 00:00:00.000000'),
+-- Financeiro
+(101,4,1,'2026-04-20 00:00:00.000000'),(102,4,2,'2026-04-20 00:00:00.000000'),(103,4,17,'2026-04-20 00:00:00.000000'),
+(104,4,28,'2026-04-20 00:00:00.000000'),(105,4,29,'2026-04-20 00:00:00.000000'),(106,4,30,'2026-04-20 00:00:00.000000'),(107,4,31,'2026-04-20 00:00:00.000000'),
+(108,4,32,'2026-04-20 00:00:00.000000'),(109,4,33,'2026-04-20 00:00:00.000000'),(110,4,34,'2026-04-20 00:00:00.000000'),(111,4,35,'2026-04-20 00:00:00.000000'),
+-- Mecânico
+(112,5,1,'2026-04-20 00:00:00.000000'),(113,5,2,'2026-04-20 00:00:00.000000'),(114,5,12,'2026-04-20 00:00:00.000000'),
+(115,5,17,'2026-04-20 00:00:00.000000'),(116,5,19,'2026-04-20 00:00:00.000000'),(117,5,22,'2026-04-20 00:00:00.000000'),
+(118,5,23,'2026-04-20 00:00:00.000000'),(119,5,25,'2026-04-20 00:00:00.000000'),
+-- Consulta: somente visualizar
+(120,6,1,'2026-04-20 00:00:00.000000'),(121,6,2,'2026-04-20 00:00:00.000000'),(122,6,7,'2026-04-20 00:00:00.000000'),(123,6,12,'2026-04-20 00:00:00.000000'),
+(124,6,17,'2026-04-20 00:00:00.000000'),(125,6,23,'2026-04-20 00:00:00.000000'),(126,6,28,'2026-04-20 00:00:00.000000'),(127,6,34,'2026-04-20 00:00:00.000000'),
+(128,6,42,'2026-04-20 00:00:00.000000');
+
+-- --------------------------------------------------------
+--
+-- Estrutura para tabela `seg_usuarios`
+-- ATENÇÃO: Senhas são hashes bcrypt (custo 12). ALTERAR em produção.
+--
+
+CREATE TABLE `seg_usuarios` (
+  `Id` bigint NOT NULL,
+  `Nome` varchar(160) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Email` varchar(160) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Login` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Senha` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+    COMMENT 'Hash bcrypt custo 12. Nunca armazenar senha em texto puro.',
+  `Telefone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Foto_Url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Status` int NOT NULL DEFAULT '1'
+    COMMENT '0 = Inativo | 1 = Ativo | 2 = Suspenso | 3 = Bloqueado',
+  `Ultimo_Login` datetime DEFAULT NULL,
+  `Token_Reset` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Token_Reset_Expira_Em` datetime DEFAULT NULL,
+  `Tentativas_Login` int NOT NULL DEFAULT '0',
+  `Bloqueado_Ate` datetime DEFAULT NULL,
+  `Criado_Por` bigint DEFAULT NULL
+    COMMENT 'Id do usuário que realizou o cadastro',
+  `Created_At` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `Updated_At` datetime(6) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `seg_usuarios` (`Id`, `Nome`, `Email`, `Login`, `Senha`, `Telefone`, `Foto_Url`, `Status`, `Ultimo_Login`, `Token_Reset`, `Token_Reset_Expira_Em`, `Tentativas_Login`, `Bloqueado_Ate`, `Criado_Por`, `Created_At`, `Updated_At`) VALUES
+(1, 'Clever Santoro Lopes',  'clever.admin@oficina.com',   'clever.admin',   '$2y$12$T4e7kYpNq8mRsVwX2uBcLu3HzAoJ1dKfNmQeP9gWvY0bO5sX6jI4C', '(11) 95241-5782', NULL, 1, NULL, NULL, NULL, 0, NULL, NULL, '2026-04-20 00:00:00.000000', NULL),
+(2, 'Carlos Alberto Gerente','carlos.gerente@oficina.com', 'carlos.gerente', '$2y$12$R7n9lZoMq5wSuVxA3vCdKt4IyBpG2eLhNpRfQ8hXwZ1cP6tY7kH3A', '(11) 98000-1002', NULL, 1, NULL, NULL, NULL, 0, NULL, 1,    '2026-04-20 00:00:00.000000', NULL),
+(3, 'Ana Paula Recepcionista','ana.recep@oficina.com',     'ana.recep',      '$2y$12$U8o0mApNr6xTvWyB4wDeJu5JzCqH3fMiOqSgR9iYxA2dQ7uZ8lI4D', '(11) 97000-1003', NULL, 1, NULL, NULL, NULL, 0, NULL, 1,    '2026-04-20 00:00:00.000000', NULL),
+(4, 'Roberto Financeiro',    'roberto.fin@oficina.com',   'roberto.fin',    '$2y$12$V9p1nBqOr7yUwXzC5xEfKv6KaDrI4gNjPrThS0jZyB3eR8vA9mJ5E', '(11) 96000-1004', NULL, 1, NULL, NULL, NULL, 0, NULL, 1,    '2026-04-20 00:00:00.000000', NULL),
+(5, 'João Mecânico Silva',   'joao.mec@oficina.com',      'joao.mec',       '$2y$12$W0q2oCrPs8zVxYaD6yFgLw7LbEsJ5hOkQsUiT1kAzC4fS9wB0nK6F', '(11) 95000-1005', NULL, 1, NULL, NULL, NULL, 0, NULL, 1,    '2026-04-20 00:00:00.000000', NULL),
+(6, 'Consulta Sistema',      'consulta@oficina.com',      'consulta.view',  '$2y$12$X1r3pDsQt9aWyZbE7zGhMx8McFtK6iPkRtVjU2lBaD5gT0xC1oL7G', '(11) 94000-1006', NULL, 1, NULL, NULL, NULL, 0, NULL, 1,    '2026-04-20 00:00:00.000000', NULL);
+
+-- --------------------------------------------------------
+--
+-- Estrutura para tabela `seg_usuarios_perfis`
+--
+
+CREATE TABLE `seg_usuarios_perfis` (
+  `Id` bigint NOT NULL,
+  `Usuario_Id` bigint NOT NULL,
+  `Perfil_Id` int NOT NULL,
+  `Ativo` tinyint(1) NOT NULL DEFAULT '1',
+  `Created_At` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `Updated_At` datetime(6) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `seg_usuarios_perfis` (`Id`, `Usuario_Id`, `Perfil_Id`, `Ativo`, `Created_At`, `Updated_At`) VALUES
+(1, 1, 1, 1, '2026-04-20 00:00:00.000000', NULL),
+(2, 2, 2, 1, '2026-04-20 00:00:00.000000', NULL),
+(3, 3, 3, 1, '2026-04-20 00:00:00.000000', NULL),
+(4, 4, 4, 1, '2026-04-20 00:00:00.000000', NULL),
+(5, 5, 5, 1, '2026-04-20 00:00:00.000000', NULL),
+(6, 6, 6, 1, '2026-04-20 00:00:00.000000', NULL);
+
+-- --------------------------------------------------------
+--
+-- Estrutura para tabela `seg_audit_log`
+-- INSERT-ONLY — nunca atualizar ou excluir registros de auditoria.
+--
+
+CREATE TABLE `seg_audit_log` (
+  `Id` bigint NOT NULL,
+  `Usuario_Id` bigint DEFAULT NULL
+    COMMENT 'NULL quando a ação ocorrer sem autenticação (ex.: tentativa de login falha)',
+  `Login` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Acao` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+    COMMENT 'LOGIN | LOGOUT | LOGIN_FAIL | CREATE | UPDATE | DELETE | VIEW | EXPORT | APPROVE',
+  `Modulo` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Tabela` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Registro_Id` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Descricao` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Dados_Antes` json DEFAULT NULL,
+  `Dados_Depois` json DEFAULT NULL,
+  `Ip` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `User_Agent` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Created_At` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `seg_audit_log` (`Id`, `Usuario_Id`, `Login`, `Acao`, `Modulo`, `Tabela`, `Registro_Id`, `Descricao`, `Dados_Antes`, `Dados_Depois`, `Ip`, `User_Agent`, `Created_At`) VALUES
+(1,1,'clever.admin','LOGIN','Segurança',NULL,NULL,'Login realizado com sucesso',NULL,NULL,'192.168.1.100','Mozilla/5.0 (Windows NT 10.0; Win64; x64)','2026-04-20 08:00:00.000000'),
+(2,1,'clever.admin','CREATE','Segurança','seg_usuarios','2','Usuário carlos.gerente criado',NULL,'{"Login":"carlos.gerente","Perfil":"Gerente"}','192.168.1.100','Mozilla/5.0 (Windows NT 10.0; Win64; x64)','2026-04-20 08:05:00.000000'),
+(3,1,'clever.admin','CREATE','Segurança','seg_usuarios','3','Usuário ana.recep criado',NULL,'{"Login":"ana.recep","Perfil":"Recepcionista"}','192.168.1.100','Mozilla/5.0 (Windows NT 10.0; Win64; x64)','2026-04-20 08:06:00.000000'),
+(4,1,'clever.admin','CREATE','Segurança','seg_usuarios','4','Usuário roberto.fin criado',NULL,'{"Login":"roberto.fin","Perfil":"Financeiro"}','192.168.1.100','Mozilla/5.0 (Windows NT 10.0; Win64; x64)','2026-04-20 08:07:00.000000'),
+(5,1,'clever.admin','CREATE','Segurança','seg_usuarios','5','Usuário joao.mec criado',NULL,'{"Login":"joao.mec","Perfil":"Mecanico"}','192.168.1.100','Mozilla/5.0 (Windows NT 10.0; Win64; x64)','2026-04-20 08:08:00.000000'),
+(6,1,'clever.admin','CREATE','Segurança','seg_usuarios','6','Usuário consulta.view criado',NULL,'{"Login":"consulta.view","Perfil":"Consulta"}','192.168.1.100','Mozilla/5.0 (Windows NT 10.0; Win64; x64)','2026-04-20 08:09:00.000000'),
+(7,2,'carlos.gerente','LOGIN','Segurança',NULL,NULL,'Login realizado com sucesso',NULL,NULL,'192.168.1.101','Mozilla/5.0 (Windows NT 10.0; Win64; x64)','2026-04-20 09:00:00.000000'),
+(8,2,'carlos.gerente','VIEW','Clientes','cad_clientes',NULL,'Listagem de clientes consultada',NULL,NULL,'192.168.1.101','Mozilla/5.0 (Windows NT 10.0; Win64; x64)','2026-04-20 09:05:00.000000'),
+(9,NULL,NULL,'LOGIN_FAIL','Segurança',NULL,NULL,'Tentativa de login falha para o usuário "inexistente"',NULL,NULL,'10.0.0.55','Mozilla/5.0 (Linux; Android 11)','2026-04-20 09:10:00.000000'),
+(10,3,'ana.recep','LOGIN','Segurança',NULL,NULL,'Login realizado com sucesso',NULL,NULL,'192.168.1.102','Mozilla/5.0 (Windows NT 10.0; Win64; x64)','2026-04-20 10:00:00.000000'),
+(11,3,'ana.recep','CREATE','Clientes','cad_clientes','43','Novo cliente cadastrado: Fábio Henrique',NULL,'{"Nome":"Fábio Henrique","Documento":"11122233344"}','192.168.1.102','Mozilla/5.0 (Windows NT 10.0; Win64; x64)','2026-04-20 10:15:00.000000'),
+(12,4,'roberto.fin','LOGIN','Segurança',NULL,NULL,'Login realizado com sucesso',NULL,NULL,'192.168.1.103','Mozilla/5.0 (Windows NT 10.0; Win64; x64)','2026-04-20 11:00:00.000000'),
+(13,4,'roberto.fin','EXPORT','Financeiro','fin_lancamentos',NULL,'Exportação de lançamentos financeiros — abr/2026',NULL,NULL,'192.168.1.103','Mozilla/5.0 (Windows NT 10.0; Win64; x64)','2026-04-20 11:30:00.000000'),
+(14,5,'joao.mec','LOGIN','Segurança',NULL,NULL,'Login realizado com sucesso',NULL,NULL,'192.168.1.104','Mozilla/5.0 (Android 12; Mobile)','2026-04-20 08:30:00.000000'),
+(15,5,'joao.mec','UPDATE','Ordens de Serviço','os_ordens','101','OS #101 atualizada: status alterado para Em Execução','{"Status":"Aguardando"}','{"Status":"Em Execução"}','192.168.1.104','Mozilla/5.0 (Android 12; Mobile)','2026-04-20 08:45:00.000000'),
+(16,1,'clever.admin','LOGOUT','Segurança',NULL,NULL,'Sessão encerrada',NULL,NULL,'192.168.1.100','Mozilla/5.0 (Windows NT 10.0; Win64; x64)','2026-04-20 18:00:00.000000');
+
+--
+-- Índices das tabelas seg_*
+--
+ALTER TABLE `seg_modulos`
+  ADD PRIMARY KEY (`Id`),
+  ADD UNIQUE KEY `UQ_seg_modulos_nome` (`Nome`);
+
+ALTER TABLE `seg_perfis`
+  ADD PRIMARY KEY (`Id`),
+  ADD UNIQUE KEY `UQ_seg_perfis_nome` (`Nome`);
+
+ALTER TABLE `seg_permissoes`
+  ADD PRIMARY KEY (`Id`),
+  ADD UNIQUE KEY `UQ_seg_permissoes_modulo_acao` (`Modulo_Id`, `Acao`),
+  ADD KEY `IDX_seg_permissoes_modulo` (`Modulo_Id`);
+
+ALTER TABLE `seg_perfis_permissoes`
+  ADD PRIMARY KEY (`Id`),
+  ADD UNIQUE KEY `UQ_seg_perfis_permissoes` (`Perfil_Id`, `Permissao_Id`),
+  ADD KEY `IDX_seg_perfis_permissoes_perfil` (`Perfil_Id`),
+  ADD KEY `IDX_seg_perfis_permissoes_permissao` (`Permissao_Id`);
+
+ALTER TABLE `seg_usuarios`
+  ADD PRIMARY KEY (`Id`),
+  ADD UNIQUE KEY `UQ_seg_usuarios_email` (`Email`),
+  ADD UNIQUE KEY `UQ_seg_usuarios_login` (`Login`),
+  ADD KEY `IDX_seg_usuarios_status` (`Status`);
+
+ALTER TABLE `seg_usuarios_perfis`
+  ADD PRIMARY KEY (`Id`),
+  ADD UNIQUE KEY `UQ_seg_usuarios_perfis` (`Usuario_Id`, `Perfil_Id`),
+  ADD KEY `IDX_seg_usuarios_perfis_usuario` (`Usuario_Id`),
+  ADD KEY `IDX_seg_usuarios_perfis_perfil` (`Perfil_Id`);
+
+ALTER TABLE `seg_audit_log`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `IDX_seg_audit_log_usuario` (`Usuario_Id`),
+  ADD KEY `IDX_seg_audit_log_acao` (`Acao`),
+  ADD KEY `IDX_seg_audit_log_created` (`Created_At`);
+
+--
+-- AUTO_INCREMENT das tabelas seg_*
+--
+ALTER TABLE `seg_modulos`           MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+ALTER TABLE `seg_perfis`            MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `seg_permissoes`        MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+ALTER TABLE `seg_perfis_permissoes` MODIFY `Id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
+ALTER TABLE `seg_usuarios`          MODIFY `Id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `seg_usuarios_perfis`   MODIFY `Id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `seg_audit_log`         MODIFY `Id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- Restrições (Foreign Keys) das tabelas seg_*
+--
+ALTER TABLE `seg_modulos`
+  ADD CONSTRAINT `FK_seg_modulos_pai` FOREIGN KEY (`Modulo_Pai_Id`) REFERENCES `seg_modulos` (`Id`) ON DELETE SET NULL;
+
+ALTER TABLE `seg_permissoes`
+  ADD CONSTRAINT `FK_seg_permissoes_modulo` FOREIGN KEY (`Modulo_Id`) REFERENCES `seg_modulos` (`Id`) ON DELETE CASCADE;
+
+ALTER TABLE `seg_perfis_permissoes`
+  ADD CONSTRAINT `FK_seg_perfis_permissoes_perfil`    FOREIGN KEY (`Perfil_Id`)    REFERENCES `seg_perfis`     (`Id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_seg_perfis_permissoes_permissao` FOREIGN KEY (`Permissao_Id`) REFERENCES `seg_permissoes` (`Id`) ON DELETE CASCADE;
+
+ALTER TABLE `seg_usuarios`
+  ADD CONSTRAINT `FK_seg_usuarios_criado_por` FOREIGN KEY (`Criado_Por`) REFERENCES `seg_usuarios` (`Id`) ON DELETE SET NULL;
+
+ALTER TABLE `seg_usuarios_perfis`
+  ADD CONSTRAINT `FK_seg_usuarios_perfis_usuario` FOREIGN KEY (`Usuario_Id`) REFERENCES `seg_usuarios` (`Id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_seg_usuarios_perfis_perfil`  FOREIGN KEY (`Perfil_Id`)  REFERENCES `seg_perfis`   (`Id`) ON DELETE CASCADE;
+
+ALTER TABLE `seg_audit_log`
+  ADD CONSTRAINT `FK_seg_audit_log_usuario` FOREIGN KEY (`Usuario_Id`) REFERENCES `seg_usuarios` (`Id`) ON DELETE SET NULL;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
