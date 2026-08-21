@@ -147,8 +147,8 @@
 
 - [ ] **5.3 Criar Rotas Faltantes**
   ```typescript
-  { path: 'ordens', component: OsLista },
-  { path: 'ordens/nova', component: OsFormulario },
+  { path: 'ordens', component: OsListaComponent },
+  { path: 'ordens/novo', component: OsCadastroComponent },
   { path: 'ordens/:id', component: OsDetalhe },
   { path: 'ordens/:id/editar', component: OsFormulario }
   ```
@@ -157,12 +157,16 @@
 
 - [ ] **6.1 Componente de Formulário**
   ```bash
-  ng generate component features/ordens-servico/pages/os-formulario
+  ng generate component features/ordens-servico/pages/os-novo
   ```
-  - Campos: Cliente, Mecânico, Descrição do Problema, Status
+  - Componente: `OsCadastroComponent`
+  - Campos obrigatórios: Cliente, Veículo do Cliente, Mecânico, Descrição do Problema
   - AutoComplete para buscar cliente
+  - Dropdown de veículos filtrado pelo cliente selecionado
   - Dropdown para selecionar mecânico
   - Data de abertura (hoje por padrão)
+  - Criação envia `clienteId`, `veiculoId`, `mecanicoId` e `descricaoProblema`
+  - Após sucesso, navegar para `/ordens/:id`
 
 - [ ] **6.2 Seção de Itens (Peças/Serviços)**
   - Array de FormGroups
