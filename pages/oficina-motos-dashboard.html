@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oficina Motos | Painel de Controle</title>
+<style>
+:root{
+  --bg:#f2f5fa;--surface:#fff;--ink:#172033;--muted:#697586;--line:#e3e8f0;
+  --nav:#171e27;--nav2:#222c38;--orange:#ff7900;--orange2:#ff9638;
+  --green:#12a86b;--blue:#2878e8;--purple:#7954d8;--red:#df4545;
+  --shadow:0 5px 18px rgba(24,39,60,.07);--radius:13px;
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,Segoe UI,Arial,sans-serif}
+button,input{font:inherit}button{cursor:pointer;border:0}
+.app{min-height:100vh;display:grid;grid-template-columns:250px 1fr}
+.sidebar{background:linear-gradient(180deg,var(--nav),#202832);color:#eef2f7;padding:18px 14px;display:flex;flex-direction:column;gap:18px}
+.brand{height:78px;display:flex;align-items:center;gap:10px;padding:0 10px;border-bottom:1px solid #3a424c}
+.brand-mark{width:48px;height:42px;border-radius:12px;background:var(--orange);display:grid;place-items:center;font-size:25px}
+.brand strong{font-size:20px;line-height:1.05}.brand strong span{display:block;color:var(--orange);font-style:italic}
+.nav{display:grid;gap:5px}.nav a{display:flex;align-items:center;gap:13px;color:#e5eaf0;text-decoration:none;padding:12px 13px;border-radius:9px;font-weight:600}
+.nav a .ico{width:22px;text-align:center;font-size:18px}.nav a.active{background:linear-gradient(90deg,#ff7900,#a94b05);color:white}
+.nav a.sub{padding:8px 12px 8px 49px;font-weight:500;color:#cbd3dc}.nav a.sub.active-sub{color:#ff9a40}
+.sidebar-promo{margin-top:auto;border:1px solid #414b57;border-radius:12px;overflow:hidden;background:#111820}
+.promo-art{height:115px;background:linear-gradient(130deg,rgba(0,0,0,.2),rgba(0,0,0,.75)),radial-gradient(circle at 70% 35%,#727b83,#26313d 55%,#111820);display:flex;align-items:end;padding:12px;font-weight:800;font-size:18px;font-style:italic}
+.promo-art span{color:#ff8a1c}.online{font-size:12px;color:#c8d1db;padding:10px 5px 0}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#13bd77;margin-right:7px}
+.version{font-size:11px;color:#8d9aaa;padding:0 5px}
+.main{min-width:0}.topbar{height:78px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:0 28px}
+.menu{font-size:23px;color:#283342;background:none}.search{max-width:650px;flex:1;position:relative}.search input{width:100%;height:45px;border:1px solid #dce3ed;border-radius:10px;padding:0 16px 0 43px;background:#f8f9fc;outline:none}.search:before{content:"⌕";position:absolute;left:15px;top:7px;font-size:26px;color:#536174}
+.top-actions{margin-left:auto;display:flex;align-items:center;gap:22px}.bell{font-size:21px;position:relative}.badge-count{position:absolute;top:-9px;right:-10px;background:#df3030;color:white;border-radius:50%;font-size:10px;padding:2px 5px}
+.user{display:flex;align-items:center;gap:10px;font-weight:700}.avatar{width:39px;height:39px;border-radius:50%;background:#dce6f4;color:#27405e;display:grid;place-items:center;font-weight:800}
+.content{padding:25px 28px 20px;max-width:1800px;margin:auto}.page-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
+h1{font-size:29px;margin:0 0 3px;letter-spacing:-.6px}.subtitle{color:var(--muted);font-size:15px}.date{background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 13px;font-weight:600}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.metric{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:17px 18px;box-shadow:var(--shadow);display:flex;align-items:center;gap:15px;min-width:0}
+.metric-icon{width:57px;height:57px;border-radius:50%;display:grid;place-items:center;font-size:26px;flex:none;background:#e9f1ff;color:#244b82}
+.metric:nth-child(2) .metric-icon{background:#e4f8ee;color:var(--green)}.metric:nth-child(3) .metric-icon{background:#e7f0ff;color:var(--blue)}.metric:nth-child(4) .metric-icon{background:#f0eaff;color:var(--purple)}
+.metric strong{font-size:26px;display:block;white-space:nowrap}.metric small{display:block;color:var(--muted);font-size:13px}.trend{font-size:11px;color:var(--green);margin-top:4px}
+.panels{display:grid;grid-template-columns:1.45fr 1fr;gap:15px;margin-bottom:17px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:17px 18px;min-width:0}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.panel h2{font-size:17px;margin:0}.period{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 10px;color:#39465a}
+.chart{height:205px;display:flex;gap:12px;align-items:stretch;padding:8px 4px 0}.ylabels{display:flex;flex-direction:column;justify-content:space-between;color:#697586;font-size:11px;padding-bottom:22px}
+.plot{flex:1;position:relative;border-bottom:1px solid #ccd5e1;background:repeating-linear-gradient(to bottom,transparent 0,transparent 48px,#e8edf4 49px,#e8edf4 50px);display:flex;align-items:end;justify-content:space-around;padding:0 8px 0}
+.bar-group{height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:7px;flex:1;min-width:0}
+.bar{width:min(38px,65%);background:linear-gradient(180deg,#ff9c43,var(--orange));border-radius:6px 6px 0 0;min-height:8px;position:relative}
+.bar-label{font-size:11px;color:#667386;white-space:nowrap}
+.donut-wrap{display:flex;align-items:center;justify-content:space-around;gap:15px;min-height:205px}
+.donut{width:164px;height:164px;border-radius:50%;background:conic-gradient(var(--green) 0 50%,var(--blue) 50% 83%,#ff9c43 83% 92%,#a5afbd 92% 100%);display:grid;place-items:center;flex:none}
+.donut-hole{width:105px;height:105px;border-radius:50%;background:#fff;display:grid;place-content:center;text-align:center}.donut-hole strong{font-size:27px}.donut-hole span{font-size:12px;color:var(--muted)}
+.legend{display:grid;gap:13px;min-width:150px}.legend-row{display:flex;align-items:center;gap:8px;font-size:12px}.legend-row b{margin-left:auto}.swatch{width:10px;height:10px;border-radius:50%;flex:none}
+.lower{display:grid;grid-template-columns:1.7fr .9fr;gap:15px}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;background:#f0f3f8;color:#344054;font-size:12px;padding:11px 10px}td{padding:11px 10px;border-bottom:1px solid #edf0f4;font-size:12px}tbody tr:hover{background:#fafcff}
+.status{display:inline-block;padding:4px 9px;border-radius:20px;font-weight:700;font-size:11px}.progress{background:#e2edff;color:#1559b7}.open{background:#fff0d5;color:#a85a00}.done{background:#dcf7e8;color:#087b49}.waiting{background:#f0eaff;color:#6840b8}
+.link{color:#1768d3;text-decoration:none;font-weight:700}.alerts{display:grid;gap:10px}.alert{border:1px solid #f3e0d8;background:#fff9f6;border-radius:10px;padding:12px;display:flex;gap:10px}.alert-icon{width:31px;height:31px;border-radius:50%;background:#ffe3d7;color:#d94b21;display:grid;place-items:center;flex:none;font-weight:800}.alert strong{display:block;font-size:13px}.alert p{margin:3px 0 0;color:#697586;font-size:12px}
+.quick{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:12px}.quick button{background:#f1f5fb;border:1px solid #e1e8f1;border-radius:9px;padding:13px 7px;color:#25354b;font-weight:700}.quick button span{display:block;font-size:21px;margin-bottom:5px}
+.footer{margin-top:22px;border-top:2px solid #ff8a22;padding:13px 4px 0;display:flex;justify-content:space-between;color:#667386;font-size:11px}.footer strong{color:#1d2939}
+@media(max-width:1100px){.app{grid-template-columns:210px 1fr}.metrics{grid-template-columns:repeat(2,1fr)}.panels,.lower{grid-template-columns:1fr}.sidebar{padding:14px 10px}.content{padding:20px}}
+@media(max-width:700px){.app{display:block}.sidebar{display:none}.topbar{height:64px;padding:0 14px;gap:12px}.top-actions{gap:12px}.user div:last-child{display:none}.content{padding:17px 12px}.page-head{align-items:flex-start;flex-direction:column}.date{font-size:12px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.metric{padding:12px;gap:9px}.metric-icon{width:40px;height:40px;font-size:19px}.metric strong{font-size:20px}.metric small{font-size:11px}.panel{padding:14px 12px}.donut-wrap{flex-direction:column}.legend{width:100%}.footer{gap:8px;flex-direction:column}.search input{height:40px}.bell{font-size:18px}}
+@media(max-width:390px){.metrics{grid-template-columns:1fr}.topbar{gap:8px}.search input{font-size:12px}.metric strong{font-size:23px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">🏍</div><strong>Oficina <span>Motos</span></strong></div>
+    <nav class="nav" aria-label="Menu principal">
+      <a class="active" href="#"><span class="ico">⌂</span>Dashboard</a>
+      <a href="#"><span class="ico">▣</span>Cadastros　⌄</a>
+      <a class="sub" href="#">Clientes</a><a class="sub" href="#">Mecânicos</a><a class="sub" href="#">Fornecedores</a><a class="sub" href="#">Motocicletas</a>
+      <a href="#"><span class="ico">🔧</span>Ordens de Serviço　⌄</a>
+      <a href="#"><span class="ico">▦</span>Estoque　⌄</a>
+      <a href="#"><span class="ico">$</span>Financeiro　⌄</a>
+      <a href="#"><span class="ico">▥</span>Relatórios</a>
+      <a href="#"><span class="ico">⚙</span>Configurações</a>
+    </nav>
+    <div class="sidebar-promo"><div class="promo-art">Sua moto sempre<br><span>em boas mãos!</span></div></div>
+    <div class="online"><span class="dot"></span>Sistema Online</div><div class="version">v1.0.0</div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <button class="menu" aria-label="Abrir menu">☰</button>
+      <div class="search"><input type="search" placeholder="Buscar por cliente, OS, placa..."></div>
+      <div class="top-actions"><div class="bell">♧<span class="badge-count">3</span></div><div class="user"><div class="avatar">CS</div><div>Carlos Silva<br><small style="color:#7b8796;font-weight:500">Administrador</small></div>⌄</div></div>
+    </header>
+    <section class="content">
+      <div class="page-head"><div><h1>Painel de Controle</h1><div class="subtitle">Visão geral da sua oficina</div></div><div class="date">▦　Hoje, 04 de Novembro de 2026　⌄</div></div>
+      <section class="metrics">
+        <article class="metric"><div class="metric-icon">🏍</div><div><strong>12</strong><small>Ordens de Serviço</small><div class="trend">↑ +1 em relação ao dia anterior</div></div></article>
+        <article class="metric"><div class="metric-icon">$</div><div><strong>R$ 8.750</strong><small>Faturamento do mês</small><div class="trend">↑ +12% em relação ao mês anterior</div></div></article>
+        <article class="metric"><div class="metric-icon">▣</div><div><strong>24</strong><small>Peças em estoque</small><div class="trend" style="color:#e66b20">↓ 3 abaixo do mínimo</div></div></article>
+        <article class="metric"><div class="metric-icon">♟</div><div><strong>487</strong><small>Clientes cadastrados</small><div class="trend">↑ +2 novos este mês</div></div></article>
+      </section>
+      <section class="panels">
+        <article class="panel">
+          <div class="panel-head"><h2>▥　Faturamento dos últimos 6 meses</h2><select class="period"><option>Últimos 6 meses</option><option>Últimos 12 meses</option></select></div>
+          <div class="chart"><div class="ylabels"><span>R$ 15 mil</span><span>R$ 12 mil</span><span>R$ 9 mil</span><span>R$ 6 mil</span><span>R$ 3 mil</span><span>R$ 0</span></div><div class="plot">
+            <div class="bar-group"><div class="bar" style="height:52%"></div><span class="bar-label">Mai/26</span></div>
+            <div class="bar-group"><div class="bar" style="height:70%"></div><span class="bar-label">Jun/26</span></div>
+            <div class="bar-group"><div class="bar" style="height:84%"></div><span class="bar-label">Jul/26</span></div>
+            <div class="bar-group"><div class="bar" style="height:67%"></div><span class="bar-label">Ago/26</span></div>
+            <div class="bar-group"><div class="bar" style="height:51%"></div><span class="bar-label">Set/26</span></div>
+            <div class="bar-group"><div class="bar" style="height:61%"></div><span class="bar-label">Out/26</span></div>
+          </div></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h2>🔧　Status das Ordens</h2></div>
+          <div class="donut-wrap"><div class="donut"><div class="donut-hole"><strong>12</strong><span>Total</span></div></div><div class="legend">
+            <div class="legend-row"><span class="swatch" style="background:var(--green)"></span>Concluídas <b>6 (50%)</b></div>
+            <div class="legend-row"><span class="swatch" style="background:var(--blue)"></span>Em andamento <b>4 (33%)</b></div>
+            <div class="legend-row"><span class="swatch" style="background:#ff9c43"></span>Aguardando peças <b>1 (8%)</b></div>
+            <div class="legend-row"><span class="swatch" style="background:#a5afbd"></span>Aguardando cliente <b>1 (8%)</b></div>
+          </div></div>
+        </article>
+      </section>
+      <section class="lower">
+        <article class="panel">
+          <div class="panel-head"><h2>▤　Últimas Ordens de Serviço</h2><a class="link" href="#">Ver todas →</a></div>
+          <div class="table-wrap"><table><thead><tr><th>OS</th><th>Cliente</th><th>Veículo</th><th>Serviço</th><th>Status</th><th>Data</th></tr></thead><tbody>
+            <tr><td>#1035</td><td>João Pereira</td><td>Honda CG 160</td><td>Revisão completa</td><td><span class="status progress">Em andamento</span></td><td>04/11/2026 16:20</td></tr>
+            <tr><td>#1034</td><td>Maria Souza</td><td>Yamaha Fazer 250</td><td>Troca de óleo</td><td><span class="status open">Aberta</span></td><td>04/11/2026 15:45</td></tr>
+            <tr><td>#1033</td><td>Carlos Lima</td><td>Honda Biz 125</td><td>Troca de pneus</td><td><span class="status done">Concluída</span></td><td>04/11/2026 14:30</td></tr>
+            <tr><td>#1032</td><td>Ana Costa</td><td>Suzuki Yes 125</td><td>Revisão</td><td><span class="status progress">Em andamento</span></td><td>04/11/2026 13:50</td></tr>
+            <tr><td>#1031</td><td>Roberto Alves</td><td>Yamaha XTZ 150</td><td>Ajuste de freios</td><td><span class="status done">Concluída</span></td><td>04/11/2026 11:20</td></tr>
+            <tr><td>#1030</td><td>Fernanda Oliveira</td><td>Honda CG 150</td><td>Kit transmissão</td><td><span class="status waiting">Aguardando peças</span></td><td>03/11/2026 17:10</td></tr>
+            <tr><td>#1029</td><td>Paulo Mendes</td><td>Honda CB 300</td><td>Diagnóstico elétrico</td><td><span class="status progress">Em andamento</span></td><td>03/11/2026 15:35</td></tr>
+            <tr><td>#1028</td><td>Juliana Rocha</td><td>Yamaha Factor 150</td><td>Troca de bateria</td><td><span class="status done">Concluída</span></td><td>03/11/2026 14:05</td></tr>
+            <tr><td>#1027</td><td>Marcos Ribeiro</td><td>Honda XRE 300</td><td>Revisão preventiva</td><td><span class="status open">Aberta</span></td><td>03/11/2026 10:40</td></tr>
+            <tr><td>#1026</td><td>Patrícia Gomes</td><td>Yamaha NMAX 160</td><td>Manutenção CVT</td><td><span class="status waiting">Aguardando cliente</span></td><td>02/11/2026 16:25</td></tr>
+          </tbody></table></div>
+        </article>
+        <aside>
+          <article class="panel">
+            <div class="panel-head"><h2>⚠ Alertas importantes</h2><span class="status open">2 alertas</span></div>
+            <div class="alerts">
+              <div class="alert"><div class="alert-icon">!</div><div><strong>Estoque baixo: Óleo 10W40</strong><p>Apenas 2 unidades disponíveis. Mínimo configurado: 5.</p></div></div>
+              <div class="alert"><div class="alert-icon">!</div><div><strong>Vencimento de NF-e</strong><p>Documento fiscal nº 25847 vence hoje.</p></div></div>
+            </div>
+          </article>
+          <article class="panel" style="margin-top:14px">
+            <div class="panel-head"><h2>⚡ Ações rápidas</h2></div>
+            <div class="quick">
+              <button><span>🔧</span>Nova OS</button><button><span>▣</span>Movimentar estoque</button>
+              <button><span>$</span>Registrar pagamento</button><button><span>▥</span>Emitir relatório</button>
+            </div>
+          </article>
+        </aside>
+      </section>
+      <footer class="footer"><div><strong>Oficina de Motos</strong>　© 2026 - Todos os direitos reservados.</div><div>Tecnologia a favor da sua oficina!</div></footer>
+    </section>
+  </main>
+</div>
+</body>
+</html>
