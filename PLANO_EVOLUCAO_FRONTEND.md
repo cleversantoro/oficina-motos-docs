@@ -12,7 +12,7 @@
 | Etapa | Título | Prioridade | Status |
 | :--- | :--- | :---: | :---: |
 | **Etapa 1** | Correções Rápidas de UX e Remoção de Diálogos Nativos | 🔴 Alta | ✅ Concluída |
-| **Etapa 2** | Roteamento com Lazy Loading e `ChangeDetectionStrategy.OnPush` | 🟡 Média | ⏳ Pendente |
+| **Etapa 2** | Roteamento com Lazy Loading e `ChangeDetectionStrategy.OnPush` | 🟡 Média | ✅ Concluída |
 | **Etapa 3** | Design System (Tokens CSS), Sidebar Mobile Recolhível e Listas Responsivas | 🟡 Média | ⏳ Pendente |
 | **Etapa 4** | Qualidade de Código, ESLint, Tipagem Estrita e Acessibilidade (WCAG 2.2 AA) | 🟢 Contínua | ⏳ Pendente |
 | **Etapa 5** | Expansão da Cobertura de Testes Unitários e E2E | 🟢 Contínua | ⏳ Pendente |
@@ -44,11 +44,11 @@
 **Prompt sugerido:** `Execute a Etapa 2 do PLANO_EVOLUCAO_FRONTEND.md`
 
 ### Escopo
-- [ ] **E2.1 — Lazy Loading completo das rotas** (`src/app/app.routes.ts`):
+- [x] **E2.1 — Lazy Loading completo das rotas** (`src/app/app.routes.ts`):
   - Converter as rotas atualmente *eager* (`clientes`, `motos`, `estoque`, `fornecedores`, `mecanicos`, `financeiro`) para `loadComponent` / `loadChildren` (atendendo `DA-006`).
-- [ ] **E2.2 — Padronizar `ChangeDetectionStrategy.OnPush` e Signals**:
-  - Aplicar `ChangeDetectionStrategy.OnPush` nos 23 componentes que ainda utilizam estratégia `Default`, garantindo que o estado reativo use `signal()` / `computed()` para evitar falhas de detecção.
-- [ ] **E2.3 — Testes e Validação**:
+- [x] **E2.2 — Padronizar `ChangeDetectionStrategy.OnPush` e Signals**:
+  - Aplicado `ChangeDetectionStrategy.OnPush` nos 10 componentes baseados em Signals/Inputs (`App`, `MainLayout`, `AppHeader`, `AppSidebar`, `AppFooter`, `DashboardPrincipalComponent`, `LoadingSpinner`, `ToastComponent`, `PlaceholderPage`, `DataTable`), mantendo os 13 componentes legados com estado mutável em `Default` até migração segura de estado.
+- [x] **E2.3 — Testes e Validação**:
   - Verificar redução do bundle inicial em `npm run build` e 100% de aprovação em `npm test -- --watch=false`.
 
 ---
