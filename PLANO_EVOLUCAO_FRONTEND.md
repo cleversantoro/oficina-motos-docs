@@ -13,7 +13,7 @@
 | :--- | :--- | :---: | :---: |
 | **Etapa 1** | Correções Rápidas de UX e Remoção de Diálogos Nativos | 🔴 Alta | ✅ Concluída |
 | **Etapa 2** | Roteamento com Lazy Loading e `ChangeDetectionStrategy.OnPush` | 🟡 Média | ✅ Concluída |
-| **Etapa 3** | Design System (Tokens CSS), Sidebar Mobile Recolhível e Listas Responsivas | 🟡 Média | ⏳ Pendente |
+| **Etapa 3** | Design System (Tokens CSS), Sidebar Mobile Recolhível e Listas Responsivas | 🟡 Média | ✅ Concluída |
 | **Etapa 4** | Qualidade de Código, ESLint, Tipagem Estrita e Acessibilidade (WCAG 2.2 AA) | 🟢 Contínua | ⏳ Pendente |
 | **Etapa 5** | Expansão da Cobertura de Testes Unitários e E2E | 🟢 Contínua | ⏳ Pendente |
 
@@ -58,14 +58,14 @@
 **Prompt sugerido:** `Execute a Etapa 3 do PLANO_EVOLUCAO_FRONTEND.md`
 
 ### Escopo
-- [ ] **E3.1 — Expandir Tokens CSS Semânticos** (`src/styles.scss`):
+- [x] **E3.1 — Expandir Tokens CSS Semânticos** (`src/styles.scss`):
   - Definir tokens `--color-surface-*`, `--color-border-*`, `--color-text-*`, `--color-danger`, `--color-warning`, `--radius-*` e `--spacing-*`, preservando a identidade industrial escura (`#0b1222` / `#f97316` / `#22c55e`).
-- [ ] **E3.2 — Sidebar Recolhível / Drawer no Mobile (`< 1024px`)** (`src/app/layout/main-layout/` e `src/app/layout/sidebar/`):
+- [x] **E3.2 — Sidebar Recolhível / Drawer no Mobile (`< 1024px`)** (`src/app/layout/main-layout/` e `src/app/layout/sidebar/`):
   - Substituir a barra horizontal fixa no mobile por botão de menu no header + drawer lateral recolhível com suporte a tecla `Escape` e foco acessível.
   - Revisar `height: 100vh; overflow: hidden` no mobile (`360×800`, `390×844`) para evitar cortes ou áreas reduzidas.
-- [ ] **E3.3 — Modernizar Listas Antigas com Cards Mobile**:
+- [x] **E3.3 — Modernizar Listas Antigas com Cards Mobile**:
   - Aplicar padrão responsivo (tabela desktop + cards mobile sem ocultar informações) em `estoque-lista`, `mecanico-lista`, `veiculo-lista` e `cliente-lista`, seguindo o padrão validado em `fornecedor-lista`.
-- [ ] **E3.4 — Testes e Validação**:
+- [x] **E3.4 — Testes e Validação**:
   - Executar `npm test -- --watch=false` e `npm run build`.
 
 ---
