@@ -15,7 +15,7 @@
 | **Etapa 2** | Roteamento com Lazy Loading e `ChangeDetectionStrategy.OnPush` | 🟡 Média | ✅ Concluída |
 | **Etapa 3** | Design System (Tokens CSS), Sidebar Mobile Recolhível e Listas Responsivas | 🟡 Média | ✅ Concluída |
 | **Etapa 4** | Qualidade de Código, ESLint, Tipagem Estrita e Acessibilidade (WCAG 2.2 AA) | 🟢 Contínua | ✅ Concluída |
-| **Etapa 5** | Expansão da Cobertura de Testes Unitários e E2E | 🟢 Contínua | ⏳ Pendente |
+| **Etapa 5** | Expansão da Cobertura de Testes Unitários e E2E | 🟢 Contínua | ✅ Concluída |
 
 ---
 
@@ -91,11 +91,11 @@
 **Prompt sugerido:** `Execute a Etapa 5 do PLANO_EVOLUCAO_FRONTEND.md`
 
 ### Escopo
-- [ ] **E5.1 — Testes Unitários de `core/services`**:
-  - Criar `.spec.ts` dedicados para os serviços ainda sem suíte unitária (`veiculos.service.ts`, `fornecedores.service.ts`, `mecanicos.service.ts`, `estoque.service.ts`, `api-client.service.ts`).
-- [ ] **E5.2 — Testes Unitários de Páginas e Layout**:
-  - Criar specs para `LoginPage`, `AppSidebar`, `fornecedor-detalhe` e telas de `clientes`/`motos` sem cobertura.
+- [x] **E5.1 — Testes Unitários de `core/services`**:
+  - Criados `.spec.ts` dedicados para os 5 serviços ainda descobertos (`api-client.service.spec.ts`, `veiculos.service.spec.ts`, `fornecedores.service.spec.ts`, `mecanicos.service.spec.ts`, `estoque.service.spec.ts`).
+- [x] **E5.2 — Testes Unitários de Páginas e Layout**:
+  - Criadas specs para `LoginPage` (`login.spec.ts`), `AppSidebar` (`sidebar.spec.ts`) e `FornecedorDetalhe` (`fornecedor-detalhe.spec.ts`).
 - [ ] **E5.3 — Testes E2E (Opcional / Pós-aprovação)**:
-  - Configurar Playwright para cobrir fluxos críticos (Login → Criar OS → Adicionar Item → Pagar → Imprimir PDF).
-- [ ] **E5.4 — Validação Final**:
-  - Executar toda a suíte unitária, E2E (se configurado) e `npm run build`.
+  - Configurar Playwright para cobrir fluxos críticos (Login → Criar OS → Adicionar Item → Pagar → Imprimir PDF) — mantido como opcional aguardando aprovação para adicionar dependência.
+- [x] **E5.4 — Validação Final**:
+  - Executar toda a suíte unitária, lint e `npm run build`.
