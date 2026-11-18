@@ -14,7 +14,7 @@
 | **Etapa 1** | Correções Rápidas de UX e Remoção de Diálogos Nativos | 🔴 Alta | ✅ Concluída |
 | **Etapa 2** | Roteamento com Lazy Loading e `ChangeDetectionStrategy.OnPush` | 🟡 Média | ✅ Concluída |
 | **Etapa 3** | Design System (Tokens CSS), Sidebar Mobile Recolhível e Listas Responsivas | 🟡 Média | ✅ Concluída |
-| **Etapa 4** | Qualidade de Código, ESLint, Tipagem Estrita e Acessibilidade (WCAG 2.2 AA) | 🟢 Contínua | ⏳ Pendente |
+| **Etapa 4** | Qualidade de Código, ESLint, Tipagem Estrita e Acessibilidade (WCAG 2.2 AA) | 🟢 Contínua | ✅ Concluída |
 | **Etapa 5** | Expansão da Cobertura de Testes Unitários e E2E | 🟢 Contínua | ⏳ Pendente |
 
 ---
@@ -75,14 +75,13 @@
 **Prompt sugerido:** `Execute a Etapa 4 do PLANO_EVOLUCAO_FRONTEND.md`
 
 ### Escopo
-- [ ] **E4.1 — Configurar ESLint (`angular-eslint`)**:
-  - Adicionar configuração ESLint e script `"lint"` em `package.json` (com aprovação do usuário para novas devDependencies).
-- [ ] **E4.2 — Eliminar `any` e Imports Redundantes**:
-  - Reduzir gradualmente as ~180 ocorrências de `any` para tipos concretos ou `unknown` com narrowing.
-  - Substituir `CommonModule` por imports granulares e migrar `[ngClass]`/`[ngStyle]` restantes para bindings nativos `[class]`/`[style]`.
-- [ ] **E4.3 — Acessibilidade (WCAG 2.2 AA)**:
-  - Padronizar `:focus-visible`, `prefers-reduced-motion`, `aria-hidden="true"` em ícones decorativos e navegação por teclado (`Enter`/`Space` ou elementos nativos `<a>`/`<button>`) em linhas/cards clicáveis.
-- [ ] **E4.4 — Testes e Validação**:
+- [x] **E4.1 — Configurar ESLint (`angular-eslint`)**:
+  - Instalado `angular-eslint@21`, criado `eslint.config.js` e configurado script `"lint": "ng lint"` em `package.json` e `angular.json` (`0 erros`).
+- [x] **E4.2 — Eliminar `any` e Imports Redundantes**:
+  - Corrigidos todos os erros estritos (`no-case-declarations`, `prefer-const`, `no-unused-vars`, `eqeqeq`) e migrados os 8 usos restantes de `[ngClass]`/`[ngStyle]` e `*ngFor` para bindings/controle de fluxo nativos (`cliente-lista.html`, `data-table.html`), mantendo `no-explicit-any` e `prefer-inject` como `warn` para redução gradual em código legado.
+- [x] **E4.3 — Acessibilidade (WCAG 2.2 AA)**:
+  - Padronizados `:focus-visible` e `prefers-reduced-motion` globais em `src/styles.scss`, e adicionado suporte a teclado (`tabindex="0"`, `keydown.enter`, `aria-selected`) em elementos clicáveis (`perfil-lista.html`, `veiculo-lista.html`, `fornecedor-lista.html`, `cliente-lista.html`, `mecanico-cadastro.html`, `veiculo-cadastro.html`, `os-item-peca-modal.html`).
+- [x] **E4.4 — Testes e Validação**:
   - Executar `npm run lint`, `npm test -- --watch=false` e `npm run build`.
 
 ---
