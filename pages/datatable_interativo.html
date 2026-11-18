@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Colaboradores - DataTable Interativo</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonte Inter do Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons via CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Container Principal -->
+    <div class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        
+        <!-- Cabeçalho da Página -->
+        <div class="sm:flex sm:items-center sm:justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Diretório de Colaboradores</h1>
+                <p class="mt-1 text-sm text-slate-500">Gerencie membros da equipe, cargos, status de acesso e remuneração.</p>
+            </div>
+            <div class="mt-4 sm:mt-0 flex items-center gap-3">
+                <button onclick="exportToCSV()" class="inline-flex items-center justify-center px-4 py-2 border border-slate-300 shadow-sm text-sm font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                    <i data-lucide="download" class="w-4 h-4 mr-2 text-slate-500"></i>
+                    Exportar CSV
+                </button>
+                <button onclick="openFormModal()" class="inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                    <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
+                    Novo Colaborador
+                </button>
+            </div>
+        </div>
+
+        <!-- Card Principal do DataTable -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            
+            <!-- Barra de Ferramentas (Busca, Filtros e Ações em Lote) -->
+            <div class="p-4 sm:p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white">
+                
+                <!-- Esquerda: Busca e Filtro de Status -->
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-grow max-w-2xl">
+                    <!-- Campo de Busca -->
+                    <div class="relative flex-grow">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i data-lucide="search" class="h-4 w-4 text-slate-400"></i>
+                        </div>
+                        <input type="text" id="searchInput" placeholder="Buscar por nome, e-mail, cargo ou ID..." 
+                            class="block w-full pl-10 pr-8 py-2 border border-slate-300 rounded-lg text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow">
+                        <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-slate-600">
+                            <i data-lucide="x" class="h-4 w-4"></i>
+                        </button>
+                    </div>
+
+                    <!-- Filtro Rápido por Status -->
+                    <div class="sm:w-44">
+                        <select id="statusFilter" class="block w-full pl-3 pr-8 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white text-slate-700">
+                            <option value="Todos">Todos os Status</option>
+                            <option value="Ativo">Ativo</option>
+                            <option value="Pendente">Pendente</option>
+                            <option value="Inativo">Inativo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Direita: Barra de Ação em Lote (Aparece quando há itens selecionados) -->
+                <div id="bulkActionsBar" class="hidden items-center justify-between sm:justify-end gap-3 bg-indigo-50 px-3.5 py-2 rounded-lg border border-indigo-100 animate-fade-in">
+                    <span class="text-sm font-medium text-indigo-800">
+                        <span id="selectedCount" class="font-bold">0</span> selecionado(s)
+                    </span>
+                    <div class="h-4 w-px bg-indigo-200"></div>
+                    <button onclick="confirmBulkDelete()" class="inline-flex items-center text-sm font-medium text-red-600 hover:text-red-800 transition-colors">
+                        <i data-lucide="trash-2" class="w-4 h-4 mr-1.5"></i>
+                        Excluir
+                    </button>
+                </div>
+            </div>
+
+            <!-- Container Responsivo da Tabela -->
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-200">
+                    <thead class="bg-slate-50/80">
+                        <tr>
+                            <!-- Checkbox Selecionar Todos -->
+                            <th scope="col" class="px-4 py-3.5 text-left w-12">
+                                <div class="flex items-center">
+                                    <input id="selectAllCheckbox" type="checkbox" 
+                                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded cursor-pointer">
+                                </div>
+                            </th>
+                            
+                            <!-- Coluna ID -->
+                            <th scope="col" onclick="handleSort('id')" class="px-4 py-3.5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider cursor-pointer hover:bg-slate-100 transition-colors select-none group">
+                                <div class="flex items-center gap-1.5">
+                                    <span>ID</span>
+                                    <span id="sort-icon-id" class="text-slate-400 group-hover:text-slate-600">
+                                        <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i>
+                                    </span>
+                                </div>
+                            </th>
+
+                            <!-- Coluna Colaborador (Nome + Email) -->
+                            <th scope="col" onclick="handleSort('nome')" class="px-4 py-3.5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider cursor-pointer hover:bg-slate-100 transition-colors select-none group">
+                                <div class="flex items-center gap-1.5">
+                                    <span>Colaborador</span>
+                                    <span id="sort-icon-nome" class="text-slate-400 group-hover:text-slate-600">
+                                        <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i>
+                                    </span>
+                                </div>
+                            </th>
+
+                            <!-- Coluna Cargo / Departamento -->
+                            <th scope="col" onclick="handleSort('cargo')" class="px-4 py-3.5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider cursor-pointer hover:bg-slate-100 transition-colors select-none group">
+                                <div class="flex items-center gap-1.5">
+                                    <span>Cargo / Depto.</span>
+                                    <span id="sort-icon-cargo" class="text-slate-400 group-hover:text-slate-600">
+                                        <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i>
+                                    </span>
+                                </div>
+                            </th>
+
+                            <!-- Coluna Status -->
+                            <th scope="col" onclick="handleSort('status')" class="px-4 py-3.5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider cursor-pointer hover:bg-slate-100 transition-colors select-none group">
+                                <div class="flex items-center gap-1.5">
+                                    <span>Status</span>
+                                    <span id="sort-icon-status" class="text-slate-400 group-hover:text-slate-600">
+                                        <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i>
+                                    </span>
+                                </div>
+                            </th>
+
+                            <!-- Coluna Data de Cadastro -->
+                            <th scope="col" onclick="handleSort('dataCadastro')" class="px-4 py-3.5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider cursor-pointer hover:bg-slate-100 transition-colors select-none group">
+                                <div class="flex items-center gap-1.5">
+                                    <span>Cadastro</span>
+                                    <span id="sort-icon-dataCadastro" class="text-slate-400 group-hover:text-slate-600">
+                                        <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i>
+                                    </span>
+                                </div>
+                            </th>
+
+                            <!-- Coluna Salário -->
+                            <th scope="col" onclick="handleSort('salario')" class="px-4 py-3.5 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider cursor-pointer hover:bg-slate-100 transition-colors select-none group">
+                                <div class="flex items-center justify-end gap-1.5">
+                                    <span>Salário</span>
+                                    <span id="sort-icon-salario" class="text-slate-400 group-hover:text-slate-600">
+                                        <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i>
+                                    </span>
+                                </div>
+                            </th>
+
+                            <!-- Coluna Ações -->
+                            <th scope="col" class="px-4 py-3.5 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                                Ações
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="bg-white divide-y divide-slate-200 text-sm">
+                        <!-- Linhas renderizadas dinamicamente via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Estado Vazio (Quando nenhum resultado é encontrado) -->
+            <div id="emptyState" class="hidden py-12 px-4 text-center">
+                <div class="mx-auto w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-3">
+                    <i data-lucide="search-x" class="w-6 h-6 text-slate-400"></i>
+                </div>
+                <h3 class="text-sm font-medium text-slate-900">Nenhum colaborador encontrado</h3>
+                <p class="mt-1 text-sm text-slate-500">Não encontramos registros correspondentes aos filtros atuais.</p>
+                <div class="mt-4">
+                    <button onclick="resetFilters()" class="inline-flex items-center px-3 py-1.5 border border-slate-300 shadow-sm text-xs font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50">
+                        Limpar filtros
+                    </button>
+                </div>
+            </div>
+
+            <!-- Rodapé de Paginação -->
+            <div class="bg-white px-4 py-3.5 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                
+                <!-- Seletor de Itens por Página e Contagem -->
+                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-sm text-slate-600">
+                    <div class="flex items-center gap-2">
+                        <span>Mostrar</span>
+                        <select id="pageSizeSelect" class="border border-slate-300 rounded-md py-1 pl-2 pr-7 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                        </select>
+                        <span>por página</span>
+                    </div>
+                    <span class="hidden sm:inline text-slate-300">|</span>
+                    <div id="paginationInfo">
+                        Mostrando <span class="font-medium text-slate-900">0</span> a <span class="font-medium text-slate-900">0</span> de <span class="font-medium text-slate-900">0</span> resultados
+                    </div>
+                </div>
+
+                <!-- Botões de Navegação de Página -->
+                <nav id="paginationControls" class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Paginação">
+                    <!-- Botões gerados dinamicamente -->
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAIS ================= -->
+
+    <!-- Modal 1: Visualizar Detalhes -->
+    <div id="viewModal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div onclick="closeModal('viewModal')" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-slate-200">
+                <div class="bg-white px-6 pt-5 pb-4">
+                    <div class="flex items-start justify-between border-b border-slate-100 pb-4">
+                        <div class="flex items-center gap-3">
+                            <div id="viewAvatar" class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-lg">
+                                AB
+                            </div>
+                            <div>
+                                <h3 id="viewNome" class="text-lg font-semibold text-slate-900">Nome do Colaborador</h3>
+                                <p id="viewEmail" class="text-sm text-slate-500">email@empresa.com.br</p>
+                            </div>
+                        </div>
+                        <button onclick="closeModal('viewModal')" class="text-slate-400 hover:text-slate-600 rounded-lg p-1">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-4 text-sm">
+                        <div class="bg-slate-50 p-3 rounded-lg">
+                            <span class="block text-xs text-slate-500 uppercase font-medium">ID Registro</span>
+                            <span id="viewId" class="mt-1 block font-semibold text-slate-800">#1001</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg">
+                            <span class="block text-xs text-slate-500 uppercase font-medium">Status</span>
+                            <div id="viewStatus" class="mt-1"></div>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg">
+                            <span class="block text-xs text-slate-500 uppercase font-medium">Cargo</span>
+                            <span id="viewCargo" class="mt-1 block font-medium text-slate-800">Desenvolvedor</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg">
+                            <span class="block text-xs text-slate-500 uppercase font-medium">Departamento</span>
+                            <span id="viewDepartamento" class="mt-1 block font-medium text-slate-800">Tecnologia</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg">
+                            <span class="block text-xs text-slate-500 uppercase font-medium">Data de Cadastro</span>
+                            <span id="viewData" class="mt-1 block font-medium text-slate-800">12/03/2024</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg">
+                            <span class="block text-xs text-slate-500 uppercase font-medium">Remuneração Mensal</span>
+                            <span id="viewSalario" class="mt-1 block font-semibold text-emerald-700">R$ 8.500,00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-50 px-6 py-3 flex justify-end gap-2 border-t border-slate-100">
+                    <button type="button" onclick="closeModal('viewModal')" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50">
+                        Fechar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Adicionar / Editar Colaborador -->
+    <div id="formModal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div onclick="closeModal('formModal')" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-slate-200">
+                <form id="colaboradorForm" onsubmit="saveColaborador(event)">
+                    <div class="bg-white px-6 pt-5 pb-4">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                            <h3 id="formModalTitle" class="text-lg font-semibold text-slate-900">Novo Colaborador</h3>
+                            <button type="button" onclick="closeModal('formModal')" class="text-slate-400 hover:text-slate-600 rounded-lg p-1">
+                                <i data-lucide="x" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        
+                        <input type="hidden" id="editId">
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Nome Completo *</label>
+                                <input type="text" id="inputNome" required placeholder="Ex: Mariana Silva" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">E-mail Corporativo *</label>
+                                <input type="email" id="inputEmail" required placeholder="Ex: mariana.silva@empresa.com.br" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Cargo *</label>
+                                    <input type="text" id="inputCargo" required placeholder="Ex: Analista de Dados" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Departamento *</label>
+                                    <select id="inputDepartamento" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+                                        <option value="Tecnologia">Tecnologia</option>
+                                        <option value="Produto">Produto</option>
+                                        <option value="Design">Design</option>
+                                        <option value="Marketing">Marketing</option>
+                                        <option value="Comercial">Comercial</option>
+                                        <option value="Recursos Humanos">Recursos Humanos</option>
+                                        <option value="Financeiro">Financeiro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Status *</label>
+                                    <select id="inputStatus" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+                                        <option value="Ativo">Ativo</option>
+                                        <option value="Pendente">Pendente</option>
+                                        <option value="Inativo">Inativo</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Salário (R$) *</label>
+                                    <input type="number" id="inputSalario" step="0.01" min="0" required placeholder="Ex: 6500.00" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 px-6 py-3 flex justify-end gap-2 border-t border-slate-100">
+                        <button type="button" onclick="closeModal('formModal')" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-indigo-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-indigo-700">
+                            Salvar Dados
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Confirmação de Exclusão -->
+    <div id="deleteModal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div onclick="closeModal('deleteModal')" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md w-full border border-slate-200">
+                <div class="bg-white px-6 pt-5 pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <i data-lucide="alert-triangle" class="h-5 w-5 text-red-600"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-semibold text-slate-900" id="deleteModalTitle">Confirmar Exclusão</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-slate-500" id="deleteModalMessage">
+                                    Tem certeza que deseja excluir este registro? Esta ação não poderá ser desfeita.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-50 px-6 py-3 flex flex-col-reverse sm:flex-row sm:justify-end gap-2 border-t border-slate-100">
+                    <button type="button" onclick="closeModal('deleteModal')" class="w-full sm:w-auto px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50">
+                        Cancelar
+                    </button>
+                    <button type="button" id="confirmDeleteBtn" class="w-full sm:w-auto px-4 py-2 bg-red-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-red-700">
+                        Sim, Excluir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notificação Toast Flutuante -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Script Principal da Aplicação -->
+    <script>
+        // ==========================================
+        // 1. DADOS FICTÍCIOS REALISTAS EM PORTUGUÊS
+        // ==========================================
+        let colaboradores = [
+            { id: 1001, nome: "Ana Beatriz Costa", email: "ana.costa@empresa.com.br", cargo: "Tech Lead", departamento: "Tecnologia", status: "Ativo", dataCadastro: "2023-03-15", salario: 14500.00 },
+            { id: 1002, nome: "Carlos Eduardo Mendes", email: "carlos.mendes@empresa.com.br", cargo: "Desenvolvedor Full Stack", departamento: "Tecnologia", status: "Ativo", dataCadastro: "2023-06-22", salario: 9800.00 },
+            { id: 1003, nome: "Mariana Oliveira Santos", email: "mariana.santos@empresa.com.br", cargo: "Product Designer UX/UI", departamento: "Design", status: "Ativo", dataCadastro: "2023-08-10", salario: 8200.00 },
+            { id: 1004, nome: "Rafael Almeida Ferreira", email: "rafael.ferreira@empresa.com.br", cargo: "Analista Financeiro Sênior", departamento: "Financeiro", status: "Pendente", dataCadastro: "2024-01-12", salario: 7400.00 },
+            { id: 1005, nome: "Juliana Lima Rocha", email: "juliana.rocha@empresa.com.br", cargo: "Gerente de Marketing", departamento: "Marketing", status: "Ativo", dataCadastro: "2022-11-05", salario: 11200.00 },
+            { id: 1006, nome: "Lucas Gabriel Martins", email: "lucas.martins@empresa.com.br", cargo: "Executivo de Contas", departamento: "Comercial", status: "Inativo", dataCadastro: "2023-02-18", salario: 6100.00 },
+            { id: 1007, nome: "Fernanda Souza Pereira", email: "fernanda.pereira@empresa.com.br", cargo: "Especialista em RH", departamento: "Recursos Humanos", status: "Ativo", dataCadastro: "2023-09-01", salario: 6900.00 },
+            { id: 1008, nome: "Thiago Henrique Alves", email: "thiago.alves@empresa.com.br", cargo: "Engenheiro de Dados", departamento: "Tecnologia", status: "Ativo", dataCadastro: "2024-02-20", salario: 12300.00 },
+            { id: 1009, nome: "Camila Rodrigues Dias", email: "camila.dias@empresa.com.br", cargo: "Product Manager", departamento: "Produto", status: "Pendente", dataCadastro: "2024-04-03", salario: 13100.00 },
+            { id: 1010, nome: "Bruno César Nogueira", email: "bruno.nogueira@empresa.com.br", cargo: "Analista de Suporte", departamento: "Tecnologia", status: "Inativo", dataCadastro: "2022-07-14", salario: 4200.00 },
+            { id: 1011, nome: "Patrícia Gomes Barbosa", email: "patricia.barbosa@empresa.com.br", cargo: "Coordenadora Comercial", departamento: "Comercial", status: "Ativo", dataCadastro: "2023-04-28", salario: 9500.00 },
+            { id: 1012, nome: "Rodrigo Teixeira Lima", email: "rodrigo.lima@empresa.com.br", cargo: "Desenvolvedor Frontend", departamento: "Tecnologia", status: "Ativo", dataCadastro: "2023-10-19", salario: 8500.00 },
+            { id: 1013, nome: "Larissa Monteiro Castro", email: "larissa.castro@empresa.com.br", cargo: "Analista de Mídia Paga", departamento: "Marketing", status: "Pendente", dataCadastro: "2024-05-08", salario: 5400.00 },
+            { id: 1014, nome: "Gustavo Henrique Ribeiro", email: "gustavo.ribeiro@empresa.com.br", cargo: "Controller", departamento: "Financeiro", status: "Ativo", dataCadastro: "2022-05-30", salario: 13800.00 },
+            { id: 1015, nome: "Beatriz Carvalho Pinto", email: "beatriz.pinto@empresa.com.br", cargo: "UX Researcher", departamento: "Design", status: "Ativo", dataCadastro: "2024-01-25", salario: 7800.00 },
+            { id: 1016, nome: "Diego Moreira Duarte", email: "diego.duarte@empresa.com.br", cargo: "DevOps Engineer", departamento: "Tecnologia", status: "Ativo", dataCadastro: "2023-07-11", salario: 12900.00 },
+            { id: 1017, nome: "Vanessa Freitas Azevedo", email: "vanessa.azevedo@empresa.com.br", cargo: "Business Partner RH", departamento: "Recursos Humanos", status: "Inativo", dataCadastro: "2022-09-12", salario: 8100.00 },
+            { id: 1018, nome: "Marcelo Augusto Vieira", email: "marcelo.vieira@empresa.com.br", cargo: "SDR / Pré-vendas", departamento: "Comercial", status: "Ativo", dataCadastro: "2024-03-19", salario: 3900.00 }
+        ];
+
+        // ==========================================
+        // 2. ESTADO DA APLICAÇÃO
+        // ==========================================
+        let state = {
+            searchQuery: '',
+            statusFilter: 'Todos',
+            sortColumn: 'id',
+            sortDirection: 'asc', // 'asc' ou 'desc'
+            currentPage: 1,
+            pageSize: 5,
+            selectedIds: new Set()
+        };
+
+        // ==========================================
+        // 3. FUNÇÕES UTILITÁRIAS DE FORMATAÇÃO
+        // ==========================================
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+        }
+
+        function formatDate(dateString) {
+            const [year, month, day] = dateString.split('-');
+            return `${day}/${month}/${year}`;
+        }
+
+        function getInitials(name) {
+            const parts = name.trim().split(' ');
+            if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+            return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+        }
+
+        function getStatusBadge(status) {
+            const styles = {
+                'Ativo': 'bg-emerald-50 text-emerald-700 border-emerald-200 dot-emerald',
+                'Pendente': 'bg-amber-50 text-amber-700 border-amber-200 dot-amber',
+                'Inativo': 'bg-rose-50 text-rose-700 border-rose-200 dot-rose'
+            };
+            const dotColors = {
+                'Ativo': 'bg-emerald-500',
+                'Pendente': 'bg-amber-500',
+                'Inativo': 'bg-rose-500'
+            };
+
+            const badgeClass = styles[status] || 'bg-slate-100 text-slate-700 border-slate-200';
+            const dotClass = dotColors[status] || 'bg-slate-500';
+
+            return `
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${badgeClass}">
+                    <span class="w-1.5 h-1.5 rounded-full ${dotClass}"></span>
+                    ${status}
+                </span>
+            `;
+        }
+
+        // ==========================================
+        // 4. LÓGICA DE FILTRAGEM, ORDENAÇÃO E PAGINAÇÃO
+        // ==========================================
+        function getProcessedData() {
+            // 1. Filtragem por busca e status
+            let filtered = colaboradores.filter(item => {
+                const query = state.searchQuery.toLowerCase().trim();
+                const matchesSearch = !query || 
+                    item.nome.toLowerCase().includes(query) ||
+                    item.email.toLowerCase().includes(query) ||
+                    item.cargo.toLowerCase().includes(query) ||
+                    item.departamento.toLowerCase().includes(query) ||
+                    item.id.toString().includes(query);
+
+                const matchesStatus = state.statusFilter === 'Todos' || item.status === state.statusFilter;
+
+                return matchesSearch && matchesStatus;
+            });
+
+            // 2. Ordenação
+            filtered.sort((a, b) => {
+                let valA = a[state.sortColumn];
+                let valB = b[state.sortColumn];
+
+                if (typeof valA === 'string') {
+                    valA = valA.toLowerCase();
+                    valB = valB.toLowerCase();
+                }
+
+                if (valA < valB) return state.sortDirection === 'asc' ? -1 : 1;
+                if (valA > valB) return state.sortDirection === 'asc' ? 1 : -1;
+                return 0;
+            });
+
+            return filtered;
+        }
+
+        // ==========================================
+        // 5. RENDERIZAÇÃO DA TABELA E COMPONENTES
+        // ==========================================
+        function renderTable() {
+            const processedData = getProcessedData();
+            const totalItems = processedData.length;
+            const totalPages = Math.max(1, Math.ceil(totalItems / state.pageSize));
+
+            // Ajusta página atual se exceder o total após exclusão ou filtro
+            if (state.currentPage > totalPages) {
+                state.currentPage = totalPages;
+            }
+
+            const startIndex = (state.currentPage - 1) * state.pageSize;
+            const endIndex = Math.min(startIndex + state.pageSize, totalItems);
+            const paginatedItems = processedData.slice(startIndex, endIndex);
+
+            const tbody = document.getElementById('tableBody');
+            const emptyState = document.getElementById('emptyState');
+
+            tbody.innerHTML = '';
+
+            if (totalItems === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+
+                paginatedItems.forEach(item => {
+                    const isSelected = state.selectedIds.has(item.id);
+                    const row = document.createElement('tr');
+                    row.className = `transition-colors ${isSelected ? 'bg-indigo-50/60 hover:bg-indigo-50' : 'hover:bg-slate-50/90'}`;
+
+                    row.innerHTML = `
+                        <td class="px-4 py-3.5 whitespace-nowrap">
+                            <input type="checkbox" 
+                                onchange="toggleRowSelection(${item.id})" 
+                                ${isSelected ? 'checked' : ''}
+                                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded cursor-pointer">
+                        </td>
+                        <td class="px-4 py-3.5 whitespace-nowrap font-mono text-xs font-medium text-slate-500">
+                            #${item.id}
+                        </td>
+                        <td class="px-4 py-3.5 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="h-9 w-9 flex-shrink-0 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 text-white flex items-center justify-center font-semibold text-xs shadow-sm">
+                                    ${getInitials(item.nome)}
+                                </div>
+                                <div class="ml-3">
+                                    <div class="font-medium text-slate-900">${item.nome}</div>
+                                    <div class="text-xs text-slate-500">${item.email}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-4 py-3.5 whitespace-nowrap">
+                            <div class="text-slate-900 font-medium">${item.cargo}</div>
+                            <div class="text-xs text-slate-500">${item.departamento}</div>
+                        </td>
+                        <td class="px-4 py-3.5 whitespace-nowrap">
+                            ${getStatusBadge(item.status)}
+                        </td>
+                        <td class="px-4 py-3.5 whitespace-nowrap text-slate-600">
+                            ${formatDate(item.dataCadastro)}
+                        </td>
+                        <td class="px-4 py-3.5 whitespace-nowrap text-right font-medium text-slate-900">
+                            ${formatCurrency(item.salario)}
+                        </td>
+                        <td class="px-4 py-3.5 whitespace-nowrap text-right text-sm font-medium">
+                            <div class="flex items-center justify-end gap-1">
+                                <button onclick="viewColaborador(${item.id})" title="Visualizar Detalhes" 
+                                    class="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="editColaborador(${item.id})" title="Editar" 
+                                    class="p-1.5 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors">
+                                    <i data-lucide="pencil" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="confirmSingleDelete(${item.id})" title="Excluir" 
+                                    class="p-1.5 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            updateSortIcons();
+            updatePagination(totalItems, totalPages, startIndex, endIndex);
+            updateSelectionUI(paginatedItems);
+            
+            // Reinicializa ícones do Lucide criados dinamicamente
+            lucide.createIcons();
+        }
+
+        function updateSortIcons() {
+            const columns = ['id', 'nome', 'cargo', 'status', 'dataCadastro', 'salario'];
+            columns.forEach(col => {
+                const iconContainer = document.getElementById(`sort-icon-${col}`);
+                if (!iconContainer) return;
+
+                if (state.sortColumn === col) {
+                    iconContainer.className = 'text-indigo-600';
+                    const iconName = state.sortDirection === 'asc' ? 'arrow-up' : 'arrow-down';
+                    iconContainer.innerHTML = `<i data-lucide="${iconName}" class="w-3.5 h-3.5"></i>`;
+                } else {
+                    iconContainer.className = 'text-slate-400 group-hover:text-slate-600';
+                    iconContainer.innerHTML = `<i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i>`;
+                }
+            });
+        }
+
+        function updatePagination(totalItems, totalPages, startIndex, endIndex) {
+            const info = document.getElementById('paginationInfo');
+            if (totalItems === 0) {
+                info.innerHTML = `Mostrando <span class="font-medium text-slate-900">0</span> resultados`;
+            } else {
+                info.innerHTML = `Mostrando <span class="font-medium text-slate-900">${startIndex + 1}</span> a <span class="font-medium text-slate-900">${endIndex}</span> de <span class="font-medium text-slate-900">${totalItems}</span> resultados`;
+            }
+
+            const controls = document.getElementById('paginationControls');
+            controls.innerHTML = '';
+
+            // Botão Anterior
+            const prevBtn = document.createElement('button');
+            prevBtn.disabled = state.currentPage === 1 || totalItems === 0;
+            prevBtn.onclick = () => goToPage(state.currentPage - 1);
+            prevBtn.className = `relative inline-flex items-center px-2.5 py-1.5 rounded-l-md border border-slate-300 bg-white text-sm font-medium ${prevBtn.disabled ? 'text-slate-300 cursor-not-allowed' : 'text-slate-600 hover:bg-slate-50'}`;
+            prevBtn.innerHTML = `<i data-lucide="chevron-left" class="w-4 h-4"></i>`;
+            controls.appendChild(prevBtn);
+
+            // Números de página (com reticências se houver muitas páginas)
+            const pages = generatePageNumbers(state.currentPage, totalPages);
+            pages.forEach(page => {
+                if (page === '...') {
+                    const span = document.createElement('span');
+                    span.className = 'relative inline-flex items-center px-3 py-1.5 border border-slate-300 bg-white text-sm font-medium text-slate-500';
+                    span.textContent = '...';
+                    controls.appendChild(span);
+                } else {
+                    const pageBtn = document.createElement('button');
+                    const isCurrent = page === state.currentPage;
+                    pageBtn.onclick = () => goToPage(page);
+                    pageBtn.className = isCurrent
+                        ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-3.5 py-1.5 border text-sm font-semibold'
+                        : 'bg-white border-slate-300 text-slate-600 hover:bg-slate-50 relative inline-flex items-center px-3.5 py-1.5 border text-sm font-medium';
+                    pageBtn.textContent = page;
+                    controls.appendChild(pageBtn);
+                }
+            });
+
+            // Botão Próximo
+            const nextBtn = document.createElement('button');
+            nextBtn.disabled = state.currentPage === totalPages || totalItems === 0;
+            nextBtn.onclick = () => goToPage(state.currentPage + 1);
+            nextBtn.className = `relative inline-flex items-center px-2.5 py-1.5 rounded-r-md border border-slate-300 bg-white text-sm font-medium ${nextBtn.disabled ? 'text-slate-300 cursor-not-allowed' : 'text-slate-600 hover:bg-slate-50'}`;
+            nextBtn.innerHTML = `<i data-lucide="chevron-right" class="w-4 h-4"></i>`;
+            controls.appendChild(nextBtn);
+        }
+
+        function generatePageNumbers(current, total) {
+            if (total <= 5) {
+                return Array.from({ length: total }, (_, i) => i + 1);
+            }
+            if (current <= 3) {
+                return [1, 2, 3, 4, '...', total];
+            }
+            if (current >= total - 2) {
+                return [1, '...', total - 3, total - 2, total - 1, total];
+            }
+            return [1, '...', current - 1, current, current + 1, '...', total];
+        }
+
+        // ==========================================
+        // 6. INTERAÇÕES: ORDENAÇÃO, FILTROS E SELEÇÃO
+        // ==========================================
+        function handleSort(column) {
+            if (state.sortColumn === column) {
+                state.sortDirection = state.sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                state.sortColumn = column;
+                state.sortDirection = 'asc';
+            }
+            renderTable();
+        }
+
+        function goToPage(page) {
+            state.currentPage = page;
+            renderTable();
+        }
+
+        function clearSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.value = '';
+            state.searchQuery = '';
+            state.currentPage = 1;
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            renderTable();
+        }
+
+        function resetFilters() {
+            clearSearch();
+            document.getElementById('statusFilter').value = 'Todos';
+            state.statusFilter = 'Todos';
+            renderTable();
+        }
+
+        function toggleRowSelection(id) {
+            if (state.selectedIds.has(id)) {
+                state.selectedIds.delete(id);
+            } else {
+                state.selectedIds.add(id);
+            }
+            renderTable();
+        }
+
+        function updateSelectionUI(currentPageItems) {
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const bulkActionsBar = document.getElementById('bulkActionsBar');
+            const selectedCountSpan = document.getElementById('selectedCount');
+
+            // Atualiza barra de ação em lote
+            if (state.selectedIds.size > 0) {
+                bulkActionsBar.classList.remove('hidden');
+                bulkActionsBar.classList.add('flex');
+                selectedCountSpan.textContent = state.selectedIds.size;
+            } else {
+                bulkActionsBar.classList.add('hidden');
+                bulkActionsBar.classList.remove('flex');
+            }
+
+            // Atualiza estado do checkbox "Selecionar Todos" na página atual
+            if (currentPageItems.length === 0) {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = false;
+                return;
+            }
+
+            const selectedOnPage = currentPageItems.filter(item => state.selectedIds.has(item.id)).length;
+            if (selectedOnPage === 0) {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = false;
+            } else if (selectedOnPage === currentPageItems.length) {
+                selectAllCheckbox.checked = true;
+                selectAllCheckbox.indeterminate = false;
+            } else {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = true;
+            }
+        }
+
+        // ==========================================
+        // 7. AÇÕES CRUD E MODAIS
+        // ==========================================
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // Visualizar
+        function viewColaborador(id) {
+            const colab = colaboradores.find(c => c.id === id);
+            if (!colab) return;
+
+            document.getElementById('viewAvatar').textContent = getInitials(colab.nome);
+            document.getElementById('viewNome').textContent = colab.nome;
+            document.getElementById('viewEmail').textContent = colab.email;
+            document.getElementById('viewId').textContent = `#${colab.id}`;
+            document.getElementById('viewStatus').innerHTML = getStatusBadge(colab.status);
+            document.getElementById('viewCargo').textContent = colab.cargo;
+            document.getElementById('viewDepartamento').textContent = colab.departamento;
+            document.getElementById('viewData').textContent = formatDate(colab.dataCadastro);
+            document.getElementById('viewSalario').textContent = formatCurrency(colab.salario);
+
+            openModal('viewModal');
+        }
+
+        // Abrir Modal para Adicionar ou Editar
+        function openFormModal(colab = null) {
+            const form = document.getElementById('colaboradorForm');
+            form.reset();
+
+            if (colab) {
+                document.getElementById('formModalTitle').textContent = `Editar Colaborador #${colab.id}`;
+                document.getElementById('editId').value = colab.id;
+                document.getElementById('inputNome').value = colab.nome;
+                document.getElementById('inputEmail').value = colab.email;
+                document.getElementById('inputCargo').value = colab.cargo;
+                document.getElementById('inputDepartamento').value = colab.departamento;
+                document.getElementById('inputStatus').value = colab.status;
+                document.getElementById('inputSalario').value = colab.salario;
+            } else {
+                document.getElementById('formModalTitle').textContent = 'Novo Colaborador';
+                document.getElementById('editId').value = '';
+            }
+
+            openModal('formModal');
+        }
+
+        function editColaborador(id) {
+            const colab = colaboradores.find(c => c.id === id);
+            if (colab) openFormModal(colab);
+        }
+
+        // Salvar (Criar ou Atualizar)
+        function saveColaborador(event) {
+            event.preventDefault();
+
+            const editId = document.getElementById('editId').value;
+            const nome = document.getElementById('inputNome').value.trim();
+            const email = document.getElementById('inputEmail').value.trim();
+            const cargo = document.getElementById('inputCargo').value.trim();
+            const departamento = document.getElementById('inputDepartamento').value;
+            const status = document.getElementById('inputStatus').value;
+            const salario = parseFloat(document.getElementById('inputSalario').value);
+
+            if (editId) {
+                // Atualização
+                const index = colaboradores.findIndex(c => c.id === parseInt(editId));
+                if (index !== -1) {
+                    colaboradores[index] = {
+                        ...colaboradores[index],
+                        nome, email, cargo, departamento, status, salario
+                    };
+                    showToast('Colaborador atualizado com sucesso!', 'success');
+                }
+            } else {
+                // Novo Registro
+                const maxId = colaboradores.reduce((max, c) => Math.max(max, c.id), 1000);
+                const today = new Date().toISOString().split('T')[0];
+                const novo = {
+                    id: maxId + 1,
+                    nome,
+                    email,
+                    cargo,
+                    departamento,
+                    status,
+                    dataCadastro: today,
+                    salario
+                };
+                colaboradores.unshift(novo);
+                state.currentPage = 1;
+                showToast('Novo colaborador adicionado!', 'success');
+            }
+
+            closeModal('formModal');
+            renderTable();
+        }
+
+        // Exclusão Individual
+        function confirmSingleDelete(id) {
+            const colab = colaboradores.find(c => c.id === id);
+            if (!colab) return;
+
+            document.getElementById('deleteModalTitle').textContent = 'Excluir Colaborador';
+            document.getElementById('deleteModalMessage').innerHTML = `Tem certeza que deseja excluir <strong>${colab.nome}</strong> (#${colab.id})? Esta ação não poderá ser desfeita.`;
+            
+            const confirmBtn = document.getElementById('confirmDeleteBtn');
+            confirmBtn.onclick = () => {
+                colaboradores = colaboradores.filter(c => c.id !== id);
+                state.selectedIds.delete(id);
+                closeModal('deleteModal');
+                renderTable();
+                showToast('Colaborador excluído com sucesso.', 'info');
+            };
+
+            openModal('deleteModal');
+        }
+
+        // Exclusão em Lote
+        function confirmBulkDelete() {
+            const count = state.selectedIds.size;
+            if (count === 0) return;
+
+            document.getElementById('deleteModalTitle').textContent = 'Excluir Selecionados';
+            document.getElementById('deleteModalMessage').innerHTML = `Tem certeza que deseja excluir os <strong>${count} colaboradores</strong> selecionados? Esta ação não poderá ser desfeita.`;
+
+            const confirmBtn = document.getElementById('confirmDeleteBtn');
+            confirmBtn.onclick = () => {
+                colaboradores = colaboradores.filter(c => !state.selectedIds.has(c.id));
+                state.selectedIds.clear();
+                closeModal('deleteModal');
+                renderTable();
+                showToast(`${count} registro(s) excluído(s) com sucesso.`, 'info');
+            };
+
+            openModal('deleteModal');
+        }
+
+        // Exportar CSV
+        function exportToCSV() {
+            const data = getProcessedData();
+            if (data.length === 0) {
+                showToast('Não há dados para exportar.', 'error');
+                return;
+            }
+
+            const headers = ['ID', 'Nome', 'Email', 'Cargo', 'Departamento', 'Status', 'Data Cadastro', 'Salario'];
+            const rows = data.map(c => [
+                c.id,
+                `"${c.nome}"`,
+                c.email,
+                `"${c.cargo}"`,
+                `"${c.departamento}"`,
+                c.status,
+                formatDate(c.dataCadastro),
+                c.salario.toFixed(2).replace('.', ',')
+            ]);
+
+            const csvContent = "data:text/csv;charset=utf-8,\uFEFF" 
+                + headers.join(";") + "\n" 
+                + rows.map(e => e.join(";")).join("\n");
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "colaboradores_export.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast('Arquivo CSV exportado com sucesso!', 'success');
+        }
+
+        // Notificação Toast
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            const colors = {
+                success: 'bg-slate-900 text-white border-slate-800',
+                info: 'bg-slate-800 text-white border-slate-700',
+                error: 'bg-red-600 text-white border-red-700'
+            };
+
+            const icons = {
+                success: 'check-circle-2',
+                info: 'info',
+                error: 'alert-circle'
+            };
+
+            toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-lg shadow-lg border text-sm font-medium transform transition-all duration-300 translate-y-2 opacity-0 ${colors[type]}`;
+            toast.innerHTML = `
+                <i data-lucide="${icons[type]}" class="w-4 h-4 text-emerald-400"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            // Animação de entrada
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            // Remove após 3.5 segundos
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // ==========================================
+        // 8. EVENT LISTENERS E INICIALIZAÇÃO
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Busca em tempo real
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            
+            searchInput.addEventListener('input', (e) => {
+                state.searchQuery = e.target.value;
+                state.currentPage = 1;
+                if (state.searchQuery.length > 0) {
+                    clearBtn.classList.remove('hidden');
+                } else {
+                    clearBtn.classList.add('hidden');
+                }
+                renderTable();
+            });
+
+            // Filtro de Status
+            document.getElementById('statusFilter').addEventListener('change', (e) => {
+                state.statusFilter = e.target.value;
+                state.currentPage = 1;
+                renderTable();
+            });
+
+            // Seletor de itens por página
+            document.getElementById('pageSizeSelect').addEventListener('change', (e) => {
+                state.pageSize = parseInt(e.target.value);
+                state.currentPage = 1;
+                renderTable();
+            });
+
+            // Checkbox "Selecionar Todos" na página atual
+            document.getElementById('selectAllCheckbox').addEventListener('change', (e) => {
+                const processedData = getProcessedData();
+                const startIndex = (state.currentPage - 1) * state.pageSize;
+                const currentPageItems = processedData.slice(startIndex, startIndex + state.pageSize);
+
+                if (e.target.checked) {
+                    currentPageItems.forEach(item => state.selectedIds.add(item.id));
+                } else {
+                    currentPageItems.forEach(item => state.selectedIds.delete(item.id));
+                }
+                renderTable();
+            });
+
+            // Renderização inicial
+            renderTable();
+        });
+    </script>
+</body>
+</html>
