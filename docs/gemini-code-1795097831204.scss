@@ -1,0 +1,16 @@
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left; // Substitui o alinhamento centralizado atual
+  padding: 0.875rem 1rem;
+  border-radius: 10px;
+  border: 1px solid $border-subtle;
+  background-color: #111622;
+  transition: all 0.2s ease;
+
+  &.active {
+    border-color: $accent-amber;
+    background-color: rgba($accent-amber, 0.1);
+  }
+}

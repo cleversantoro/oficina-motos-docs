@@ -1,0 +1,177 @@
+<form [formGroup]="form" class="form-wrapper">
+  
+  <!-- SEÇÃO 1: Contato Principal -->
+  <section class="form-card">
+    <header class="card-header">
+      <div>
+        <h2 class="card-title">Contato & Localização</h2>
+        <p class="card-subtitle">Canais diretos de comunicação com o cliente.</p>
+      </div>
+    </header>
+
+    <div class="grid-2-cols">
+      <mat-form-field appearance="outline">
+        <mat-label>E-mail principal</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="cliente@teste.com" />
+        <mat-icon matSuffix>mail</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Telefone principal</mat-label>
+        <input matInput type="tel" formControlName="telefonePrincipal" placeholder="(11) 98888-7777" />
+        <mat-icon matSuffix>call</mat-icon>
+      </mat-form-field>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 2: Contatos Adicionais -->
+  <section class="form-card">
+    <header class="card-header">
+      <div>
+        <h3 class="card-title">Contatos adicionais</h3>
+        <p class="card-subtitle">Telefones secundários, recados ou WhatsApp.</p>
+      </div>
+      <button mat-stroked-button type="button" class="btn-add" (click)="adicionarContato()">
+        <mat-icon>add</mat-icon>
+        Adicionar
+      </button>
+    </header>
+
+    <div formArrayName="contatosAdicionais" class="array-list">
+      @for (contato of contatosAdicionais.controls; track $index) {
+        <div [formGroupName]="$index" class="sub-card contato-grid">
+          
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Tipo</mat-label>
+            <mat-select formControlName="tipo">
+              <mat-option value="Celular">Celular</mat-option>
+              <mat-option value="WhatsApp">WhatsApp</mat-option>
+              <mat-option value="Comercial">Comercial</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Valor</mat-label>
+            <input matInput formControlName="valor" placeholder="(11) 91234-1001" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Observação</mat-label>
+            <input matInput formControlName="observacao" placeholder="WhatsApp principal" />
+          </mat-form-field>
+
+          <div class="item-actions">
+            <mat-slide-toggle formControlName="principal" color="accent">
+              Principal
+            </mat-slide-toggle>
+
+            <button 
+              mat-icon-button 
+              type="button" 
+              color="warn" 
+              matTooltip="Remover contato"
+              (click)="removerContato($index)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- SEÇÃO 3: Endereços -->
+  <section class="form-card">
+    <header class="card-header">
+      <div>
+        <h3 class="card-title">Endereços</h3>
+        <p class="card-subtitle">Endereços residenciais, comerciais ou de entrega.</p>
+      </div>
+      <button mat-stroked-button type="button" class="btn-add" (click)="adicionarEndereco()">
+        <mat-icon>add</mat-icon>
+        Adicionar
+      </button>
+    </header>
+
+    <div formArrayName="enderecos" class="array-list">
+      @for (endereco of enderecos.controls; track $index) {
+        <div [formGroupName]="$index" class="sub-card">
+          
+          <!-- Cabeçalho do Endereço -->
+          <div class="sub-card-header">
+            <div class="sub-card-title-group">
+              <span class="sub-card-title">Endereço {{ $index + 1 }}</span>
+              @if (endereco.get('principal')?.value) {
+                <span class="badge-principal">Principal</span>
+              }
+            </div>
+
+            <div class="item-actions">
+              <mat-slide-toggle formControlName="principal" color="accent">
+                Principal
+              </mat-slide-toggle>
+
+              <button 
+                mat-icon-button 
+                type="button" 
+                color="warn"
+                matTooltip="Remover endereço"
+                (click)="removerEndereco($index)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Grid Proporcional de 12 Colunas -->
+          <div class="endereco-grid">
+            <mat-form-field appearance="outline" class="col-4">
+              <mat-label>Tipo</mat-label>
+              <mat-select formControlName="tipo">
+                <mat-option value="Residencial">Residencial</mat-option>
+                <mat-option value="Comercial">Comercial</mat-option>
+                <mat-option value="Entrega">Entrega</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="col-4">
+              <mat-label>CEP</mat-label>
+              <input matInput formControlName="cep" placeholder="01310-100" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="col-4">
+              <mat-label>Bairro</mat-label>
+              <input matInput formControlName="bairro" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="col-6">
+              <mat-label>Logradouro</mat-label>
+              <input matInput formControlName="logradouro" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="col-2">
+              <mat-label>Número</mat-label>
+              <input matInput formControlName="numero" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="col-4">
+              <mat-label>Complemento</mat-label>
+              <input matInput formControlName="complemento" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="col-9">
+              <mat-label>Cidade</mat-label>
+              <input matInput formControlName="cidade" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="col-3">
+              <mat-label>Estado (UF)</mat-label>
+              <input matInput formControlName="uf" maxlength="2" class="uppercase-input" />
+            </mat-form-field>
+          </div>
+
+        </div>
+      }
+    </div>
+  </section>
+
+</form>
