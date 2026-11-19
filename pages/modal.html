@@ -1,0 +1,113 @@
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-confirm-modal',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+    <div class="backdrop" *ngIf="isOpen" (click)="onCancel()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <h3>Confirmar Exclusão</h3>
+        <p>{{ message }}</p>
+        
+        <div class="actions">
+          <button class="btn-cancel" (click)="onCancel()">Cancelar</button>
+          <button class="btn-delete" (click)="onConfirm()">Excluir</button>
+        </div>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-box {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-cancel { background: #e0e0e0; color: #333; }
+    .btn-delete { background: #d32f2f; color: #fff; }
+  `]
+})
+export class ConfirmModalComponent {
+  @Input() isOpen = false;
+  @Input() message = 'Tem certeza que deseja excluir este item?';
+  @Output() confirm = new EventEmitter<void>();
+  @Output() cancel = new EventEmitter<void>();
+
+  onConfirm() {
+    this.confirm.emit();
+  }
+
+  onCancel() {
+    this.cancel.emit();
+  }
+}
+
+
+
+import { Component } from '@angular/core';
+import { ConfirmModalComponent } from './confirm-modal.component';
+
+@Component({
+  selector: 'app-lista-itens',
+  standalone: true,
+  imports: [ConfirmModalComponent],
+  template: `
+    <button (click)="abrirModal(123)">Delete</button>
+
+    <app-confirm-modal
+      [isOpen]="mostrarModal"
+      message="Deseja realmente apagar este registro?"
+      (confirm)="executarExclusao()"
+      (cancel)="fecharModal()">
+    </app-confirm-modal>
+  `
+})
+export class ListaItensComponent {
+  mostrarModal = false;
+  itemParaDeletarId: number | null = null;
+
+  abrirModal(id: number) {
+    this.itemParaDeletarId = id;
+    this.mostrarModal = true;
+  }
+
+  fecharModal() {
+    this.mostrarModal = false;
+    this.itemParaDeletarId = null;
+  }
+
+  executarExclusao() {
+    if (this.itemParaDeletarId !== null) {
+      console.log('Excluindo item:', this.itemParaDeletarId);
+      // Chame seu service.delete(this.itemParaDeletarId) aqui
+    }
+    this.fecharModal();
+  }
+}
